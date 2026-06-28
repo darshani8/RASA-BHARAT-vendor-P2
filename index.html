@@ -396,11 +396,11 @@
       <!-- PRODUCT AREA -->
       <section style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden">
         <div style="padding:16px 26px 12px;display:flex;gap:8px;overflow-x:auto;flex-shrink:0">
-          <button class="zchip" style="border:1px solid transparent;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:8px 16px;border-radius:999px;white-space:nowrap">All Items</button>
-          <button class="zchip" style="border:1px solid var(--border);cursor:pointer;background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap">Breakfast</button>
-          <button class="zchip" style="border:1px solid var(--border);cursor:pointer;background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap">Mains</button>
-          <button class="zchip" style="border:1px solid var(--border);cursor:pointer;background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap">Beverages</button>
-          <button class="zchip" style="border:1px solid var(--border);cursor:pointer;background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap">Sweets</button>
+          <button onclick="{{ onCatAll }}" class="zchip" style="{{ catAllStyle }}">All Items</button>
+          <button onclick="{{ onCatBreakfast }}" class="zchip" style="{{ catBreakfastStyle }}">Breakfast</button>
+          <button onclick="{{ onCatMains }}" class="zchip" style="{{ catMainsStyle }}">Mains</button>
+          <button onclick="{{ onCatBeverages }}" class="zchip" style="{{ catBeveragesStyle }}">Beverages</button>
+          <button onclick="{{ onCatSweets }}" class="zchip" style="{{ catSweetsStyle }}">Sweets</button>
         </div>
         <div style="flex:1;overflow-y:auto;padding:6px 26px 26px">
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px">
@@ -1367,6 +1367,7 @@ class Component extends DCLogic {
       {id:'Kiosk 01', token:'B-110', cashier:'Self-service', status:'payment'}
     ],
     modalOpen: false,
+    posCat: 'All Items',
     filter: 'all',
     sort: 'recent',
     requested: {},
@@ -1443,17 +1444,25 @@ class Component extends DCLogic {
   inc(id){ this.setState(s => ({cart:s.cart.map(x=>x.id===id?{...x,qty:x.qty+1}:x)})); }
   dec(id){ this.setState(s => ({cart:s.cart.map(x=>x.id===id?{...x,qty:x.qty-1}:x).filter(x=>x.qty>0)})); }
   clear(){ this.setState({cart:[]}); }
+  setPosCat(c){ this.setState({posCat:c}); }
   rvPos(){
     const cart=this.state.cart.map(x=>({...x, lineTotal:this.money(x.price*x.qty), onInc:()=>this.inc(x.id), onDec:()=>this.dec(x.id)}));
     const sub=this.state.cart.reduce((a,x)=>a+x.price*x.qty,0);
     const tax=sub*0.085;
-    const products=this.products.map(p=>({...p, priceLabel:this.money(p.price), hasTag:!!p.tag, addItem:()=>this.add(p)}));
+    const cat=this.state.posCat;
+    const visible=cat==='All Items'?this.products:this.products.filter(p=>p.cat===cat);
+    const products=visible.map(p=>({...p, priceLabel:this.money(p.price), hasTag:!!p.tag, addItem:()=>this.add(p)}));
+    const catActive='border:1px solid transparent;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:8px 16px;border-radius:999px;white-space:nowrap';
+    const catIdle='border:1px solid var(--border);cursor:pointer;background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap';
+    const cstyle=(c)=> cat===c?catActive:catIdle;
     return {
       products, cart,
       empty:cart.length===0,
       itemCount:this.state.cart.reduce((a,x)=>a+x.qty,0),
       subtotal:this.money(sub), tax:this.money(tax), total:this.money(sub+tax),
-      clear:()=>this.clear()
+      clear:()=>this.clear(),
+      catAllStyle:cstyle('All Items'), catBreakfastStyle:cstyle('Breakfast'), catMainsStyle:cstyle('Mains'), catBeveragesStyle:cstyle('Beverages'), catSweetsStyle:cstyle('Sweets'),
+      onCatAll:()=>this.setPosCat('All Items'), onCatBreakfast:()=>this.setPosCat('Breakfast'), onCatMains:()=>this.setPosCat('Mains'), onCatBeverages:()=>this.setPosCat('Beverages'), onCatSweets:()=>this.setPosCat('Sweets')
     };
   }
 
