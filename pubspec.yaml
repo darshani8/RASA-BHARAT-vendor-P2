@@ -1,0 +1,25 @@
+name: rasap2_vendor
+description: RASAP2 Vendor — food-queue vendor dashboard (Flutter PWA) connected to the RASAP2 backend.
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  # Flutter 3.27+ (Dart 3.6+): the theme uses CardThemeData, the post-3.27 type for cardTheme.
+  sdk: ">=3.6.0 <4.0.0"
+  flutter: ">=3.27.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2
+  shared_preferences: ^2.3.2
+  google_fonts: ^6.2.1
+  intl: ^0.19.0
+  # Socket.IO v4-compatible client for the backend realtime/ gateway (server: socket.io ^4.8).
+  socket_io_client: ^2.0.3+1
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
