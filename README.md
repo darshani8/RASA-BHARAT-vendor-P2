@@ -63,7 +63,12 @@ flutter pub get
 ```bash
 flutter run -d chrome --web-port 8080     # dev — fixed port so it matches the backend CORS allow-list
 flutter build web --release               # production PWA in build/web (service worker auto-generated)
+flutter build web --release --no-web-resources-cdn   # also bundle CanvasKit locally (offline / air-gapped)
 ```
+
+The Manrope font is bundled (`assets/fonts`), so the app never fetches fonts at runtime. Add
+`--no-web-resources-cdn` if you also want CanvasKit served from your own origin instead of the
+gstatic CDN.
 
 > Pin the dev port (`--web-port 8080`) so the origin matches `CORS_ALLOWED_ORIGINS` on the backend
 > (see below). `flutter run` otherwise picks a random port that CORS will reject.
@@ -112,6 +117,7 @@ This frontend lives in its **own** repo, separate from the backend:
 
 - Money is **integer paise as a string** everywhere (matches the backend BIGINT contract); the UI
   converts to/from ₹ only for display and validates a positive integer before sending.
-- This scaffold was authored as source without a Flutter toolchain in the build environment, so it
-  has not been run through `flutter analyze` here — run it after `flutter pub get` and fix any
-  version drift for your installed Flutter SDK. `CLAUDE_CODE_HANDOFF.md` records the original task.
+- Verified on Flutter 3.44.4 (Dart 3.12.2): `flutter analyze` is clean, `flutter test` passes, the
+  web release builds, and a headless-Chromium sign-in against a live RASAP2 backend exercised the
+  full flow (login + board + orders + menu + analytics, with the realtime "Live" badge connected).
+  `CLAUDE_CODE_HANDOFF.md` records the original task and what was implemented.
