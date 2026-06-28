@@ -202,7 +202,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         ),
                         Switch(
                           value: available,
-                          activeColor: Zenith.accent,
+                          activeThumbColor: Zenith.accent,
                           onChanged: (v) => _toggle(m, v),
                         ),
                         PopupMenuButton<String>(

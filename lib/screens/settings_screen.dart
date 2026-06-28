@@ -80,7 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             Switch(
               value: _accepting ?? false,
-              activeColor: Zenith.accent,
+              activeThumbColor: Zenith.accent,
               onChanged: _accepting == null ? null : _setAccepting,
             ),
           ]),
@@ -140,7 +140,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     color: Zenith.ink,
                     fontSize: 12.5,
                     fontWeight: FontWeight.w700,
-                    fontFamily: mono ? 'monospace' : null)),
+                    // Avoid the generic 'monospace' family — CanvasKit web can't resolve it (the id
+                    // would render blank). A little letter-spacing keeps ids legible in Manrope.
+                    letterSpacing: mono ? 0.4 : null)),
           ),
         ],
       );

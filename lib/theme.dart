@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Zenith palette — mirrors the HTML vendor suite so the Flutter app shares the brand.
 class Zenith {
@@ -22,6 +21,9 @@ class Zenith {
   static ThemeData theme() {
     final base = ThemeData(
       useMaterial3: true,
+      // Manrope is bundled (assets/fonts) rather than fetched at runtime — offline-capable PWA,
+      // no FOUT, no dependency on fonts.gstatic.com.
+      fontFamily: 'Manrope',
       colorScheme: ColorScheme.fromSeed(
         seedColor: accent,
         primary: accent,
@@ -30,7 +32,6 @@ class Zenith {
       scaffoldBackgroundColor: canvas,
     );
     return base.copyWith(
-      textTheme: GoogleFonts.manropeTextTheme(base.textTheme),
       appBarTheme: const AppBarTheme(
         backgroundColor: card,
         foregroundColor: ink,

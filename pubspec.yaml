@@ -4,22 +4,27 @@ publish_to: "none"
 version: 0.1.0+1
 
 environment:
-  # Flutter 3.27+ (Dart 3.6+): the theme uses CardThemeData, the post-3.27 type for cardTheme.
-  sdk: ">=3.6.0 <4.0.0"
-  flutter: ">=3.27.0"
+  # Flutter 3.32+ (Dart 3.8+): theme uses CardThemeData (3.27+) and Switch.activeThumbColor (3.31+).
+  sdk: ">=3.8.0 <4.0.0"
+  flutter: ">=3.32.0"
 
 dependencies:
   flutter:
     sdk: flutter
   http: ^1.2.2
   shared_preferences: ^2.3.2
-  google_fonts: ^6.2.1
   intl: ^0.19.0
   # Socket.IO v4-compatible client for the backend realtime/ gateway (server: socket.io ^4.8).
   socket_io_client: ^2.0.3+1
 
 dev_dependencies:
+  flutter_test:
+    sdk: flutter
   flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true
+  fonts:
+    - family: Manrope
+      fonts:
+        - asset: assets/fonts/Manrope.ttf

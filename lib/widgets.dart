@@ -89,7 +89,7 @@ Widget orderCard(
 }
 
 /// Loads one keyset page; `cursor` is null for the first page and `Page.nextCursor` thereafter.
-typedef PageLoader = Future<Page> Function({String? cursor});
+typedef PageLoader = Future<PageResult> Function({String? cursor});
 
 /// Reusable, keyset-paginated, refreshable order list used by the Queue board and Orders screens.
 /// Pulls more pages as the user scrolls; pull-to-refresh and [refreshSignal] (a realtime tick)

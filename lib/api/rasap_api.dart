@@ -14,10 +14,10 @@ class ApiException implements Exception {
 
 /// One keyset page from a backend list endpoint: the rows plus the opaque cursor for the next
 /// page (`null` when there are no more rows). Mirrors `{ data, page: { limit, nextCursor } }`.
-class Page {
+class PageResult {
   final List items;
   final String? nextCursor;
-  const Page(this.items, this.nextCursor);
+  const PageResult(this.items, this.nextCursor);
   bool get hasMore => nextCursor != null;
 }
 
@@ -149,7 +149,7 @@ class RasapApi {
 
   // KDS board (active orders by ready-time). vendorId is taken from the token server-side — the
   // endpoint accepts only { limit?, cursor? }. → { data, page:{ limit, nextCursor } }
-  Future<Page> board({int limit = 50, String? cursor}) async {
+  Future<PageResult> board({int limit = 50, String? cursor}) async {
     final r = await _send('GET', '/vendor/board',
         query: {'limit': '$limit', if (cursor != null) 'cursor': cursor}) as Map;
     return _page(r);
@@ -157,7 +157,7 @@ class RasapApi {
 
   // incoming orders (vendor token scopes to own vendor). status ∈
   // created|paid|ready|collected|completed|cancelled. → { data, page }
-  Future<Page> orders({String? status, int limit = 50, String? cursor}) async {
+  Future<PageResult> orders({String? status, int limit = 50, String? cursor}) async {
     final r = await _send('GET', '/vendors/me/orders', query: {
       'limit': '$limit',
       if (status != null) 'status': status,
@@ -166,11 +166,11 @@ class RasapApi {
     return _page(r);
   }
 
-  Page _page(Map r) {
+  PageResult _page(Map r) {
     final data = (r['data'] as List?) ?? const [];
     final pg = r['page'];
     final next = pg is Map ? pg['nextCursor'] as String? : null;
-    return Page(data, next);
+    return PageResult(data, next);
   }
 
   Future<void> markReady(String id) async => _send('POST', '/orders/$id/ready');
