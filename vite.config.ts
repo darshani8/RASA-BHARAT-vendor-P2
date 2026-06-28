@@ -16,7 +16,9 @@ export default defineConfig({
         background_color: '#0E1116',
         display: 'standalone',
         orientation: 'any',
-        start_url: '/',
+        // Relative so the installed PWA opens at the deploy base (works under /<repo>/ on Pages).
+        start_url: '.',
+        scope: '.',
         icons: [
           { src: 'icons/Icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icons/Icon-512.png', sizes: '512x512', type: 'image/png' },
