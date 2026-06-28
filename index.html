@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0E1116" />
+  <meta name="description" content="Zenith Retail Cloud — vendor point-of-sale & operations dashboard" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/icons/Icon-192.png" />
+  <title>Zenith Retail Cloud</title>
+</head>
+<body style="margin:0;background:#0E1116">
+  <x-dc>
+<div style="height:100vh;width:100%;overflow:hidden;background:#0E1116">
+  <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+<div ref="{{ setRoot }}" style="--canvas:#F4F5F7;--card:#FFFFFF;--card-soft:#FAFBFC;--border:#E9EBEE;--border-strong:#D8DCE1;--hover:#F6F7F9;--ink:#0F1217;--text:#3D434C;--muted:#7B828C;--faint:#A6ACB4;--side-bg:#0E1116;--side-bg-2:#11151B;--side-text:#9097A1;--side-active-text:#FFFFFF;--nav-hover:rgba(255,255,255,.05);--nav-active:rgba(255,255,255,.08);--side-border:rgba(255,255,255,.07);--accent:#128A63;--accent-ink:#0C6347;--accent-soft:rgba(18,138,99,.10);--pos:#128A63;--neg:#C5413A;--neg-soft:rgba(197,65,58,.10);--amber:#B7791F;--amber-soft:rgba(183,121,31,.12);--shadow-sm:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04);--shadow-md:0 10px 34px -8px rgba(16,24,40,.14);--pad:22px;display:flex;height:100vh;width:100%;background:var(--canvas);color:var(--text);font-family:'Manrope',system-ui,sans-serif;overflow:hidden;font-feature-settings:'tnum' 1,'cv11' 1">
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside style="width:256px;flex-shrink:0;background:var(--side-bg);border-right:1px solid var(--side-border);display:flex;flex-direction:column;padding:22px 16px 18px">
+    <div style="display:flex;align-items:center;gap:11px;padding:6px 8px 0">
+      <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,138,99,.35)">
+        <span style="color:#fff;font-weight:800;font-size:17px;letter-spacing:-.04em">Z</span>
+      </div>
+      <div>
+        <div style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">Zenith</div>
+        <div style="color:var(--faint);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase">Retail Cloud</div>
+      </div>
+    </div>
+
+    <div style="margin-top:26px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Overview</div>
+      <a href="#" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;background:var(--nav-active);color:var(--side-active-text);position:relative">
+        <span style="position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:3px;height:18px;border-radius:0 3px 3px 0;background:var(--accent)"></span>
+        <span class="ms" style="font-size:20px;color:var(--accent)">space_dashboard</span>Dashboard
+      </a>
+    </div>
+
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Operations</div>
+      <a href="#/pos" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">point_of_sale</span>Point of Sale</a>
+      <a href="#/orders" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">receipt_long</span>Orders<span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--side-active-text);background:rgba(255,255,255,.08);padding:2px 7px;border-radius:6px">12</span></a>
+      
+      <a href="#/queue" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">pending_actions</span>Queue</a>
+      <a href="#/inventory" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">inventory_2</span>Inventory</a>
+    </div>
+
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Insights</div>
+      <a href="#/analytics" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">monitoring</span>Analytics</a>
+      <a href="#/reports" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">workspace_premium</span>Reports</a>
+    </div>
+
+    <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--side-border);display:flex;flex-direction:column;gap:2px">
+      <a href="#" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">help</span>Support</a>
+      <div style="display:flex;align-items:center;gap:11px;padding:10px;margin-top:6px;border-radius:11px;background:var(--side-bg-2);border:1px solid var(--side-border)">
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,#2A3340,#171C24);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">AD</div>
+        <div style="min-width:0;flex:1">
+          <div style="color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Avery Donovan</div>
+          <div style="color:var(--faint);font-size:11px;font-weight:500">Store Manager</div>
+        </div>
+        <span class="ms" style="font-size:18px;color:var(--side-text)">unfold_more</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN ===== -->
+  <main style="flex:1;display:flex;flex-direction:column;min-width:0;height:100vh;overflow:hidden">
+
+    <!-- TOPBAR -->
+    <header style="display:flex;align-items:center;gap:18px;padding:14px 28px;background:rgba(255,255,255,.78);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10">
+      <div style="min-width:0">
+        <div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em">Terminal 01 · Main Counter</div>
+        <div style="font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.02em">Dashboard</div>
+      </div>
+
+      <div style="flex:1;max-width:380px;margin-left:8px;position:relative">
+        <span class="ms" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:19px;color:var(--faint)">search</span>
+        <input placeholder="Search orders, items, customers…" style="width:100%;border:1px solid var(--border);background:var(--card-soft);color:var(--text);font-family:inherit;font-size:13px;border-radius:10px;padding:9px 12px 9px 40px;outline:none">
+      </div>
+
+      <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(18,138,99,.2)">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);animation:zpulse 2.4s infinite"></span>
+          <span style="font-size:12px;font-weight:700;color:var(--accent-ink);letter-spacing:.01em">Register Open</span>
+        </div>
+        <a href="#/pos" class="zbtn" style="display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;border-radius:10px;text-decoration:none">
+          <span class="ms" style="font-size:18px">add</span>New Order
+        </a>
+        <div style="display:flex;align-items:center;gap:4px;padding-left:12px;border-left:1px solid var(--border)">
+          <button class="zbtn" style="position:relative;border:none;background:transparent;cursor:pointer;width:38px;height:38px;border-radius:10px;color:var(--muted);display:flex;align-items:center;justify-content:center">
+            <span class="ms" style="font-size:21px">notifications</span>
+            <span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--neg);border:1.5px solid var(--card)"></span>
+          </button>
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;margin-left:4px;cursor:pointer">AD</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- SCROLL AREA -->
+    <div style="flex:1;overflow-y:auto;padding:26px 28px 40px">
+      <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:18px">
+
+        <!-- HEADLINE ROW -->
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+          <div>
+            <h1 style="font-size:25px;font-weight:800;color:var(--ink);letter-spacing:-.025em;line-height:1.1">Good morning, Avery</h1>
+            <p style="font-size:13.5px;color:var(--muted);margin-top:5px;font-weight:500">Here's how the counter is performing today · Tuesday, June 27</p>
+          </div>
+          <div style="display:flex;gap:8px">
+            <button class="zbtn" style="display:flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer"><span class="ms" style="font-size:18px;color:var(--muted)">calendar_today</span>Today</button>
+            <button class="zbtn" style="display:flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer"><span class="ms" style="font-size:18px;color:var(--muted)">ios_share</span>Export</button>
+          </div>
+        </div>
+
+        <!-- KPI GRID -->
+        <section style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Today's Revenue</span>
+              <span style="display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--pos);background:var(--accent-soft);padding:3px 7px;border-radius:7px"><span class="ms" style="font-size:14px">trending_up</span>12.5%</span>
+            </div>
+            <div style="font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">$48,250</div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:12px">
+              <span style="font-size:11.5px;color:var(--faint);font-weight:500">vs $42.9k yesterday</span>
+              <svg viewBox="0 0 120 34" width="74" height="22" fill="none" preserveAspectRatio="none"><path d="M0,28 L17,24 L34,26 L51,17 L68,20 L85,11 L102,13 L120,4" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div>
+          </div>
+
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Cash Collected</span>
+              <span style="display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--pos);background:var(--accent-soft);padding:3px 7px;border-radius:7px"><span class="ms" style="font-size:14px">trending_up</span>8.2%</span>
+            </div>
+            <div style="font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">$7,240</div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:12px">
+              <span style="font-size:11.5px;color:var(--faint);font-weight:500">cash drawer balance</span>
+              <svg viewBox="0 0 120 34" width="74" height="22" fill="none" preserveAspectRatio="none"><path d="M0,22 L17,18 L34,23 L51,14 L68,22 L85,16 L102,9 L120,12" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div>
+          </div>
+
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Avg Handle Time</span>
+              <span style="display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--pos);background:var(--accent-soft);padding:3px 7px;border-radius:7px"><span class="ms" style="font-size:14px">trending_down</span>30s</span>
+            </div>
+            <div style="font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">4m 12s</div>
+            <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-top:12px">
+              <span style="font-size:11.5px;color:var(--faint);font-weight:500">target 4m 45s</span>
+              <svg viewBox="0 0 120 34" width="74" height="22" fill="none" preserveAspectRatio="none"><path d="M0,8 L17,12 L34,10 L51,16 L68,14 L85,20 L102,18 L120,24" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+            </div>
+          </div>
+
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Completion Rate</span>
+              <span style="display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--amber);background:var(--amber-soft);padding:3px 7px;border-radius:7px">SLA</span>
+            </div>
+            <div style="font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">98.2%</div>
+            <div style="margin-top:16px">
+              <div style="height:6px;border-radius:999px;background:var(--hover);overflow:hidden"><div style="height:100%;width:98.2%;border-radius:999px;background:linear-gradient(90deg,#1BA576,#0C6347)"></div></div>
+              <div style="font-size:11.5px;color:var(--faint);font-weight:500;margin-top:8px">307 of 312 fulfilled</div>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- CHART + QUEUE -->
+        <section style="display:grid;grid-template-columns:1.85fr 1fr;gap:16px">
+
+          <!-- REVENUE CHART -->
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad);display:flex;flex-direction:column">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+              <div>
+                <div style="font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Revenue Flow</div>
+                <div style="font-size:12px;color:var(--muted);margin-top:3px;font-weight:500">Hourly net sales · 9:00 — 19:00</div>
+              </div>
+              <div style="display:flex;gap:2px;background:var(--hover);padding:3px;border-radius:9px">
+                <button class="ztab" style="border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;padding:5px 12px;border-radius:7px;background:var(--card);color:var(--ink);box-shadow:var(--shadow-sm)">Today</button>
+                <button class="ztab" style="border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:7px;background:transparent;color:var(--muted)">Week</button>
+                <button class="ztab" style="border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:7px;background:transparent;color:var(--muted)">Month</button>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:baseline;gap:10px;margin-top:14px">
+              <span style="font-size:27px;font-weight:800;color:var(--ink);letter-spacing:-.03em">$48,250</span>
+              <span style="display:inline-flex;align-items:center;gap:3px;font-size:12.5px;font-weight:700;color:var(--pos)"><span class="ms" style="font-size:16px">arrow_upward</span>12.5% today</span>
+            </div>
+
+            <div style="position:relative;margin-top:10px;flex:1">
+              <svg viewBox="0 0 740 250" width="100%" height="100%" preserveAspectRatio="none" style="display:block;overflow:visible">
+                <defs>
+                  <linearGradient id="zfill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.20"></stop>
+                    <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"></stop>
+                  </linearGradient>
+                </defs>
+                <line x1="0" y1="20" x2="740" y2="20" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 5"></line>
+                <line x1="0" y1="78" x2="740" y2="78" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 5"></line>
+                <line x1="0" y1="136" x2="740" y2="136" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 5"></line>
+                <line x1="0" y1="194" x2="740" y2="194" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 5"></line>
+                <path d="M0,180 C45,168 65,150 100,150 C140,150 152,182 180,182 C218,182 222,118 258,118 C300,118 312,146 342,142 C382,137 392,90 422,90 C462,90 472,114 512,110 C552,106 568,58 602,58 C638,58 648,82 678,80 C704,78 720,46 740,44 L740,250 L0,250 Z" fill="url(#zfill)"></path>
+                <path d="M0,180 C45,168 65,150 100,150 C140,150 152,182 180,182 C218,182 222,118 258,118 C300,118 312,146 342,142 C382,137 392,90 422,90 C462,90 472,114 512,110 C552,106 568,58 602,58 C638,58 648,82 678,80 C704,78 720,46 740,44" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="602" cy="58" r="4.5" fill="var(--card)" stroke="var(--accent)" stroke-width="2.5"></circle>
+              </svg>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:11px;font-weight:600;color:var(--faint)">
+              <span>9a</span><span>11a</span><span>1p</span><span>3p</span><span>5p</span><span>7p</span>
+            </div>
+          </div>
+
+          <!-- LIVE QUEUE -->
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;overflow:hidden">
+            <div style="padding:18px var(--pad) 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
+              <div style="font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Live Queue</div>
+              <span style="font-size:11px;font-weight:700;color:var(--muted);background:var(--hover);padding:3px 9px;border-radius:7px">24 active</span>
+            </div>
+            <div style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
+
+              <div class="zrow" style="display:flex;align-items:center;gap:12px;padding:11px 10px;border-radius:11px;cursor:pointer">
+                <div style="width:40px;height:40px;border-radius:10px;background:var(--amber-soft);color:var(--amber);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">42</div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13px;font-weight:700;color:var(--ink)">Sarah Jennings</div>
+                  <div style="font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">2× Signature Bowl · 1× Iced Tea</div>
+                </div>
+                <span style="flex-shrink:0;font-size:10.5px;font-weight:700;color:var(--amber);background:var(--amber-soft);padding:4px 9px;border-radius:999px;white-space:nowrap">Preparing</span>
+              </div>
+
+              <div class="zrow" style="display:flex;align-items:center;gap:12px;padding:11px 10px;border-radius:11px;cursor:pointer">
+                <div style="width:40px;height:40px;border-radius:10px;background:var(--accent-soft);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">41</div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13px;font-weight:700;color:var(--ink)">Mike Reynolds</div>
+                  <div style="font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">1× Breakfast Wrap</div>
+                </div>
+                <span style="flex-shrink:0;font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 9px;border-radius:999px;white-space:nowrap">Ready</span>
+              </div>
+
+              <div class="zrow" style="display:flex;align-items:center;gap:12px;padding:11px 10px;border-radius:11px;cursor:pointer">
+                <div style="width:40px;height:40px;border-radius:10px;background:var(--hover);color:var(--text);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">40</div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13px;font-weight:700;color:var(--ink)">Elena Park</div>
+                  <div style="font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">3× Espresso · 1× Croissant</div>
+                </div>
+                <span style="flex-shrink:0;font-size:10.5px;font-weight:700;color:var(--muted);background:var(--hover);padding:4px 9px;border-radius:999px;white-space:nowrap">Queued</span>
+              </div>
+
+              <div class="zrow" style="display:flex;align-items:center;gap:12px;padding:11px 10px;border-radius:11px;cursor:pointer">
+                <div style="width:40px;height:40px;border-radius:10px;background:var(--hover);color:var(--text);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0">39</div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-size:13px;font-weight:700;color:var(--ink)">James Cole</div>
+                  <div style="font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">1× Garden Salad · 1× Soda</div>
+                </div>
+                <span style="flex-shrink:0;font-size:10.5px;font-weight:700;color:var(--muted);background:var(--hover);padding:4px 9px;border-radius:999px;white-space:nowrap">Queued</span>
+              </div>
+            </div>
+            <div style="padding:12px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:8px">
+              <button class="zbtn" style="display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:9px;border-radius:10px;cursor:pointer"><span class="ms" style="font-size:17px;color:var(--muted)">pause_circle</span>Pause</button>
+              <button class="zbtn" style="display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:9px;border-radius:10px;cursor:pointer"><span class="ms" style="font-size:17px;color:var(--muted)">campaign</span>Announce</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- TRANSACTIONS -->
+        <section class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:18px var(--pad);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
+            <div>
+              <div style="font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Recent Transactions</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:3px;font-weight:500">Last 6 completed orders</div>
+            </div>
+            <button class="zbtn" style="display:flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:7px 13px;border-radius:9px;cursor:pointer">View all<span class="ms" style="font-size:16px;color:var(--muted)">arrow_forward</span></button>
+          </div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead>
+              <tr style="background:var(--card-soft)">
+                <th style="text-align:left;padding:10px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Order</th>
+                <th style="text-align:left;padding:10px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Customer</th>
+                <th style="text-align:left;padding:10px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Time</th>
+                <th style="text-align:left;padding:10px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Method</th>
+                <th style="text-align:right;padding:10px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Amount</th>
+                <th style="text-align:right;padding:10px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-092</td>
+                <td style="padding:13px 16px;font-size:13px;color:var(--text);font-weight:600">Sarah Jennings</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">10:42 AM</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--text)">Card ·· 4291</td>
+                <td style="padding:13px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">$24.50</td>
+                <td style="padding:13px var(--pad);text-align:right"><span style="font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:999px">Completed</span></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-091</td>
+                <td style="padding:13px 16px;font-size:13px;color:var(--text);font-weight:600">Daniel Okafor</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">10:38 AM</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--text)">Apple Pay</td>
+                <td style="padding:13px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">$12.00</td>
+                <td style="padding:13px var(--pad);text-align:right"><span style="font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:999px">Completed</span></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-090</td>
+                <td style="padding:13px 16px;font-size:13px;color:var(--text);font-weight:600">Priya Nair</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">10:31 AM</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--text)">Cash</td>
+                <td style="padding:13px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">$38.75</td>
+                <td style="padding:13px var(--pad);text-align:right"><span style="font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:999px">Completed</span></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-089</td>
+                <td style="padding:13px 16px;font-size:13px;color:var(--text);font-weight:600">Marcus Lee</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">10:24 AM</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--text)">Card ·· 8830</td>
+                <td style="padding:13px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">$9.25</td>
+                <td style="padding:13px var(--pad);text-align:right"><span style="font-size:10.5px;font-weight:700;color:var(--amber);background:var(--amber-soft);padding:4px 10px;border-radius:999px">Refunded</span></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-088</td>
+                <td style="padding:13px 16px;font-size:13px;color:var(--text);font-weight:600">Hannah Brooks</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">10:17 AM</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--text)">Apple Pay</td>
+                <td style="padding:13px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">$52.00</td>
+                <td style="padding:13px var(--pad);text-align:right"><span style="font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:999px">Completed</span></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-087</td>
+                <td style="padding:13px 16px;font-size:13px;color:var(--text);font-weight:600">Tomás Rivera</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">10:09 AM</td>
+                <td style="padding:13px 16px;font-size:12.5px;color:var(--text)">Card ·· 1147</td>
+                <td style="padding:13px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">$17.80</td>
+                <td style="padding:13px var(--pad);text-align:right"><span style="font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:999px">Completed</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+      </div>
+    </div>
+  </main>
+</div>
+  </sc-if>
+  <sc-if value="{{ isPos }}" hint-placeholder-val="{{ false }}">
+<div ref="{{ setRoot }}" style="--canvas:#F4F5F7;--card:#FFFFFF;--card-soft:#FAFBFC;--border:#E9EBEE;--border-strong:#D8DCE1;--hover:#F6F7F9;--ink:#0F1217;--text:#3D434C;--muted:#7B828C;--faint:#A6ACB4;--side-bg:#0E1116;--side-bg-2:#11151B;--side-text:#9097A1;--side-active-text:#FFFFFF;--nav-hover:rgba(255,255,255,.05);--nav-active:rgba(255,255,255,.08);--side-border:rgba(255,255,255,.07);--accent:#128A63;--accent-ink:#0C6347;--accent-soft:rgba(18,138,99,.10);--pos:#128A63;--neg:#C5413A;--neg-soft:rgba(197,65,58,.10);--amber:#B7791F;--amber-soft:rgba(183,121,31,.12);--shadow-sm:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04);--shadow-md:0 10px 34px -8px rgba(16,24,40,.14);--pad:22px;display:flex;height:100vh;width:100%;background:var(--canvas);color:var(--text);font-family:'Manrope',system-ui,sans-serif;overflow:hidden;font-feature-settings:'tnum' 1">
+
+  <aside style="width:256px;flex-shrink:0;background:var(--side-bg);border-right:1px solid var(--side-border);display:flex;flex-direction:column;padding:22px 16px 18px">
+    <div style="display:flex;align-items:center;gap:11px;padding:6px 8px 0">
+      <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,138,99,.35)"><span style="color:#fff;font-weight:800;font-size:17px;letter-spacing:-.04em">Z</span></div>
+      <div><div style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">Zenith</div><div style="color:var(--faint);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase">Retail Cloud</div></div>
+    </div>
+    <div style="margin-top:26px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Overview</div>
+      <a href="#/dashboard" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">space_dashboard</span>Dashboard</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Operations</div>
+      <a href="#/pos" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;background:var(--nav-active);color:var(--side-active-text);position:relative"><span style="position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:3px;height:18px;border-radius:0 3px 3px 0;background:var(--accent)"></span><span class="ms" style="font-size:20px;color:var(--accent)">point_of_sale</span>Point of Sale</a>
+      <a href="#/orders" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">receipt_long</span>Orders<span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--side-active-text);background:rgba(255,255,255,.08);padding:2px 7px;border-radius:6px">12</span></a>
+      
+      <a href="#/queue" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">pending_actions</span>Queue</a>
+      <a href="#/inventory" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">inventory_2</span>Inventory</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Insights</div>
+      <a href="#/analytics" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">monitoring</span>Analytics</a>
+      <a href="#/reports" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">workspace_premium</span>Reports</a>
+    </div>
+    <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--side-border);display:flex;flex-direction:column;gap:2px">
+      <a href="#" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">help</span>Support</a>
+      <div style="display:flex;align-items:center;gap:11px;padding:10px;margin-top:6px;border-radius:11px;background:var(--side-bg-2);border:1px solid var(--side-border)">
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,#2A3340,#171C24);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">AD</div>
+        <div style="min-width:0;flex:1"><div style="color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Avery Donovan</div><div style="color:var(--faint);font-size:11px;font-weight:500">Store Manager</div></div>
+        <span class="ms" style="font-size:18px;color:var(--side-text)">unfold_more</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1;display:flex;flex-direction:column;min-width:0;height:100vh;overflow:hidden">
+    <header style="display:flex;align-items:center;gap:18px;padding:14px 26px;background:rgba(255,255,255,.78);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10">
+      <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em">Terminal 01 · Main Counter</div><div style="font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.02em">Point of Sale</div></div>
+      <div style="flex:1;max-width:340px;margin-left:8px;position:relative">
+        <span class="ms" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:19px;color:var(--faint)">search</span>
+        <input placeholder="Search products, SKU…" style="width:100%;border:1px solid var(--border);background:var(--card-soft);color:var(--text);font-family:inherit;font-size:13px;border-radius:10px;padding:9px 12px 9px 40px;outline:none">
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(18,138,99,.2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);animation:zpulse 2.4s infinite"></span><span style="font-size:12px;font-weight:700;color:var(--accent-ink)">Register Open</span></div>
+        <button onclick="{{ clear }}" class="zbtn" style="display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;border-radius:10px"><span class="ms" style="font-size:18px">add</span>New Order</button>
+        <div style="display:flex;align-items:center;gap:4px;padding-left:12px;border-left:1px solid var(--border)">
+          <button class="zbtn" style="position:relative;border:none;background:transparent;cursor:pointer;width:38px;height:38px;border-radius:10px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:21px">notifications</span><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--neg);border:1.5px solid var(--card)"></span></button>
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;margin-left:4px;cursor:pointer">AD</div>
+        </div>
+      </div>
+    </header>
+
+    <div style="flex:1;display:flex;overflow:hidden;min-height:0">
+      <!-- PRODUCT AREA -->
+      <section style="flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden">
+        <div style="padding:16px 26px 12px;display:flex;gap:8px;overflow-x:auto;flex-shrink:0">
+          <button class="zchip" style="border:1px solid transparent;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:8px 16px;border-radius:999px;white-space:nowrap">All Items</button>
+          <button class="zchip" style="border:1px solid var(--border);cursor:pointer;background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap">Breakfast</button>
+          <button class="zchip" style="border:1px solid var(--border);cursor:pointer;background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap">Mains</button>
+          <button class="zchip" style="border:1px solid var(--border);cursor:pointer;background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap">Beverages</button>
+          <button class="zchip" style="border:1px solid var(--border);cursor:pointer;background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:999px;white-space:nowrap">Sweets</button>
+        </div>
+        <div style="flex:1;overflow-y:auto;padding:6px 26px 26px">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px">
+            <sc-for list="{{ products }}" as="p" hint-placeholder-count="8">
+              <div onclick="{{ p.addItem }}" class="zcard zprod" style="background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;box-shadow:var(--shadow-sm)">
+                <div style="height:88px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;position:relative">
+                  <span class="ms" style="font-size:34px;color:var(--accent-ink)">{{ p.icon }}</span>
+                  <sc-if value="{{ p.hasTag }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:8px;right:8px;font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);background:var(--card);padding:3px 7px;border-radius:6px;box-shadow:var(--shadow-sm)">{{ p.tag }}</span></sc-if>
+                </div>
+                <div style="padding:12px 13px 13px;display:flex;flex-direction:column;gap:2px;flex:1">
+                  <div style="font-size:13px;font-weight:700;color:var(--ink);line-height:1.25">{{ p.name }}</div>
+                  <div style="font-size:11.5px;color:var(--muted);font-weight:500">{{ p.cat }}</div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:9px">
+                    <span style="font-size:15px;font-weight:800;color:var(--ink);letter-spacing:-.01em">{{ p.priceLabel }}</span>
+                    <span class="ms" style="font-size:22px;color:var(--accent)">add_circle</span>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+
+      <!-- CART -->
+      <aside style="width:368px;flex-shrink:0;background:var(--card);border-left:1px solid var(--border);display:flex;flex-direction:column;height:100%;box-shadow:-8px 0 24px -18px rgba(16,24,40,.2)">
+        <div style="padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <div><div style="font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Order #4092</div><div style="font-size:12px;color:var(--muted);font-weight:500;margin-top:2px">Walk-in · {{ itemCount }} items</div></div>
+          <button onclick="{{ clear }}" class="zbtn" style="border:1px solid var(--border);background:var(--card);cursor:pointer;width:34px;height:34px;border-radius:9px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:19px">delete</span></button>
+        </div>
+
+        <div style="flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:4px">
+          <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:50px 20px;text-align:center;height:100%">
+              <span class="ms" style="font-size:42px;color:var(--faint)">shopping_cart</span>
+              <div style="font-size:13.5px;font-weight:700;color:var(--text)">Cart is empty</div>
+              <div style="font-size:12px;color:var(--muted);max-width:180px">Tap a product on the left to start building this order.</div>
+            </div>
+          </sc-if>
+          <sc-for list="{{ cart }}" as="line" hint-placeholder-count="3">
+            <div class="zrow" style="display:flex;align-items:center;gap:10px;padding:11px 10px;border-radius:11px">
+              <div style="flex:1;min-width:0">
+                <div style="font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ line.name }}</div>
+                <div style="font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ line.note }}</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:2px;background:var(--hover);border:1px solid var(--border);border-radius:9px;padding:2px">
+                <button onclick="{{ line.onDec }}" class="zstep" style="border:none;background:transparent;cursor:pointer;width:26px;height:26px;border-radius:7px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:16px">remove</span></button>
+                <span style="min-width:18px;text-align:center;font-size:13px;font-weight:700;color:var(--ink)">{{ line.qty }}</span>
+                <button onclick="{{ line.onInc }}" class="zstep" style="border:none;background:transparent;cursor:pointer;width:26px;height:26px;border-radius:7px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:16px">add</span></button>
+              </div>
+              <div style="width:58px;text-align:right;font-size:13px;font-weight:700;color:var(--ink)">{{ line.lineTotal }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="padding:16px 20px 20px;border-top:1px solid var(--border);background:var(--card-soft)">
+          <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px">
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted);font-weight:500">Subtotal</span><span style="color:var(--text);font-weight:600">{{ subtotal }}</span></div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted);font-weight:500">Tax (8.5%)</span><span style="color:var(--text);font-weight:600">{{ tax }}</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px dashed var(--border)"><span style="font-size:15px;font-weight:800;color:var(--ink)">Total</span><span style="font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.02em">{{ total }}</span></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px">
+            <button class="zbtn" style="display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:13px;font-weight:700;padding:11px;border-radius:11px;cursor:pointer"><span class="ms" style="font-size:18px;color:var(--muted)">payments</span>Cash</button>
+            <button class="zbtn" style="display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent-ink);font-family:inherit;font-size:13px;font-weight:700;padding:11px;border-radius:11px;cursor:pointer"><span class="ms" style="font-size:18px">credit_card</span>Card</button>
+          </div>
+          <button class="zbtn" style="width:100%;display:flex;align-items:center;justify-content:center;gap:9px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:15px;font-weight:800;padding:14px;border-radius:12px;letter-spacing:-.01em">Charge {{ total }}<span class="ms" style="font-size:20px">arrow_forward</span></button>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+  </sc-if>
+  <sc-if value="{{ isOrders }}" hint-placeholder-val="{{ false }}">
+<div ref="{{ setRoot }}" style="--canvas:#F4F5F7;--card:#FFFFFF;--card-soft:#FAFBFC;--border:#E9EBEE;--border-strong:#D8DCE1;--hover:#F6F7F9;--ink:#0F1217;--text:#3D434C;--muted:#7B828C;--faint:#A6ACB4;--side-bg:#0E1116;--side-bg-2:#11151B;--side-text:#9097A1;--side-active-text:#FFFFFF;--nav-hover:rgba(255,255,255,.05);--nav-active:rgba(255,255,255,.08);--side-border:rgba(255,255,255,.07);--accent:#128A63;--accent-ink:#0C6347;--accent-soft:rgba(18,138,99,.10);--pos:#128A63;--neg:#C5413A;--neg-soft:rgba(197,65,58,.10);--amber:#B7791F;--amber-soft:rgba(183,121,31,.12);--shadow-sm:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04);--shadow-md:0 10px 34px -8px rgba(16,24,40,.14);--pad:22px;display:flex;height:100vh;width:100%;background:var(--canvas);color:var(--text);font-family:'Manrope',system-ui,sans-serif;overflow:hidden;font-feature-settings:'tnum' 1">
+
+  <aside style="width:256px;flex-shrink:0;background:var(--side-bg);border-right:1px solid var(--side-border);display:flex;flex-direction:column;padding:22px 16px 18px">
+    <div style="display:flex;align-items:center;gap:11px;padding:6px 8px 0">
+      <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,138,99,.35)"><span style="color:#fff;font-weight:800;font-size:17px;letter-spacing:-.04em">Z</span></div>
+      <div><div style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">Zenith</div><div style="color:var(--faint);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase">Retail Cloud</div></div>
+    </div>
+    <div style="margin-top:26px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Overview</div>
+      <a href="#/dashboard" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">space_dashboard</span>Dashboard</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Operations</div>
+      <a href="#/pos" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">point_of_sale</span>Point of Sale</a>
+      <a href="#/orders" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;background:var(--nav-active);color:var(--side-active-text);position:relative"><span style="position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:3px;height:18px;border-radius:0 3px 3px 0;background:var(--accent)"></span><span class="ms" style="font-size:20px;color:var(--accent)">receipt_long</span>Orders<span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--side-active-text);background:rgba(255,255,255,.1);padding:2px 7px;border-radius:6px">12</span></a>
+      
+      <a href="#/queue" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">pending_actions</span>Queue</a>
+      <a href="#/inventory" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">inventory_2</span>Inventory</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Insights</div>
+      <a href="#/analytics" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">monitoring</span>Analytics</a>
+      <a href="#/reports" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">workspace_premium</span>Reports</a>
+    </div>
+    <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--side-border);display:flex;flex-direction:column;gap:2px">
+      <a href="#" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">help</span>Support</a>
+      <div style="display:flex;align-items:center;gap:11px;padding:10px;margin-top:6px;border-radius:11px;background:var(--side-bg-2);border:1px solid var(--side-border)">
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,#2A3340,#171C24);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">AD</div>
+        <div style="min-width:0;flex:1"><div style="color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Avery Donovan</div><div style="color:var(--faint);font-size:11px;font-weight:500">Store Manager</div></div>
+        <span class="ms" style="font-size:18px;color:var(--side-text)">unfold_more</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1;display:flex;flex-direction:column;min-width:0;height:100vh;overflow:hidden">
+    <header style="display:flex;align-items:center;gap:18px;padding:14px 28px;background:rgba(255,255,255,.78);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10">
+      <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em">Terminal 01 · Main Counter</div><div style="font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.02em">Orders</div></div>
+      <div style="flex:1;max-width:380px;margin-left:8px;position:relative">
+        <span class="ms" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:19px;color:var(--faint)">search</span>
+        <input placeholder="Search orders, tokens, customers…" style="width:100%;border:1px solid var(--border);background:var(--card-soft);color:var(--text);font-family:inherit;font-size:13px;border-radius:10px;padding:9px 12px 9px 40px;outline:none">
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(18,138,99,.2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);animation:zpulse 2.4s infinite"></span><span style="font-size:12px;font-weight:700;color:var(--accent-ink)">Register Open</span></div>
+        <a href="#/pos" class="zbtn" style="display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;border-radius:10px;text-decoration:none"><span class="ms" style="font-size:18px">add</span>New Order</a>
+        <div style="display:flex;align-items:center;gap:4px;padding-left:12px;border-left:1px solid var(--border)">
+          <button class="zbtn" style="position:relative;border:none;background:transparent;cursor:pointer;width:38px;height:38px;border-radius:10px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:21px">notifications</span><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--neg);border:1.5px solid var(--card)"></span></button>
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;margin-left:4px;cursor:pointer">AD</div>
+        </div>
+      </div>
+    </header>
+
+    <div style="flex:1;overflow-y:auto;padding:26px 28px 40px">
+      <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:18px">
+
+        <div>
+          <h1 style="font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.025em;line-height:1.1">Pipeline Management</h1>
+          <p style="font-size:13.5px;color:var(--muted);margin-top:5px;font-weight:500">Live tracking and historical order records across the counter.</p>
+        </div>
+
+        <!-- METRICS -->
+        <section style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Active Queue</span><span class="ms" style="font-size:20px;color:var(--muted)">pending_actions</span></div>
+            <div style="font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">24</div>
+            <div style="display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:11.5px;font-weight:700;color:var(--pos)"><span class="ms" style="font-size:15px">arrow_upward</span>12%<span style="color:var(--faint);font-weight:500">vs last hour</span></div>
+          </div>
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Preparing</span><span class="ms" style="font-size:20px;color:var(--amber)">skillet</span></div>
+            <div style="font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">8</div>
+            <div style="margin-top:12px;font-size:11.5px;font-weight:500;color:var(--faint)">Avg time · <span style="color:var(--text);font-weight:700">4m 12s</span></div>
+          </div>
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Ready for Pickup</span><span class="ms" style="font-size:20px;color:var(--accent)">check_circle</span></div>
+            <div style="font-size:34px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">3</div>
+            <div style="margin-top:12px;font-size:11.5px;font-weight:500;color:var(--amber)">2 waiting &gt; 5m</div>
+          </div>
+          <div style="background:var(--ink);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad);position:relative;overflow:hidden">
+            <span class="ms" style="position:absolute;right:-18px;top:-12px;font-size:118px;color:rgba(255,255,255,.05)">monitoring</span>
+            <div style="position:relative"><span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:rgba(255,255,255,.6)">Completed Today</span>
+            <div style="font-size:34px;font-weight:800;color:#fff;letter-spacing:-.03em;line-height:1;margin-top:14px">142</div>
+            <div style="display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-size:11.5px;font-weight:600;color:rgba(255,255,255,.85)"><span class="ms" style="font-size:15px;color:#3FD0A0">trending_up</span>On track for daily goal</div></div>
+          </div>
+        </section>
+
+        <!-- TABLE -->
+        <section class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:14px var(--pad);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);gap:12px;flex-wrap:wrap">
+            <div style="display:flex;gap:2px;background:var(--hover);padding:3px;border-radius:9px">
+              <button class="zbtn" style="border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:7px;background:var(--card);color:var(--ink);box-shadow:var(--shadow-sm)">All Orders</button>
+              <button class="zbtn" style="border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:7px;background:transparent;color:var(--muted)">Active</button>
+              <button class="zbtn" style="border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:7px;background:transparent;color:var(--muted)">Completed</button>
+            </div>
+            <div style="font-size:12px;color:var(--muted);font-weight:600">Showing 1–6 of 142</div>
+          </div>
+          <sc-for list="{{ orders }}" as="o" hint-placeholder-count="6">
+                </sc-for><table style="width:100%;border-collapse:collapse">
+            <thead><tr style="background:var(--card-soft)">
+              <th style="text-align:left;padding:11px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Token</th>
+              <th style="text-align:left;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Customer</th>
+              <th style="text-align:left;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Items</th>
+              <th style="text-align:right;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Amount</th>
+              <th style="text-align:left;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Payment</th>
+              <th style="text-align:left;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Status</th>
+              <th style="padding:11px var(--pad)"></th>
+            </tr></thead>
+            <tbody>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                  <td style="padding:14px var(--pad);font-size:14px;font-weight:800;color:var(--ink)">{{ o.id }}</td>
+                  <td style="padding:14px 16px;font-size:13px;font-weight:600;color:var(--text)">{{ o.customer }}</td>
+                  <td style="padding:14px 16px;font-size:12.5px;color:var(--muted)">{{ o.items }}</td>
+                  <td style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">{{ o.amount }}</td>
+                  <td style="padding:14px 16px"><span style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--text)"><span class="ms" style="font-size:15px;color:var(--muted)">{{ o.payIcon }}</span>{{ o.payLabel }}</span></td>
+                  <td style="padding:14px 16px">
+                    <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-start">
+                      <span style="{{ o.pillStyle }}"><span class="ms" style="font-size:13px">{{ o.pillIcon }}</span>{{ o.pillLabel }}</span>
+                      <sc-if value="{{ o.hasReason }}" hint-placeholder-val="{{ false }}"><span style="font-size:10.5px;font-weight:600;color:var(--muted);padding-left:2px">{{ o.rejectReason }}</span></sc-if>
+                    </div>
+                  </td>
+                  <td style="padding:14px var(--pad);text-align:right">
+                    <sc-if value="{{ o.showAcceptReject }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex;gap:7px;justify-content:flex-end">
+                        <button onclick="{{ o.onStartReject }}" class="zbtn" style="display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);background:var(--card);color:var(--neg);font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:8px;cursor:pointer"><span class="ms" style="font-size:15px">close</span>Reject</button>
+                        <button onclick="{{ o.onAccept }}" class="zbtn" style="display:inline-flex;align-items:center;gap:5px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer"><span class="ms" style="font-size:15px">check</span>Accept</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ o.showRejectPicker }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;gap:6px;justify-content:flex-end;align-items:center">
+                        <select onchange="{{ o.onReasonChange }}" style="border:1px solid var(--neg);background:var(--card);color:var(--ink);font-family:inherit;font-size:11.5px;font-weight:600;padding:6px 8px;border-radius:8px;outline:none;cursor:pointer">
+                          <option value="">Select reason…</option>
+                          <option value="Out of stock">Out of stock</option>
+                          <option value="Item unavailable">Item unavailable</option>
+                          <option value="Kitchen closed">Kitchen closed</option>
+                          <option value="Payment issue">Payment issue</option>
+                          <option value="Customer cancelled">Customer cancelled</option>
+                        </select>
+                        <button onclick="{{ o.onCancelReject }}" class="zbtn" style="border:1px solid var(--border);background:var(--card);cursor:pointer;width:30px;height:30px;border-radius:8px;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0"><span class="ms" style="font-size:18px">close</span></button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ o.showPrepared }}" hint-placeholder-val="{{ false }}">
+                      <button onclick="{{ o.onPrepared }}" class="zbtn" style="display:inline-flex;align-items:center;gap:5px;border:none;background:var(--amber);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer"><span class="ms" style="font-size:15px">skillet</span>Mark Prepared</button>
+                    </sc-if>
+                    <sc-if value="{{ o.showCollect }}" hint-placeholder-val="{{ false }}">
+                      <button onclick="{{ o.onCollect }}" class="zbtn" style="display:inline-flex;align-items:center;gap:5px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer"><span class="ms" style="font-size:15px">shopping_bag</span>Collect Order</button>
+                    </sc-if>
+                    <sc-if value="{{ o.showComplete }}" hint-placeholder-val="{{ false }}">
+                      <button onclick="{{ o.onComplete }}" class="zbtn" style="display:inline-flex;align-items:center;gap:5px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent-ink);font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer"><span class="ms" style="font-size:15px">done_all</span>Mark Completed</button>
+                    </sc-if>
+                    <sc-if value="{{ o.showMore }}" hint-placeholder-val="{{ false }}">
+                      <button class="zmore zbtn" style="border:none;background:transparent;cursor:pointer;color:var(--muted);width:30px;height:30px;border-radius:8px"><span class="ms" style="font-size:20px">more_vert</span></button>
+                    </sc-if>
+                  </td>
+                </tr>
+              
+            </tbody>
+          </table>
+          <div style="padding:14px var(--pad);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)">
+            <button class="zbtn" style="display:flex;align-items:center;gap:5px;border:1px solid var(--border);background:var(--card);color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:9px;cursor:pointer"><span class="ms" style="font-size:17px">chevron_left</span>Prev</button>
+            <div style="display:flex;gap:5px">
+              <button class="zbtn" style="width:32px;height:32px;border-radius:8px;border:none;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer">1</button>
+              <button class="zbtn" style="width:32px;height:32px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer">2</button>
+              <button class="zbtn" style="width:32px;height:32px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer">3</button>
+              <span style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;color:var(--faint)">…</span>
+            </div>
+            <button class="zbtn" style="display:flex;align-items:center;gap:5px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:9px;cursor:pointer">Next<span class="ms" style="font-size:17px">chevron_right</span></button>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+</div>
+  </sc-if>
+  <sc-if value="{{ isQueue }}" hint-placeholder-val="{{ false }}">
+<div ref="{{ setRoot }}" style="--canvas:#F4F5F7;--card:#FFFFFF;--card-soft:#FAFBFC;--border:#E9EBEE;--border-strong:#D8DCE1;--hover:#F6F7F9;--ink:#0F1217;--text:#3D434C;--muted:#7B828C;--faint:#A6ACB4;--side-bg:#0E1116;--side-bg-2:#11151B;--side-text:#9097A1;--side-active-text:#FFFFFF;--nav-hover:rgba(255,255,255,.05);--nav-active:rgba(255,255,255,.08);--side-border:rgba(255,255,255,.07);--accent:#128A63;--accent-ink:#0C6347;--accent-soft:rgba(18,138,99,.10);--pos:#128A63;--neg:#C5413A;--neg-soft:rgba(197,65,58,.10);--amber:#B7791F;--amber-soft:rgba(183,121,31,.12);--shadow-sm:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04);--shadow-md:0 10px 34px -8px rgba(16,24,40,.14);--pad:22px;display:flex;height:100vh;width:100%;background:var(--canvas);color:var(--text);font-family:'Manrope',system-ui,sans-serif;overflow:hidden;font-feature-settings:'tnum' 1">
+
+  <aside style="width:256px;flex-shrink:0;background:var(--side-bg);border-right:1px solid var(--side-border);display:flex;flex-direction:column;padding:22px 16px 18px">
+    <div style="display:flex;align-items:center;gap:11px;padding:6px 8px 0">
+      <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,138,99,.35)"><span style="color:#fff;font-weight:800;font-size:17px;letter-spacing:-.04em">Z</span></div>
+      <div><div style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">Zenith</div><div style="color:var(--faint);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase">Retail Cloud</div></div>
+    </div>
+    <div style="margin-top:26px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Overview</div>
+      <a href="#/dashboard" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">space_dashboard</span>Dashboard</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Operations</div>
+      <a href="#/pos" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">point_of_sale</span>Point of Sale</a>
+      <a href="#/orders" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">receipt_long</span>Orders<span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--side-active-text);background:rgba(255,255,255,.08);padding:2px 7px;border-radius:6px">12</span></a>
+      <a href="#/queue" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;background:var(--nav-active);color:var(--side-active-text);position:relative"><span style="position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:3px;height:18px;border-radius:0 3px 3px 0;background:var(--accent)"></span><span class="ms" style="font-size:20px;color:var(--accent)">pending_actions</span>Queue</a>
+      <a href="#/inventory" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">inventory_2</span>Inventory</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Insights</div>
+      <a href="#/analytics" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">monitoring</span>Analytics</a>
+      <a href="#/reports" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">workspace_premium</span>Reports</a>
+    </div>
+    <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--side-border);display:flex;flex-direction:column;gap:2px">
+      <a href="#" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">help</span>Support</a>
+      <div style="display:flex;align-items:center;gap:11px;padding:10px;margin-top:6px;border-radius:11px;background:var(--side-bg-2);border:1px solid var(--side-border)">
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,#2A3340,#171C24);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">AD</div>
+        <div style="min-width:0;flex:1"><div style="color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Avery Donovan</div><div style="color:var(--faint);font-size:11px;font-weight:500">Store Manager</div></div>
+        <span class="ms" style="font-size:18px;color:var(--side-text)">unfold_more</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1;display:flex;flex-direction:column;min-width:0;height:100vh;overflow:hidden">
+    <header style="display:flex;align-items:center;gap:18px;padding:14px 28px;background:rgba(255,255,255,.78);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10">
+      <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em">Terminal 01 · Main Counter</div><div style="font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.02em">Operations Hub</div></div>
+      <div style="flex:1;max-width:340px;margin-left:8px;position:relative">
+        <span class="ms" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:19px;color:var(--faint)">search</span>
+        <input placeholder="Search tokens…" style="width:100%;border:1px solid var(--border);background:var(--card-soft);color:var(--text);font-family:inherit;font-size:13px;border-radius:10px;padding:9px 12px 9px 40px;outline:none">
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(18,138,99,.2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);animation:zpulse 2.4s infinite"></span><span style="font-size:12px;font-weight:700;color:var(--accent-ink)">Live Updates</span></div>
+        <a href="#/pos" class="zbtn" style="display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;border-radius:10px;text-decoration:none"><span class="ms" style="font-size:18px">add</span>New Order</a>
+        <div style="display:flex;align-items:center;gap:4px;padding-left:12px;border-left:1px solid var(--border)">
+          <button class="zbtn" style="position:relative;border:none;background:transparent;cursor:pointer;width:38px;height:38px;border-radius:10px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:21px">notifications</span><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--neg);border:1.5px solid var(--card)"></span></button>
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;margin-left:4px;cursor:pointer">AD</div>
+        </div>
+      </div>
+    </header>
+
+    <div style="flex:1;overflow-y:auto;padding:26px 28px 40px">
+      <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:18px">
+        <!-- ORDER ZONE + PAYMENT ZONE -->
+        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:18px;align-items:stretch">
+
+          <!-- ORDER ZONE -->
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;overflow:hidden">
+            <div style="padding:18px var(--pad) 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
+              <div style="display:flex;align-items:center;gap:10px"><span class="ms" style="font-size:20px;color:var(--accent)">receipt_long</span><span style="font-size:15px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Order Zone</span></div>
+              <span style="font-size:11.5px;font-weight:700;color:var(--muted);background:var(--hover);padding:4px 10px;border-radius:8px">Order #4092</span>
+            </div>
+            <div style="flex:1;display:flex;flex-direction:column;padding:8px 12px">
+              <sc-for list="{{ orderItems }}" as="it" hint-placeholder-count="3">
+                <div class="zrow" style="display:flex;align-items:center;gap:12px;padding:12px 10px;border-radius:11px">
+                  <div style="width:38px;height:38px;border-radius:10px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span class="ms" style="font-size:20px;color:var(--accent-ink)">{{ it.icon }}</span></div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-size:13px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.name }}</div>
+                    <div style="font-size:11.5px;color:var(--muted);font-weight:500">{{ it.unit }} each</div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:2px;background:var(--hover);border:1px solid var(--border);border-radius:9px;padding:2px">
+                    <button onclick="{{ it.onDec }}" class="zbtn" style="border:none;background:transparent;cursor:pointer;width:26px;height:26px;border-radius:7px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:16px">remove</span></button>
+                    <span style="min-width:18px;text-align:center;font-size:13px;font-weight:700;color:var(--ink)">{{ it.qty }}</span>
+                    <button onclick="{{ it.onInc }}" class="zbtn" style="border:none;background:transparent;cursor:pointer;width:26px;height:26px;border-radius:7px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:16px">add</span></button>
+                  </div>
+                  <div style="width:58px;text-align:right;font-size:13px;font-weight:700;color:var(--ink)">{{ it.lineTotal }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="padding:14px var(--pad);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--card-soft)">
+              <span style="font-size:12px;font-weight:600;color:var(--muted)">{{ qItemCount }} items in order</span>
+              <button class="zbtn" style="display:flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:7px 13px;border-radius:9px;cursor:pointer"><span class="ms" style="font-size:16px;color:var(--muted)">add</span>Add Item</button>
+            </div>
+          </div>
+
+          <!-- PAYMENT ZONE -->
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;overflow:hidden">
+            <div style="padding:18px var(--pad) 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)"><span class="ms" style="font-size:20px;color:var(--accent)">account_balance_wallet</span><span style="font-size:15px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Payment Zone</span></div>
+            <div style="padding:20px var(--pad);display:flex;flex-direction:column;flex:1">
+              <div style="text-align:center;padding:10px 0 16px">
+                <div style="font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)">Amount Due</div>
+                <div style="font-size:42px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:8px">{{ qTotal }}</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:9px;padding:14px 0;border-top:1px dashed var(--border);border-bottom:1px dashed var(--border)">
+                <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted);font-weight:500">Subtotal</span><span style="color:var(--text);font-weight:600">{{ qSubtotal }}</span></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--muted);font-weight:500">Tax (8.5%)</span><span style="color:var(--text);font-weight:600">{{ qTax }}</span></div>
+              </div>
+              <div style="font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:16px 0 9px">Payment Method</div>
+              <div style="display:flex;gap:8px">
+                <button onclick="{{ setCash }}" class="zbtn" style="{{ cashStyle }}"><span class="ms" style="font-size:17px">payments</span>Cash</button>
+                <button onclick="{{ setCard }}" class="zbtn" style="{{ cardStyle }}"><span class="ms" style="font-size:17px">credit_card</span>Card</button>
+                <button onclick="{{ setApp }}" class="zbtn" style="{{ appStyle }}"><span class="ms" style="font-size:17px">phone_iphone</span>App</button>
+              </div>
+              <button class="zbtn" style="margin-top:auto;width:100%;display:flex;align-items:center;justify-content:center;gap:9px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:15px;font-weight:800;padding:14px;border-radius:12px;letter-spacing:-.01em">Charge {{ qTotal }}<span class="ms" style="font-size:20px">arrow_forward</span></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TERMINAL QUEUE -->
+        <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:18px var(--pad) 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
+            <div style="display:flex;align-items:center;gap:10px"><span class="ms" style="font-size:20px;color:var(--accent)">point_of_sale</span><span style="font-size:15px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Terminal Queue</span><span style="font-size:11.5px;font-weight:700;color:var(--muted);background:var(--hover);padding:3px 9px;border-radius:7px">{{ terminalCount }} terminals</span></div>
+            <button class="zbtn" style="display:flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:7px 13px;border-radius:9px;cursor:pointer"><span class="ms" style="font-size:16px;color:var(--muted)">filter_list</span>Filter</button>
+          </div>
+          <sc-for list="{{ terminals }}" as="t" hint-placeholder-count="4">
+                </sc-for><table style="width:100%;border-collapse:collapse">
+            <thead><tr style="background:var(--card-soft)">
+              <th style="text-align:left;padding:11px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Terminal</th>
+              <th style="text-align:left;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Current Token</th>
+              <th style="text-align:left;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Cashier</th>
+              <th style="text-align:left;padding:11px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Status</th>
+            </tr></thead>
+            <tbody>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                  <td style="padding:14px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">{{ t.id }}</td>
+                  <td style="padding:14px 16px;font-size:14px;font-weight:800;color:var(--ink)">{{ t.token }}</td>
+                  <td style="padding:14px 16px;font-size:12.5px;color:var(--text);font-weight:600">{{ t.cashier }}</td>
+                  <td style="padding:14px var(--pad)"><span style="{{ t.pillStyle }}"><span style="width:6px;height:6px;border-radius:50%;background:{{ t.dot }}"></span>{{ t.pillLabel }}</span></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+  </sc-if>
+  <sc-if value="{{ isInventory }}" hint-placeholder-val="{{ false }}">
+<div ref="{{ setRoot }}" style="--canvas:#F4F5F7;--card:#FFFFFF;--card-soft:#FAFBFC;--border:#E9EBEE;--border-strong:#D8DCE1;--hover:#F6F7F9;--ink:#0F1217;--text:#3D434C;--muted:#7B828C;--faint:#A6ACB4;--side-bg:#0E1116;--side-bg-2:#11151B;--side-text:#9097A1;--side-active-text:#FFFFFF;--nav-hover:rgba(255,255,255,.05);--nav-active:rgba(255,255,255,.08);--side-border:rgba(255,255,255,.07);--accent:#128A63;--accent-ink:#0C6347;--accent-soft:rgba(18,138,99,.10);--pos:#128A63;--neg:#C5413A;--neg-soft:rgba(197,65,58,.10);--amber:#B7791F;--amber-soft:rgba(183,121,31,.12);--shadow-sm:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04);--shadow-md:0 10px 34px -8px rgba(16,24,40,.14);--pad:22px;display:flex;height:100vh;width:100%;background:var(--canvas);color:var(--text);font-family:'Manrope',system-ui,sans-serif;overflow:hidden;font-feature-settings:'tnum' 1">
+
+  <aside style="width:256px;flex-shrink:0;background:var(--side-bg);border-right:1px solid var(--side-border);display:flex;flex-direction:column;padding:22px 16px 18px">
+    <div style="display:flex;align-items:center;gap:11px;padding:6px 8px 0">
+      <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,138,99,.35)"><span style="color:#fff;font-weight:800;font-size:17px;letter-spacing:-.04em">Z</span></div>
+      <div><div style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">Zenith</div><div style="color:var(--faint);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase">Retail Cloud</div></div>
+    </div>
+    <div style="margin-top:26px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Overview</div>
+      <a href="#/dashboard" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">space_dashboard</span>Dashboard</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Operations</div>
+      <a href="#/pos" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">point_of_sale</span>Point of Sale</a>
+      <a href="#/orders" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">receipt_long</span>Orders<span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--side-active-text);background:rgba(255,255,255,.08);padding:2px 7px;border-radius:6px">12</span></a>
+      
+      <a href="#/inventory" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;background:var(--nav-active);color:var(--side-active-text);position:relative"><span style="position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:3px;height:18px;border-radius:0 3px 3px 0;background:var(--accent)"></span><span class="ms" style="font-size:20px;color:var(--accent)">inventory_2</span>Inventory</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Insights</div>
+      <a href="#/analytics" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">monitoring</span>Analytics</a>
+      <a href="#/reports" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">workspace_premium</span>Reports</a>
+    </div>
+    <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--side-border);display:flex;flex-direction:column;gap:2px">
+      <a href="#" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">help</span>Support</a>
+      <div style="display:flex;align-items:center;gap:11px;padding:10px;margin-top:6px;border-radius:11px;background:var(--side-bg-2);border:1px solid var(--side-border)">
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,#2A3340,#171C24);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">AD</div>
+        <div style="min-width:0;flex:1"><div style="color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Avery Donovan</div><div style="color:var(--faint);font-size:11px;font-weight:500">Store Manager</div></div>
+        <span class="ms" style="font-size:18px;color:var(--side-text)">unfold_more</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1;display:flex;flex-direction:column;min-width:0;height:100vh;overflow:hidden">
+    <header style="display:flex;align-items:center;gap:18px;padding:14px 28px;background:rgba(255,255,255,.78);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10">
+      <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em">Terminal 01 · Main Counter</div><div style="font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.02em">Inventory Catalog</div></div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(18,138,99,.2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);animation:zpulse 2.4s infinite"></span><span style="font-size:12px;font-weight:700;color:var(--accent-ink)">Register Open</span></div>
+        <a href="#/pos" class="zbtn" style="display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;border-radius:10px;text-decoration:none"><span class="ms" style="font-size:18px">add</span>New Order</a>
+        <div style="display:flex;align-items:center;gap:4px;padding-left:12px;border-left:1px solid var(--border)">
+          <button class="zbtn" style="position:relative;border:none;background:transparent;cursor:pointer;width:38px;height:38px;border-radius:10px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:21px">notifications</span><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--neg);border:1.5px solid var(--card)"></span></button>
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;margin-left:4px;cursor:pointer">AD</div>
+        </div>
+      </div>
+    </header>
+
+    <div style="flex:1;overflow-y:auto;padding:26px 28px 40px">
+      <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:18px">
+
+        <!-- STAT CHIPS -->
+        <section style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:18px 20px;display:flex;align-items:center;gap:14px">
+            <div style="width:42px;height:42px;border-radius:11px;background:var(--hover);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:22px;color:var(--text)">category</span></div>
+            <div><div style="font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1">48</div><div style="font-size:11.5px;font-weight:600;color:var(--muted);margin-top:3px">Total SKUs</div></div>
+          </div>
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:18px 20px;display:flex;align-items:center;gap:14px">
+            <div style="width:42px;height:42px;border-radius:11px;background:var(--amber-soft);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:22px;color:var(--amber)">warning</span></div>
+            <div><div style="font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1">6</div><div style="font-size:11.5px;font-weight:600;color:var(--muted);margin-top:3px">Low Stock</div></div>
+          </div>
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:18px 20px;display:flex;align-items:center;gap:14px">
+            <div style="width:42px;height:42px;border-radius:11px;background:var(--neg-soft);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:22px;color:var(--neg)">error</span></div>
+            <div><div style="font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1">2</div><div style="font-size:11.5px;font-weight:600;color:var(--muted);margin-top:3px">Critical / Out</div></div>
+          </div>
+        </section>
+
+        <!-- TOOLBAR + TABLE -->
+        <section class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);overflow:hidden">
+          <div style="padding:16px var(--pad);display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);flex-wrap:wrap">
+            <div style="flex:1;min-width:240px;max-width:380px;position:relative">
+              <span class="ms" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:19px;color:var(--faint)">search</span>
+              <input placeholder="Search inventory…" style="width:100%;border:1px solid var(--border);background:var(--card-soft);color:var(--text);font-family:inherit;font-size:13px;border-radius:10px;padding:9px 12px 9px 40px;outline:none">
+            </div>
+            <button class="zbtn" style="display:flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:9px 14px;border-radius:10px;cursor:pointer"><span class="ms" style="font-size:18px;color:var(--muted)">filter_list</span>All Categories</button>
+            <button onclick="{{ openModal }}" class="zbtn" style="margin-left:auto;display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:10px"><span class="ms" style="font-size:18px">add</span>Add Item</button>
+          </div>
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr style="background:var(--card-soft)">
+              <th style="text-align:left;padding:11px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Item Name</th>
+              <th style="text-align:left;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Category</th>
+              <th style="text-align:right;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Stock</th>
+              <th style="text-align:right;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Price</th>
+              <th style="text-align:right;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Prep</th>
+              <th style="text-align:left;padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Status</th>
+              <th style="padding:11px var(--pad)"></th>
+            </tr></thead>
+            <tbody>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:14px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">Classic Burger</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted)">Mains</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">45</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:600;color:var(--text);text-align:right">$12.99</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted);text-align:right">12m</td>
+                <td style="padding:14px 16px"><span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:999px"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></span>Available</span></td>
+                <td style="padding:14px var(--pad);text-align:right"><button class="zbtn" style="border:1px solid var(--border);background:var(--card);cursor:pointer;width:32px;height:32px;border-radius:8px;color:var(--muted)"><span class="ms" style="font-size:18px">edit</span></button></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:14px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">Truffle Fries</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted)">Sides</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">120</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:600;color:var(--text);text-align:right">$6.99</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted);text-align:right">8m</td>
+                <td style="padding:14px 16px"><span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:999px"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></span>Available</span></td>
+                <td style="padding:14px var(--pad);text-align:right"><button class="zbtn" style="border:1px solid var(--border);background:var(--card);cursor:pointer;width:32px;height:32px;border-radius:8px;color:var(--muted)"><span class="ms" style="font-size:18px">edit</span></button></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:14px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">Grilled Chicken Salad</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted)">Salads</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--amber);text-align:right">15</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:600;color:var(--text);text-align:right">$14.50</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted);text-align:right">15m</td>
+                <td style="padding:14px 16px"><span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--amber);background:var(--amber-soft);padding:4px 10px;border-radius:999px"><span style="width:6px;height:6px;border-radius:50%;background:var(--amber)"></span>Low Stock</span></td>
+                <td style="padding:14px var(--pad);text-align:right"><button class="zbtn" style="border:1px solid var(--border);background:var(--card);cursor:pointer;width:32px;height:32px;border-radius:8px;color:var(--muted)"><span class="ms" style="font-size:18px">edit</span></button></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:14px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">Chocolate Lava Cake</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted)">Desserts</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--neg);text-align:right">8</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:600;color:var(--text);text-align:right">$8.50</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted);text-align:right">20m</td>
+                <td style="padding:14px 16px"><span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--neg);background:var(--neg-soft);padding:4px 10px;border-radius:999px"><span style="width:6px;height:6px;border-radius:50%;background:var(--neg)"></span>Critical</span></td>
+                <td style="padding:14px var(--pad);text-align:right"><button class="zbtn" style="border:1px solid var(--border);background:var(--card);cursor:pointer;width:32px;height:32px;border-radius:8px;color:var(--muted)"><span class="ms" style="font-size:18px">edit</span></button></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:14px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">Margherita Pizza</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted)">Mains</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">32</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:600;color:var(--text);text-align:right">$15.00</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted);text-align:right">18m</td>
+                <td style="padding:14px 16px"><span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:999px"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></span>Available</span></td>
+                <td style="padding:14px var(--pad);text-align:right"><button class="zbtn" style="border:1px solid var(--border);background:var(--card);cursor:pointer;width:32px;height:32px;border-radius:8px;color:var(--muted)"><span class="ms" style="font-size:18px">edit</span></button></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:14px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">Caesar Wrap</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted)">Salads</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">22</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:600;color:var(--text);text-align:right">$9.75</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted);text-align:right">10m</td>
+                <td style="padding:14px 16px"><span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:999px"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></span>Available</span></td>
+                <td style="padding:14px var(--pad);text-align:right"><button class="zbtn" style="border:1px solid var(--border);background:var(--card);cursor:pointer;width:32px;height:32px;border-radius:8px;color:var(--muted)"><span class="ms" style="font-size:18px">edit</span></button></td>
+              </tr>
+              <tr class="zrow" style="border-top:1px solid var(--border)">
+                <td style="padding:14px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">Iced Matcha</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted)">Beverages</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right">64</td>
+                <td style="padding:14px 16px;font-size:13px;font-weight:600;color:var(--text);text-align:right">$5.50</td>
+                <td style="padding:14px 16px;font-size:12.5px;color:var(--muted);text-align:right">4m</td>
+                <td style="padding:14px 16px"><span style="display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:999px"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></span>Available</span></td>
+                <td style="padding:14px var(--pad);text-align:right"><button class="zbtn" style="border:1px solid var(--border);background:var(--card);cursor:pointer;width:32px;height:32px;border-radius:8px;color:var(--muted)"><span class="ms" style="font-size:18px">edit</span></button></td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="padding:14px var(--pad);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)">
+            <span style="font-size:12px;color:var(--muted);font-weight:600">Showing 1–7 of 48 entries</span>
+            <div style="display:flex;gap:6px">
+              <button class="zbtn" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:18px">chevron_left</span></button>
+              <button class="zbtn" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:18px">chevron_right</span></button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- ADD ITEM MODAL -->
+  <sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center">
+      <div onclick="{{ closeModal }}" style="position:absolute;inset:0;background:rgba(10,14,19,.55);backdrop-filter:blur(3px);animation:zfade .15s ease"></div>
+      <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100%;max-width:520px;background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:0 30px 70px -20px rgba(0,0,0,.45);display:flex;flex-direction:column;max-height:90vh;animation:zpop .18s cubic-bezier(.2,.8,.2,1)">
+        <div style="padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+          <div><div style="font-size:17px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Add Menu Item</div><div style="font-size:12.5px;color:var(--muted);margin-top:2px;font-weight:500">Create a new catalog entry for Terminal 01</div></div>
+          <button onclick="{{ closeModal }}" class="zbtn" style="border:1px solid var(--border);background:var(--card);cursor:pointer;width:36px;height:36px;border-radius:10px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:20px">close</span></button>
+        </div>
+        <div style="padding:22px 24px;overflow-y:auto;display:flex;flex-direction:column;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:7px"><label style="font-size:11.5px;font-weight:700;color:var(--text)">Item Name</label><input class="zin" placeholder="e.g. Classic Burger"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:7px"><label style="font-size:11.5px;font-weight:700;color:var(--text)">Category</label><select class="zin"><option>Mains</option><option>Sides</option><option>Salads</option><option>Desserts</option><option>Beverages</option></select></div>
+            <div style="display:flex;flex-direction:column;gap:7px"><label style="font-size:11.5px;font-weight:700;color:var(--text)">Price ($)</label><input class="zin" type="number" placeholder="0.00"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <div style="display:flex;flex-direction:column;gap:7px"><label style="font-size:11.5px;font-weight:700;color:var(--text)">Initial Stock</label><input class="zin" type="number" placeholder="0"></div>
+            <div style="display:flex;flex-direction:column;gap:7px"><label style="font-size:11.5px;font-weight:700;color:var(--text)">Prep Time (mins)</label><input class="zin" type="number" placeholder="e.g. 15"></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px"><label style="font-size:11.5px;font-weight:700;color:var(--text)">Description</label><textarea class="zin" rows="3" placeholder="Optional description…" style="resize:none"></textarea></div>
+        </div>
+        <div style="padding:16px 24px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;background:var(--card-soft)">
+          <button onclick="{{ closeModal }}" class="zbtn" style="border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:13px;font-weight:700;padding:10px 18px;border-radius:10px;cursor:pointer">Cancel</button>
+          <button onclick="{{ closeModal }}" class="zbtn" style="border:none;background:var(--ink);color:#fff;font-family:inherit;font-size:13px;font-weight:700;padding:10px 20px;border-radius:10px;cursor:pointer">Save Item</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+  </sc-if>
+  <sc-if value="{{ isAnalytics }}" hint-placeholder-val="{{ false }}">
+<div ref="{{ setRoot }}" style="--canvas:#F4F5F7;--card:#FFFFFF;--card-soft:#FAFBFC;--border:#E9EBEE;--border-strong:#D8DCE1;--hover:#F6F7F9;--ink:#0F1217;--text:#3D434C;--muted:#7B828C;--faint:#A6ACB4;--side-bg:#0E1116;--side-bg-2:#11151B;--side-text:#9097A1;--side-active-text:#FFFFFF;--nav-hover:rgba(255,255,255,.05);--nav-active:rgba(255,255,255,.08);--side-border:rgba(255,255,255,.07);--accent:#128A63;--accent-ink:#0C6347;--accent-soft:rgba(18,138,99,.10);--pos:#128A63;--neg:#C5413A;--neg-soft:rgba(197,65,58,.10);--amber:#B7791F;--amber-soft:rgba(183,121,31,.12);--shadow-sm:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04);--shadow-md:0 10px 34px -8px rgba(16,24,40,.14);--pad:22px;display:flex;height:100vh;width:100%;background:var(--canvas);color:var(--text);font-family:'Manrope',system-ui,sans-serif;overflow:hidden;font-feature-settings:'tnum' 1">
+
+  <aside style="width:256px;flex-shrink:0;background:var(--side-bg);border-right:1px solid var(--side-border);display:flex;flex-direction:column;padding:22px 16px 18px">
+    <div style="display:flex;align-items:center;gap:11px;padding:6px 8px 0">
+      <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,138,99,.35)"><span style="color:#fff;font-weight:800;font-size:17px;letter-spacing:-.04em">Z</span></div>
+      <div><div style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">Zenith</div><div style="color:var(--faint);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase">Retail Cloud</div></div>
+    </div>
+    <div style="margin-top:26px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Overview</div>
+      <a href="#/dashboard" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">space_dashboard</span>Dashboard</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Operations</div>
+      <a href="#/pos" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">point_of_sale</span>Point of Sale</a>
+      <a href="#/orders" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">receipt_long</span>Orders<span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--side-active-text);background:rgba(255,255,255,.08);padding:2px 7px;border-radius:6px">12</span></a>
+      
+      <a href="#/queue" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">pending_actions</span>Queue</a>
+      <a href="#/inventory" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">inventory_2</span>Inventory</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Insights</div>
+      <a href="#/analytics" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;background:var(--nav-active);color:var(--side-active-text);position:relative"><span style="position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:3px;height:18px;border-radius:0 3px 3px 0;background:var(--accent)"></span><span class="ms" style="font-size:20px;color:var(--accent)">monitoring</span>Analytics</a>
+      <a href="#/reports" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">workspace_premium</span>Reports</a>
+    </div>
+    <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--side-border);display:flex;flex-direction:column;gap:2px">
+      <a href="#" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">help</span>Support</a>
+      <div style="display:flex;align-items:center;gap:11px;padding:10px;margin-top:6px;border-radius:11px;background:var(--side-bg-2);border:1px solid var(--side-border)">
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,#2A3340,#171C24);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">AD</div>
+        <div style="min-width:0;flex:1"><div style="color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Avery Donovan</div><div style="color:var(--faint);font-size:11px;font-weight:500">Store Manager</div></div>
+        <span class="ms" style="font-size:18px;color:var(--side-text)">unfold_more</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1;display:flex;flex-direction:column;min-width:0;height:100vh;overflow:hidden">
+    <header style="display:flex;align-items:center;gap:18px;padding:14px 28px;background:rgba(255,255,255,.78);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10">
+      <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em">Terminal 01 · Main Counter</div><div style="font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.02em">Business Intelligence</div></div>
+      <div style="flex:1;max-width:340px;margin-left:8px;position:relative">
+        <span class="ms" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:19px;color:var(--faint)">search</span>
+        <input placeholder="Search analytics…" style="width:100%;border:1px solid var(--border);background:var(--card-soft);color:var(--text);font-family:inherit;font-size:13px;border-radius:10px;padding:9px 12px 9px 40px;outline:none">
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(18,138,99,.2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);animation:zpulse 2.4s infinite"></span><span style="font-size:12px;font-weight:700;color:var(--accent-ink)">Register Open</span></div>
+        <a href="#/pos" class="zbtn" style="display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;border-radius:10px;text-decoration:none"><span class="ms" style="font-size:18px">add</span>New Order</a>
+        <div style="display:flex;align-items:center;gap:4px;padding-left:12px;border-left:1px solid var(--border)">
+          <button class="zbtn" style="position:relative;border:none;background:transparent;cursor:pointer;width:38px;height:38px;border-radius:10px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:21px">notifications</span><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--neg);border:1.5px solid var(--card)"></span></button>
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;margin-left:4px;cursor:pointer">AD</div>
+        </div>
+      </div>
+    </header>
+
+    <div style="flex:1;overflow-y:auto;padding:26px 28px 40px">
+      <div style="max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:18px">
+
+        <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap">
+          <div>
+            <h1 style="font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.025em;line-height:1.1">Business Intelligence</h1>
+            <p style="font-size:13.5px;color:var(--muted);margin-top:5px;font-weight:500">Deep-dive performance metrics for Terminal 01.</p>
+          </div>
+          <div style="display:flex;gap:2px;background:var(--hover);padding:3px;border-radius:9px">
+            <button class="zbtn" style="border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;padding:6px 14px;border-radius:7px;background:var(--card);color:var(--ink);box-shadow:var(--shadow-sm)">Today</button>
+            <button class="zbtn" style="border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;padding:6px 14px;border-radius:7px;background:transparent;color:var(--muted)">7 Days</button>
+            <button class="zbtn" style="border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;padding:6px 14px;border-radius:7px;background:transparent;color:var(--muted)">30 Days</button>
+          </div>
+        </div>
+
+        <!-- KPIs -->
+        <section style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Total Revenue · 7d</span><span class="ms" style="font-size:20px;color:var(--accent)">trending_up</span></div>
+            <div style="font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">$42,850</div>
+            <div style="display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:11.5px;font-weight:700;color:var(--pos)"><span class="ms" style="font-size:15px">arrow_upward</span>12.5%<span style="color:var(--faint);font-weight:500">vs last week</span></div>
+          </div>
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Avg Order Value</span><span class="ms" style="font-size:20px;color:var(--muted)">receipt_long</span></div>
+            <div style="font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">$85.20</div>
+            <div style="display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:11.5px;font-weight:700;color:var(--muted)"><span class="ms" style="font-size:15px">remove</span>0.0%<span style="color:var(--faint);font-weight:500">vs last week</span></div>
+          </div>
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Total Orders</span><span class="ms" style="font-size:20px;color:var(--muted)">shopping_bag</span></div>
+            <div style="font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">503</div>
+            <div style="display:inline-flex;align-items:center;gap:4px;margin-top:12px;font-size:11.5px;font-weight:700;color:var(--pos)"><span class="ms" style="font-size:15px">arrow_upward</span>8.2%<span style="color:var(--faint);font-weight:500">vs last week</span></div>
+          </div>
+        </section>
+
+        <!-- TREND + DONUT -->
+        <section style="display:grid;grid-template-columns:1.62fr 1fr;gap:16px">
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad);display:flex;flex-direction:column">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between">
+              <div><div style="font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Sales Trend</div><div style="font-size:12px;color:var(--muted);margin-top:3px;font-weight:500">Daily revenue · last 7 days</div></div>
+              <div style="text-align:right"><div style="font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.02em">$8,900</div><div style="font-size:11px;color:var(--pos);font-weight:700">Peak · Saturday</div></div>
+            </div>
+            <div style="position:relative;margin-top:16px;height:220px">
+              <svg viewBox="0 0 720 260" width="100%" height="100%" preserveAspectRatio="none" style="display:block;overflow:visible">
+                <defs><linearGradient id="zt" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--accent)" stop-opacity="0.18"></stop><stop offset="100%" stop-color="var(--accent)" stop-opacity="0"></stop></linearGradient></defs>
+                <line x1="0" y1="30" x2="720" y2="30" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 5"></line>
+                <line x1="0" y1="92" x2="720" y2="92" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 5"></line>
+                <line x1="0" y1="154" x2="720" y2="154" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 5"></line>
+                <line x1="0" y1="216" x2="720" y2="216" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 5"></line>
+                <path d="M0,137 C60,127 60,117 120,117 C180,117 180,123 240,123 C300,123 300,92 360,92 C420,92 420,63 480,63 C540,63 540,32 600,32 C660,32 660,93 720,93 L720,260 L0,260 Z" fill="url(#zt)"></path>
+                <path d="M0,137 C60,127 60,117 120,117 C180,117 180,123 240,123 C300,123 300,92 360,92 C420,92 420,63 480,63 C540,63 540,32 600,32 C660,32 660,93 720,93" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <circle cx="600" cy="32" r="5" fill="var(--card)" stroke="var(--accent)" stroke-width="2.5"></circle>
+              </svg>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-top:10px;font-size:11px;font-weight:600;color:var(--faint)"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+          </div>
+
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad);display:flex;flex-direction:column">
+            <div style="font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Payment Split</div>
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding-top:8px">
+              <div style="position:relative;width:168px;height:168px">
+                <svg viewBox="0 0 180 180" width="168" height="168">
+                  <g transform="rotate(-90 90 90)">
+                    <circle cx="90" cy="90" r="70" fill="none" stroke="var(--ink)" stroke-width="22" stroke-dasharray="285.9 153.9" stroke-dashoffset="0"></circle>
+                    <circle cx="90" cy="90" r="70" fill="none" stroke="var(--accent)" stroke-width="22" stroke-dasharray="88 351.8" stroke-dashoffset="-285.9"></circle>
+                    <circle cx="90" cy="90" r="70" fill="none" stroke="var(--amber)" stroke-width="22" stroke-dasharray="66 373.8" stroke-dashoffset="-373.9"></circle>
+                  </g>
+                </svg>
+                <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-size:22px;font-weight:800;color:var(--ink);letter-spacing:-.02em">100%</span><span style="font-size:10.5px;font-weight:600;color:var(--muted)">Processed</span></div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px;width:100%;padding:0 6px">
+                <div style="display:flex;align-items:center;gap:9px"><span style="width:10px;height:10px;border-radius:3px;background:var(--ink)"></span><span style="font-size:12.5px;color:var(--text);font-weight:600;flex:1">Credit / Debit</span><span style="font-size:12.5px;font-weight:800;color:var(--ink)">65%</span></div>
+                <div style="display:flex;align-items:center;gap:9px"><span style="width:10px;height:10px;border-radius:3px;background:var(--accent)"></span><span style="font-size:12.5px;color:var(--text);font-weight:600;flex:1">Prepaid</span><span style="font-size:12.5px;font-weight:800;color:var(--ink)">20%</span></div>
+                <div style="display:flex;align-items:center;gap:9px"><span style="width:10px;height:10px;border-radius:3px;background:var(--amber)"></span><span style="font-size:12.5px;color:var(--text);font-weight:600;flex:1">Cash</span><span style="font-size:12.5px;font-weight:800;color:var(--ink)">15%</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PEAK HOURS + HIGH VALUE -->
+        <section style="display:grid;grid-template-columns:1fr 1.35fr;gap:16px">
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad);display:flex;flex-direction:column">
+            <div style="font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em">Peak Hours</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:3px;font-weight:500">Transactions by hour</div>
+            <div style="flex:1;margin-top:18px;min-height:170px">
+              <svg viewBox="0 0 320 190" width="100%" height="100%" preserveAspectRatio="none" style="display:block">
+                <rect x="9" y="139" width="26" height="21" rx="5" fill="var(--border-strong)"></rect>
+                <rect x="55" y="100" width="26" height="60" rx="5" fill="var(--border-strong)"></rect>
+                <rect x="101" y="44" width="26" height="116" rx="5" fill="var(--border-strong)"></rect>
+                <rect x="147" y="83" width="26" height="77" rx="5" fill="var(--border-strong)"></rect>
+                <rect x="193" y="20" width="26" height="140" rx="5" fill="var(--accent)"></rect>
+                <rect x="239" y="66" width="26" height="94" rx="5" fill="var(--border-strong)"></rect>
+                <rect x="285" y="126" width="26" height="34" rx="5" fill="var(--border-strong)"></rect>
+                <text x="22" y="178" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="600" fill="var(--faint)">8a</text>
+                <text x="68" y="178" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="600" fill="var(--faint)">10a</text>
+                <text x="114" y="178" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="600" fill="var(--faint)">12p</text>
+                <text x="160" y="178" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="600" fill="var(--faint)">2p</text>
+                <text x="206" y="178" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="700" fill="var(--accent-ink)">4p</text>
+                <text x="252" y="178" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="600" fill="var(--faint)">6p</text>
+                <text x="298" y="178" text-anchor="middle" font-family="Manrope" font-size="11" font-weight="600" fill="var(--faint)">8p</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);overflow:hidden;display:flex;flex-direction:column">
+            <div style="padding:18px var(--pad) 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)">
+              <div style="font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em">High-Value Orders</div>
+              <button class="zbtn" style="display:flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:7px 13px;border-radius:9px;cursor:pointer">View all<span class="ms" style="font-size:16px;color:var(--muted)">arrow_forward</span></button>
+            </div>
+            <table style="width:100%;border-collapse:collapse">
+              <thead><tr style="background:var(--card-soft)">
+                <th style="text-align:left;padding:10px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Order ID</th>
+                <th style="text-align:left;padding:10px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Time</th>
+                <th style="text-align:left;padding:10px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Type</th>
+                <th style="text-align:right;padding:10px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)">Amount</th>
+              </tr></thead>
+              <tbody>
+                <tr class="zrow" style="border-top:1px solid var(--border)"><td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-9021</td><td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">14:32</td><td style="padding:13px 16px"><span style="font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:3px 9px;border-radius:6px">Prepaid</span></td><td style="padding:13px var(--pad);font-size:13px;font-weight:800;color:var(--ink);text-align:right">$450.00</td></tr>
+                <tr class="zrow" style="border-top:1px solid var(--border)"><td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-9018</td><td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">13:15</td><td style="padding:13px 16px"><span style="font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text);background:var(--hover);padding:3px 9px;border-radius:6px">Card</span></td><td style="padding:13px var(--pad);font-size:13px;font-weight:800;color:var(--ink);text-align:right">$325.50</td></tr>
+                <tr class="zrow" style="border-top:1px solid var(--border)"><td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-8995</td><td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">11:45</td><td style="padding:13px 16px"><span style="font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--amber);background:var(--amber-soft);padding:3px 9px;border-radius:6px">Cash</span></td><td style="padding:13px var(--pad);font-size:13px;font-weight:800;color:var(--ink);text-align:right">$210.00</td></tr>
+                <tr class="zrow" style="border-top:1px solid var(--border)"><td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-8980</td><td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">10:05</td><td style="padding:13px 16px"><span style="font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--text);background:var(--hover);padding:3px 9px;border-radius:6px">Card</span></td><td style="padding:13px var(--pad);font-size:13px;font-weight:800;color:var(--ink);text-align:right">$185.00</td></tr>
+                <tr class="zrow" style="border-top:1px solid var(--border)"><td style="padding:13px var(--pad);font-size:13px;font-weight:700;color:var(--ink)">#ORD-8967</td><td style="padding:13px 16px;font-size:12.5px;color:var(--muted)">09:22</td><td style="padding:13px 16px"><span style="font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:3px 9px;border-radius:6px">Prepaid</span></td><td style="padding:13px var(--pad);font-size:13px;font-weight:800;color:var(--ink);text-align:right">$162.40</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+  </sc-if>
+  <sc-if value="{{ isReports }}" hint-placeholder-val="{{ false }}">
+<div ref="{{ setRoot }}" style="--canvas:#F4F5F7;--card:#FFFFFF;--card-soft:#FAFBFC;--border:#E9EBEE;--border-strong:#D8DCE1;--hover:#F6F7F9;--ink:#0F1217;--text:#3D434C;--muted:#7B828C;--faint:#A6ACB4;--side-bg:#0E1116;--side-bg-2:#11151B;--side-text:#9097A1;--side-active-text:#FFFFFF;--nav-hover:rgba(255,255,255,.05);--nav-active:rgba(255,255,255,.08);--side-border:rgba(255,255,255,.07);--accent:#128A63;--accent-ink:#0C6347;--accent-soft:rgba(18,138,99,.10);--pos:#128A63;--neg:#C5413A;--neg-soft:rgba(197,65,58,.10);--amber:#B7791F;--amber-soft:rgba(183,121,31,.12);--shadow-sm:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04);--shadow-md:0 10px 34px -8px rgba(16,24,40,.14);--pad:22px;display:flex;height:100vh;width:100%;background:var(--canvas);color:var(--text);font-family:'Manrope',system-ui,sans-serif;overflow:hidden;font-feature-settings:'tnum' 1">
+
+  <aside style="width:256px;flex-shrink:0;background:var(--side-bg);border-right:1px solid var(--side-border);display:flex;flex-direction:column;padding:22px 16px 18px">
+    <div style="display:flex;align-items:center;gap:11px;padding:6px 8px 0">
+      <div style="width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,138,99,.35)"><span style="color:#fff;font-weight:800;font-size:17px;letter-spacing:-.04em">Z</span></div>
+      <div><div style="color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em">Zenith</div><div style="color:var(--faint);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase">Retail Cloud</div></div>
+    </div>
+    <div style="margin-top:26px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Overview</div>
+      <a href="#/dashboard" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">space_dashboard</span>Dashboard</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Operations</div>
+      <a href="#/pos" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">point_of_sale</span>Point of Sale</a>
+      <a href="#/orders" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">receipt_long</span>Orders<span style="margin-left:auto;font-size:11px;font-weight:700;color:var(--side-active-text);background:rgba(255,255,255,.08);padding:2px 7px;border-radius:6px">12</span></a>
+      <a href="#/queue" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">pending_actions</span>Queue</a>
+      <a href="#/inventory" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">inventory_2</span>Inventory</a>
+    </div>
+    <div style="margin-top:18px;display:flex;flex-direction:column;gap:2px">
+      <div style="color:var(--side-text);opacity:.55;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:0 10px 8px">Insights</div>
+      <a href="#/analytics" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">monitoring</span>Analytics</a>
+      <a href="#/reports" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;background:var(--nav-active);color:var(--side-active-text);position:relative"><span style="position:absolute;left:-16px;top:50%;transform:translateY(-50%);width:3px;height:18px;border-radius:0 3px 3px 0;background:var(--accent)"></span><span class="ms" style="font-size:20px;color:var(--accent)">workspace_premium</span>Reports</a>
+    </div>
+    <div style="margin-top:auto;padding-top:16px;border-top:1px solid var(--side-border);display:flex;flex-direction:column;gap:2px">
+      <a href="#" class="znav" style="display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)"><span class="ms" style="font-size:20px">help</span>Support</a>
+      <div style="display:flex;align-items:center;gap:11px;padding:10px;margin-top:6px;border-radius:11px;background:var(--side-bg-2);border:1px solid var(--side-border)">
+        <div style="width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,#2A3340,#171C24);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0">AD</div>
+        <div style="min-width:0;flex:1"><div style="color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Avery Donovan</div><div style="color:var(--faint);font-size:11px;font-weight:500">Store Manager</div></div>
+        <span class="ms" style="font-size:18px;color:var(--side-text)">unfold_more</span>
+      </div>
+    </div>
+  </aside>
+
+  <main style="flex:1;display:flex;flex-direction:column;min-width:0;height:100vh;overflow:hidden">
+    <header style="display:flex;align-items:center;gap:18px;padding:14px 28px;background:rgba(255,255,255,.78);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--border);flex-shrink:0;z-index:10">
+      <div style="min-width:0"><div style="font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.02em">Terminal 01 · Main Counter</div><div style="font-size:18px;font-weight:800;color:var(--ink);letter-spacing:-.02em">Customer Reports</div></div>
+      <div style="flex:1;max-width:340px;margin-left:8px;position:relative">
+        <span class="ms" style="position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:19px;color:var(--faint)">search</span>
+        <input placeholder="Search orders, customers…" style="width:100%;border:1px solid var(--border);background:var(--card-soft);color:var(--text);font-family:inherit;font-size:13px;border-radius:10px;padding:9px 12px 9px 40px;outline:none">
+      </div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:14px">
+        <div style="display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(18,138,99,.2)"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);animation:zpulse 2.4s infinite"></span><span style="font-size:12px;font-weight:700;color:var(--accent-ink)">Register Open</span></div>
+        <a href="#/pos" class="zbtn" style="display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 15px;border-radius:10px;text-decoration:none"><span class="ms" style="font-size:18px">add</span>New Order</a>
+        <div style="display:flex;align-items:center;gap:4px;padding-left:12px;border-left:1px solid var(--border)">
+          <button class="zbtn" style="position:relative;border:none;background:transparent;cursor:pointer;width:38px;height:38px;border-radius:10px;color:var(--muted);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:21px">notifications</span><span style="position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--neg);border:1.5px solid var(--card)"></span></button>
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;margin-left:4px;cursor:pointer">AD</div>
+        </div>
+      </div>
+    </header><div style="flex:1;overflow-y:auto;padding:26px 28px 40px">
+      <div style="max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:18px">
+
+        <div>
+          <h1 style="font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.025em;line-height:1.1">Customer Reports</h1>
+          <p style="font-size:13.5px;color:var(--muted);margin-top:5px;font-weight:500">Order records with customer reviews and feedback. Request a review or reply directly from the counter.</p>
+        </div>
+
+        <!-- SUMMARY -->
+        <section style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Avg Rating</span><span class="ms" style="font-size:20px;color:var(--amber)">star</span></div>
+            <div style="display:flex;align-items:baseline;gap:6px;margin-top:14px"><span style="font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1">4.7</span><span style="font-size:13px;color:var(--faint);font-weight:600">/ 5.0</span></div>
+            <div style="font-size:11.5px;color:var(--faint);font-weight:500;margin-top:12px">Across 128 reviews</div>
+          </div>
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Reviews Collected</span><span class="ms" style="font-size:20px;color:var(--accent)">reviews</span></div>
+            <div style="font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">128</div>
+            <div style="font-size:11.5px;color:var(--faint);font-weight:500;margin-top:12px">68% response rate</div>
+          </div>
+          <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Awaiting Review</span><span class="ms" style="font-size:20px;color:var(--muted)">hourglass_empty</span></div>
+            <div style="font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px">{{ awaitingCount }}</div>
+            <div style="font-size:11.5px;color:var(--faint);font-weight:500;margin-top:12px">Eligible for a request</div>
+          </div>
+        </section>
+
+        <!-- FILTER / SORT TOOLBAR -->
+        <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:16px 18px;display:flex;flex-direction:column;gap:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+            <span style="font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)">Filter by rating</span>
+            <div style="display:flex;align-items:center;gap:9px">
+              <span style="font-size:11.5px;font-weight:700;color:var(--faint)">Sort</span>
+              <div style="position:relative;display:flex;align-items:center">
+                <select onchange="{{ onSort }}" style="appearance:none;-webkit-appearance:none;border:1px solid var(--border);background:var(--card-soft);color:var(--ink);font-family:inherit;font-size:12.5px;font-weight:700;padding:8px 32px 8px 12px;border-radius:9px;outline:none;cursor:pointer">
+                  <option value="recent">Most recent</option>
+                  <option value="highest">Highest rated</option>
+                  <option value="lowest">Lowest rated</option>
+                </select>
+                <span class="ms" style="position:absolute;right:8px;font-size:18px;color:var(--muted);pointer-events:none">unfold_more</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;gap:9px;flex-wrap:wrap">
+            <button onclick="{{ fAll }}" class="zbtn" style="{{ allStyle }}">All<span style="{{ allBadge }}">{{ countAll }}</span></button>
+            <button onclick="{{ fGood }}" class="zbtn" style="{{ goodStyle }}"><span class="ms" style="font-size:17px;color:var(--amber);font-variation-settings:'FILL' 1">star</span>Good<span style="font-size:11px;font-weight:700;opacity:.6;letter-spacing:.02em">4–5★</span><span style="{{ goodBadge }}">{{ countGood }}</span></button>
+            <button onclick="{{ fAvg }}" class="zbtn" style="{{ avgStyle }}"><span class="ms" style="font-size:17px;color:var(--amber);font-variation-settings:'FILL' 1">star_half</span>Average<span style="font-size:11px;font-weight:700;opacity:.6;letter-spacing:.02em">3★</span><span style="{{ avgBadge }}">{{ countAvg }}</span></button>
+            <button onclick="{{ fBad }}" class="zbtn" style="{{ badStyle }}"><span class="ms" style="font-size:17px;color:var(--faint)">star_border</span>Poor<span style="font-size:11px;font-weight:700;opacity:.6;letter-spacing:.02em">1–2★</span><span style="{{ badBadge }}">{{ countBad }}</span></button>
+            <button onclick="{{ fAwait }}" class="zbtn" style="{{ awaitStyle }}"><span class="ms" style="font-size:17px;color:var(--muted)">schedule</span>Awaiting<span style="{{ awaitBadge }}">{{ countAwait }}</span></button>
+          </div>
+        </div>
+
+        <!-- FEEDBACK LIST -->
+        <section style="display:flex;flex-direction:column;gap:14px">
+          <sc-for list="{{ reviews }}" as="o" hint-placeholder-count="5">
+            <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad);display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start">
+
+              <!-- ORDER DETAILS (always shown) -->
+              <div style="display:flex;flex-direction:column;gap:9px;border-right:1px solid var(--border);padding-right:24px">
+                <div style="display:flex;align-items:center;gap:10px">
+                  <div style="width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;background:linear-gradient(145deg,#3A4250,#1B2027)">{{ o.initials }}</div>
+                  <div style="min-width:0"><div style="font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-.01em">{{ o.customer }}</div><div style="font-size:11.5px;color:var(--muted);font-weight:600">{{ o.num }}</div></div>
+                </div>
+                <div style="font-size:12.5px;color:var(--text);font-weight:500;line-height:1.5;margin-top:2px">{{ o.items }}</div>
+                <div style="display:flex;align-items:center;gap:10px;margin-top:4px">
+                  <span style="font-size:14px;font-weight:800;color:var(--ink)">{{ o.amount }}</span>
+                  <span style="font-size:11.5px;color:var(--faint);font-weight:500">· {{ o.date }}</span>
+                </div>
+              </div>
+
+              <!-- REVIEW or AWAITING -->
+              <div style="display:flex;flex-direction:column;gap:12px;min-height:64px">
+                <sc-if value="{{ o.reviewed }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;gap:10px;flex-direction:column">
+                    <div style="display:flex;align-items:center;gap:10px">
+                      <div style="display:flex;gap:2px">
+                        <sc-for list="{{ o.stars }}" as="s" hint-placeholder-count="5"><span class="ms" style="font-size:18px;color:{{ s.color }};font-variation-settings:'FILL' 1">star</span></sc-for>
+                      </div>
+                      <span style="font-size:12.5px;font-weight:700;color:var(--ink)">{{ o.ratingLabel }}</span>
+                      <span style="font-size:11px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:3px 9px;border-radius:999px;margin-left:2px">Reviewed</span>
+                    </div>
+                    <p style="font-size:13px;color:var(--text);font-weight:500;line-height:1.6;font-style:italic">“{{ o.comment }}”</p>
+                    <div style="display:flex;gap:8px;margin-top:2px">
+                      <sc-if value="{{ o.showReply }}" hint-placeholder-val="{{ true }}">
+                        <button onclick="{{ o.onReply }}" class="zbtn" style="display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:8px 14px;border-radius:9px;cursor:pointer"><span class="ms" style="font-size:16px;color:var(--muted)">reply</span>Reply to customer</button>
+                      </sc-if>
+                      <sc-if value="{{ o.replied }}" hint-placeholder-val="{{ false }}">
+                        <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:8px 14px;border-radius:9px"><span class="ms" style="font-size:16px">check</span>Reply sent</span>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ o.awaiting }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;height:100%;flex:1">
+                    <div style="display:flex;align-items:center;gap:11px">
+                      <div style="width:38px;height:38px;border-radius:10px;background:var(--hover);display:flex;align-items:center;justify-content:center"><span class="ms" style="font-size:20px;color:var(--faint)">rate_review</span></div>
+                      <div><div style="font-size:13px;font-weight:700;color:var(--text)">No review submitted yet</div><div style="font-size:11.5px;color:var(--muted);font-weight:500">Order details only — customer hasn't left feedback</div></div>
+                    </div>
+                    <sc-if value="{{ o.showRequest }}" hint-placeholder-val="{{ true }}">
+                      <button onclick="{{ o.onRequest }}" class="zbtn" style="flex-shrink:0;display:inline-flex;align-items:center;gap:6px;border:none;background:var(--ink);color:#fff;font-family:inherit;font-size:12px;font-weight:700;padding:9px 15px;border-radius:9px;cursor:pointer"><span class="ms" style="font-size:16px">send</span>Request Review</button>
+                    </sc-if>
+                    <sc-if value="{{ o.requested }}" hint-placeholder-val="{{ false }}">
+                      <span style="flex-shrink:0;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:9px 15px;border-radius:9px"><span class="ms" style="font-size:16px">mark_email_read</span>Request Sent</span>
+                    </sc-if>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ filteredEmpty }}" hint-placeholder-val="{{ false }}">
+            <div class="zcard" style="background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:48px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center">
+              <span class="ms" style="font-size:38px;color:var(--faint)">filter_alt_off</span>
+              <div style="font-size:14px;font-weight:800;color:var(--ink)">No reviews match this filter</div>
+              <div style="font-size:12.5px;color:var(--muted);font-weight:500">Try a different rating band or clear the filter.</div>
+            </div>
+          </sc-if>
+        </section>
+      </div>
+    </div>
+
+    
+  </main>
+</div>
+  </sc-if>
+</div>
+  </x-dc>
+  <script type="text/x-dc" data-dc-script="" data-props="{&quot;accent&quot;:&quot;#128A63&quot;,&quot;theme&quot;:&quot;light&quot;,&quot;density&quot;:&quot;comfortable&quot;,&quot;startRoute&quot;:&quot;dashboard&quot;}">
+
+class Component extends DCLogic {
+  state = {
+    route: 'dashboard',
+    cart: [
+      {id:'croissant', name:'Artisanal Croissant', note:'Warm', price:4.5, qty:2},
+      {id:'coffee', name:'House Drip Coffee', note:'12oz · Room for cream', price:3.0, qty:1},
+      {id:'avocado', name:'Avocado Toast', note:'Sourdough', price:12.5, qty:1}
+    ],
+    rejectingId: null,
+    orders: [
+      {id:'#088', customer:'Nadia Olsen', items:'2× Cappuccino, 1× Croissant', amount:'$16.75', payLabel:'Card', payIcon:'credit_card', status:'pending'},
+      {id:'#087', customer:'Liam Foster', items:'1× Cold Brew, 1× Bagel', amount:'$11.25', payLabel:'App', payIcon:'phone_iphone', status:'pending'},
+      {id:'#084', customer:'Sarah Jenkins', items:'2× Latte, 1× Pastry', amount:'$14.50', payLabel:'Prepaid', payIcon:'credit_card', status:'ready'},
+      {id:'#085', customer:'Michael Torres', items:'1× Americano', amount:'$3.50', payLabel:'Cash', payIcon:'payments', status:'preparing'},
+      {id:'#086', customer:'Emily Rhodes', items:'3× Espresso, 2× Muffin', amount:'$22.00', payLabel:'Prepaid', payIcon:'credit_card', status:'completed'},
+      {id:'#082', customer:'Hannah Brooks', items:'2× Flat White, 1× Bagel', amount:'$18.25', payLabel:'Card', payIcon:'credit_card', status:'completed'}
+    ],
+    method: 'card',
+    orderItems: [
+      {id:'bowl', name:'Signature Bowl', price:13.0, qty:2, icon:'ramen_dining'},
+      {id:'tea', name:'Iced Tea', price:3.5, qty:1, icon:'local_bar'},
+      {id:'croissant', name:'Artisanal Croissant', price:4.5, qty:1, icon:'bakery_dining'}
+    ],
+    terminals: [
+      {id:'Counter 01', token:'A-402', cashier:'Avery Donovan', status:'serving'},
+      {id:'Counter 02', token:'A-405', cashier:'Jordan Kim', status:'serving'},
+      {id:'Counter 03', token:'\u2014', cashier:'Unassigned', status:'open'},
+      {id:'Kiosk 01', token:'B-110', cashier:'Self-service', status:'payment'}
+    ],
+    modalOpen: false,
+    filter: 'all',
+    sort: 'recent',
+    requested: {},
+    replied: {},
+    reviews: [
+      {num:'#ORD-092', customer:'Sarah Jennings', items:'2× Signature Bowl · 1× Iced Tea', amount:'$24.50', date:'Today, 10:42 AM', reviewed:true, rating:5, comment:'Fantastic service and the bowl was perfectly fresh. In and out in under five minutes.'},
+      {num:'#ORD-091', customer:'Daniel Okafor', items:'1× Breakfast Wrap · 1× Drip Coffee', amount:'$12.00', date:'Today, 10:38 AM', reviewed:false},
+      {num:'#ORD-090', customer:'Priya Nair', items:'3× Espresso · 1× Croissant', amount:'$38.75', date:'Today, 10:31 AM', reviewed:true, rating:4, comment:'Coffee was great. Slight wait at the counter, but the staff were warm and friendly.'},
+      {num:'#ORD-089', customer:'Marcus Lee', items:'1× Garden Salad · 1× Soda', amount:'$9.25', date:'Today, 10:24 AM', reviewed:false},
+      {num:'#ORD-088', customer:'Hannah Brooks', items:'2× Flat White · 1× Bagel', amount:'$18.25', date:'Today, 10:17 AM', reviewed:true, rating:5, comment:'Best flat white in the city, and the new digital menu boards make ordering effortless.'},
+      {num:'#ORD-087', customer:'Tomás Rivera', items:'1× Cold Brew · 1× Muffin', amount:'$8.75', date:'Today, 10:09 AM', reviewed:true, rating:3, comment:'Order was correct but the muffin felt a little stale. Service was quick though.'},
+      {num:'#ORD-086', customer:'Leah Park', items:'1× Veggie Wrap · 1× Lemonade', amount:'$13.40', date:'Today, 9:58 AM', reviewed:true, rating:2, comment:'Waited too long and the wrap arrived cold. Hoping the new system speeds things up.'}
+    ]
+  };
+
+  // ---------- router ----------
+  routeFromHash(){
+    const h = (location.hash || '').replace(/^#\/?/, '').trim();
+    const valid = ['dashboard','pos','orders','queue','inventory','analytics','reports'];
+    return valid.includes(h) ? h : 'dashboard';
+  }
+  componentDidMount(){
+    this._onHash = () => this.setState({ route: this.routeFromHash() });
+    window.addEventListener('hashchange', this._onHash);
+    const valid = ['dashboard','pos','orders','queue','inventory','analytics','reports'];
+    const initial = (location.hash ? this.routeFromHash() : (valid.includes(this.props.startRoute) ? this.props.startRoute : 'dashboard'));
+    this.setState({ route: initial });
+    this.applyTheme(this._root);
+  }
+  componentWillUnmount(){ window.removeEventListener('hashchange', this._onHash); }
+  componentDidUpdate(){ this.applyTheme(this._root); }
+
+  // ---------- theme ----------
+  applyTheme(el){
+    if(!el) return;
+    const K={theme:'zenith-theme',accent:'zenith-accent',density:'zenith-density'};
+    const pick=(name,def)=>{
+      const prop=this.props[name], last='_last_'+name, stored=localStorage.getItem(K[name]);
+      let val;
+      if(this[last]!==undefined && prop!==this[last]){ val=(prop==null?def:prop); localStorage.setItem(K[name],val); }
+      else { val=(stored!=null?stored:(prop==null?def:prop)); if(stored==null) localStorage.setItem(K[name],val); }
+      this[last]=prop; return val;
+    };
+    const theme=pick('theme','light'), accent=pick('accent','#128A63'), density=pick('density','comfortable');
+    const hexToRgb=(h)=>{const m=h.replace('#','');const v=m.length===3?m.split('').map(c=>c+c).join(''):m;return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)];};
+    const [r,g,b]=hexToRgb(accent);
+    const darken=(f)=>`rgb(${Math.round(r*f)},${Math.round(g*f)},${Math.round(b*f)})`;
+    el.style.setProperty('--accent',accent);
+    el.style.setProperty('--accent-ink',darken(0.62));
+    el.style.setProperty('--accent-soft',`rgba(${r},${g},${b},0.10)`);
+    el.style.setProperty('--pos',accent);
+    const dark=theme==='dark';
+    const t=dark?{'--canvas':'#0B0E13','--card':'#12161D','--card-soft':'#0F1319','--border':'#1F2630','--border-strong':'#2B333E','--hover':'rgba(255,255,255,.04)','--ink':'#F2F4F7','--text':'#C4CAD2','--muted':'#838C98','--faint':'#5C6470','--shadow-sm':'0 1px 2px rgba(0,0,0,.4)','--shadow-md':'0 12px 36px -8px rgba(0,0,0,.55)'}:{'--canvas':'#F4F5F7','--card':'#FFFFFF','--card-soft':'#FAFBFC','--border':'#E9EBEE','--border-strong':'#D8DCE1','--hover':'#F6F7F9','--ink':'#0F1217','--text':'#3D434C','--muted':'#7B828C','--faint':'#A6ACB4','--shadow-sm':'0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04)','--shadow-md':'0 10px 34px -8px rgba(16,24,40,.14)'};
+    Object.entries(t).forEach(([k,v])=>el.style.setProperty(k,v));
+    el.style.setProperty('--pad', density==='compact'?'15px':'22px');
+  }
+
+  money(n){ return '$' + n.toFixed(2); }
+
+  // ---------- POS ----------
+  get products() {
+    return [
+      {id:'croissant', name:'Artisanal Croissant', cat:'Breakfast', price:4.5, icon:'bakery_dining', tag:''},
+      {id:'coffee', name:'House Drip Coffee', cat:'Beverages', price:3.0, icon:'local_cafe', tag:'Popular'},
+      {id:'avocado', name:'Avocado Toast', cat:'Mains', price:12.5, icon:'brunch_dining', tag:''},
+      {id:'lemon', name:'Lemon Tart', cat:'Sweets', price:6.75, icon:'cake', tag:''},
+      {id:'matcha', name:'Matcha Latte', cat:'Beverages', price:5.5, icon:'emoji_food_beverage', tag:''},
+      {id:'bowl', name:'Signature Bowl', cat:'Mains', price:13.0, icon:'ramen_dining', tag:'Popular'},
+      {id:'wrap', name:'Breakfast Wrap', cat:'Breakfast', price:7.25, icon:'lunch_dining', tag:''},
+      {id:'tea', name:'Iced Tea', cat:'Beverages', price:3.5, icon:'local_bar', tag:''}
+    ];
+  }
+  add(p){ this.setState(s => { const c=[...s.cart]; const i=c.findIndex(x=>x.id===p.id); if(i>=0) c[i]={...c[i],qty:c[i].qty+1}; else c.push({id:p.id,name:p.name,note:p.cat,price:p.price,qty:1}); return {cart:c}; }); }
+  inc(id){ this.setState(s => ({cart:s.cart.map(x=>x.id===id?{...x,qty:x.qty+1}:x)})); }
+  dec(id){ this.setState(s => ({cart:s.cart.map(x=>x.id===id?{...x,qty:x.qty-1}:x).filter(x=>x.qty>0)})); }
+  clear(){ this.setState({cart:[]}); }
+  rvPos(){
+    const cart=this.state.cart.map(x=>({...x, lineTotal:this.money(x.price*x.qty), onInc:()=>this.inc(x.id), onDec:()=>this.dec(x.id)}));
+    const sub=this.state.cart.reduce((a,x)=>a+x.price*x.qty,0);
+    const tax=sub*0.085;
+    const products=this.products.map(p=>({...p, priceLabel:this.money(p.price), hasTag:!!p.tag, addItem:()=>this.add(p)}));
+    return {
+      products, cart,
+      empty:cart.length===0,
+      itemCount:this.state.cart.reduce((a,x)=>a+x.qty,0),
+      subtotal:this.money(sub), tax:this.money(tax), total:this.money(sub+tax),
+      clear:()=>this.clear()
+    };
+  }
+
+  // ---------- Orders ----------
+  statusMeta(s){
+    const base='display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:999px;';
+    const M={
+      pending:{label:'Pending', icon:'schedule', css:'color:var(--amber);background:var(--amber-soft)'},
+      preparing:{label:'Preparing', icon:'skillet', css:'color:var(--amber);background:var(--amber-soft)'},
+      ready:{label:'Ready', icon:'check_circle', css:'color:var(--accent-ink);background:var(--accent-soft)'},
+      collected:{label:'Collected', icon:'done_all', css:'color:var(--accent-ink);background:var(--accent-soft)'},
+      completed:{label:'Completed', icon:'check', css:'color:var(--accent-ink);background:var(--accent-soft)'},
+      rejected:{label:'Rejected', icon:'close', css:'color:var(--neg);background:var(--neg-soft)'}
+    };
+    const m=M[s]||M.pending;
+    return {label:m.label, icon:m.icon, style:base+m.css};
+  }
+  setStatus(id, patch){ this.setState(s => ({orders:s.orders.map(o => o.id===id ? {...o, ...patch} : o)})); }
+  accept(id){ this.setStatus(id, {status:'preparing'}); }
+  prepared(id){ this.setStatus(id, {status:'ready'}); }
+  collect(id){ this.setStatus(id, {status:'collected'}); }
+  complete(id){ this.setStatus(id, {status:'completed'}); }
+  startReject(id){ this.setState({rejectingId:id}); }
+  cancelReject(){ this.setState({rejectingId:null}); }
+  confirmReject(id, reason){ this.setState(s => ({rejectingId:null, orders:s.orders.map(o => o.id===id ? {...o, status:'rejected', rejectReason:reason} : o)})); }
+  rvOrders(){
+    const orders = this.state.orders.map(o => {
+      const m = this.statusMeta(o.status);
+      const rejecting = this.state.rejectingId === o.id;
+      return {
+        ...o,
+        pillLabel: m.label, pillIcon: m.icon, pillStyle: m.style,
+        hasReason: o.status === 'rejected' && !!o.rejectReason,
+        showAcceptReject: o.status === 'pending' && !rejecting,
+        showRejectPicker: o.status === 'pending' && rejecting,
+        showPrepared: o.status === 'preparing',
+        showCollect: o.status === 'ready',
+        showComplete: o.status === 'collected',
+        showMore: o.status === 'completed' || o.status === 'rejected',
+        onAccept: () => this.accept(o.id),
+        onPrepared: () => this.prepared(o.id),
+        onCollect: () => this.collect(o.id),
+        onComplete: () => this.complete(o.id),
+        onStartReject: () => this.startReject(o.id),
+        onCancelReject: () => this.cancelReject(),
+        onReasonChange: (e) => { const v = e.target.value; if (v) this.confirmReject(o.id, v); }
+      };
+    });
+    return { orders };
+  }
+
+  // ---------- Queue ----------
+  qInc(id){ this.setState(s => ({orderItems:s.orderItems.map(x=>x.id===id?{...x,qty:x.qty+1}:x)})); }
+  qDec(id){ this.setState(s => ({orderItems:s.orderItems.map(x=>x.id===id?{...x,qty:x.qty-1}:x).filter(x=>x.qty>0)})); }
+  setMethod(m){ this.setState({method:m}); }
+  termMeta(s){
+    const base='display:inline-flex;align-items:center;gap:7px;font-size:10.5px;font-weight:700;padding:4px 11px;border-radius:999px;';
+    const M={
+      serving:{label:'Serving', dot:'var(--accent)', css:'color:var(--accent-ink);background:var(--accent-soft)'},
+      open:{label:'Open', dot:'var(--faint)', css:'color:var(--muted);background:var(--hover)'},
+      payment:{label:'Payment', dot:'var(--amber)', css:'color:var(--amber);background:var(--amber-soft)'}
+    };
+    const m=M[s]||M.open;
+    return {label:m.label, dot:m.dot, style:base+m.css};
+  }
+  rvQueue(){
+    const mBase='flex:1;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700;padding:10px;border-radius:10px;';
+    const sel=mBase+'border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent-ink);';
+    const idle=mBase+'border:1px solid var(--border);background:var(--card);color:var(--text);';
+    const items=this.state.orderItems.map(x=>({...x, unit:this.money(x.price), lineTotal:this.money(x.price*x.qty), onInc:()=>this.qInc(x.id), onDec:()=>this.qDec(x.id)}));
+    const sub=this.state.orderItems.reduce((a,x)=>a+x.price*x.qty,0);
+    const tax=sub*0.085;
+    const terminals=this.state.terminals.map(t=>{ const m=this.termMeta(t.status); return {...t, pillStyle:m.style, pillLabel:m.label, dot:m.dot}; });
+    return {
+      orderItems:items,
+      qItemCount:this.state.orderItems.reduce((a,x)=>a+x.qty,0),
+      qSubtotal:this.money(sub), qTax:this.money(tax), qTotal:this.money(sub+tax),
+      cashStyle:this.state.method==='cash'?sel:idle,
+      cardStyle:this.state.method==='card'?sel:idle,
+      appStyle:this.state.method==='app'?sel:idle,
+      setCash:()=>this.setMethod('cash'),
+      setCard:()=>this.setMethod('card'),
+      setApp:()=>this.setMethod('app'),
+      terminals,
+      terminalCount:this.state.terminals.length
+    };
+  }
+
+  // ---------- Inventory ----------
+  rvInventory(){
+    return {
+      modalOpen:this.state.modalOpen,
+      openModal:()=>this.setState({modalOpen:true}),
+      closeModal:()=>this.setState({modalOpen:false})
+    };
+  }
+
+  // ---------- Reports ----------
+  initials(name){ return name.split(' ').map(p=>p[0]).slice(0,2).join('').toUpperCase(); }
+  request(num){ this.setState(s => ({requested:{...s.requested, [num]:true}})); }
+  reply(num){ this.setState(s => ({replied:{...s.replied, [num]:true}})); }
+  setFilter(f){ this.setState({filter:f}); }
+  setSort(s){ this.setState({sort:s}); }
+  matches(o, f){
+    if(f==='all') return true;
+    if(f==='good') return o.reviewed && o.rating>=4;
+    if(f==='average') return o.reviewed && o.rating===3;
+    if(f==='bad') return o.reviewed && o.rating<=2;
+    if(f==='awaiting') return !o.reviewed;
+    return true;
+  }
+  rvReports(){
+    const all = this.state.reviews;
+    let list = all.filter(o => this.matches(o, this.state.filter));
+    if(this.state.sort==='highest') list = [...list].sort((a,b)=>(b.rating||0)-(a.rating||0));
+    else if(this.state.sort==='lowest') list = [...list].sort((a,b)=>(a.rating||0)-(b.rating||0));
+    const reviews = list.map(o => {
+      const stars = [0,1,2,3,4].map(i => ({ color: i < (o.rating||0) ? 'var(--amber)' : 'var(--border-strong)' }));
+      const requested = !!this.state.requested[o.num];
+      const replied = !!this.state.replied[o.num];
+      return {
+        ...o,
+        initials: this.initials(o.customer),
+        awaiting: !o.reviewed,
+        stars,
+        ratingLabel: o.reviewed ? (o.rating).toFixed(1) : '',
+        requested, showRequest: !requested,
+        replied, showReply: !replied,
+        onRequest: () => this.request(o.num),
+        onReply: () => this.reply(o.num)
+      };
+    });
+    const chip='display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:13px;font-weight:700;padding:8px 13px;border-radius:10px;cursor:pointer;white-space:nowrap;';
+    const chipSel='display:inline-flex;align-items:center;gap:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-family:inherit;font-size:13px;font-weight:700;padding:8px 13px;border-radius:10px;cursor:pointer;white-space:nowrap;';
+    const cs=(f)=> this.state.filter===f?chipSel:chip;
+    const bIdle='display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:6px;background:var(--hover);color:var(--muted);font-size:11px;font-weight:800;';
+    const bSel='display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:6px;background:rgba(255,255,255,.18);color:#fff;font-size:11px;font-weight:800;';
+    const bs=(f)=> this.state.filter===f?bSel:bIdle;
+    return {
+      reviews,
+      filteredEmpty: reviews.length===0,
+      awaitingCount: all.filter(o => !o.reviewed).length,
+      countAll: all.length,
+      countGood: all.filter(o=>o.reviewed&&o.rating>=4).length,
+      countAvg: all.filter(o=>o.reviewed&&o.rating===3).length,
+      countBad: all.filter(o=>o.reviewed&&o.rating<=2).length,
+      countAwait: all.filter(o=>!o.reviewed).length,
+      allStyle:cs('all'), goodStyle:cs('good'), avgStyle:cs('average'), badStyle:cs('bad'), awaitStyle:cs('awaiting'),
+      allBadge:bs('all'), goodBadge:bs('good'), avgBadge:bs('average'), badBadge:bs('bad'), awaitBadge:bs('awaiting'),
+      fAll:()=>this.setFilter('all'), fGood:()=>this.setFilter('good'), fAvg:()=>this.setFilter('average'), fBad:()=>this.setFilter('bad'), fAwait:()=>this.setFilter('awaiting'),
+      onSort:(e)=>this.setSort(e.target.value)
+    };
+  }
+
+  // ---------- master ----------
+  renderVals(){
+    const r = this.state.route;
+    return {
+      setRoot:(el)=>{this._root=el;this.applyTheme(el);},
+      isDashboard:r==='dashboard', isPos:r==='pos', isOrders:r==='orders', isQueue:r==='queue', isInventory:r==='inventory', isAnalytics:r==='analytics', isReports:r==='reports',
+      ...this.rvPos(),
+      ...this.rvOrders(),
+      ...this.rvQueue(),
+      ...this.rvInventory(),
+      ...this.rvReports()
+    };
+  }
+}
+
+
+  </script>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
