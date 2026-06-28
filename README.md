@@ -1,5 +1,8 @@
 # Zenith Retail Cloud — Vendor PWA (React)
 
+**Live:** https://darshani8.github.io/RASA-BHARAT-vendor-P2/ — deployed to GitHub Pages on every
+push (`.github/workflows/deploy-pages.yml`).
+
 A vendor point-of-sale & operations dashboard, built as a **React 18 + Vite PWA**. This replaces
 the previous Flutter app. It reproduces the "Zenith Retail Cloud" design exactly — a dark ink
 sidebar (Dashboard · Point of Sale · Orders · Queue · Inventory · Analytics · Reports) with a
