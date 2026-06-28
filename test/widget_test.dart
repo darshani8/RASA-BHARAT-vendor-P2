@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:rasap2_vendor/api/rasap_api.dart';
 import 'package:rasap2_vendor/theme.dart';
-import 'package:rasap2_vendor/widgets.dart';
+import 'package:rasap2_vendor/ui/components.dart';
 
 void main() {
   test('paiseToRupees formats integer paise strings as rupees', () {

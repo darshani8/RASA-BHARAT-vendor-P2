@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -73,12 +74,14 @@ class RasapApi {
     bool auth = true,
     bool prefixed = true,
     Map<String, String>? query,
+    Map<String, String>? extraHeaders,
     bool retryOn401 = true,
   }) async {
     if (baseUrl.isEmpty) throw ApiException('No API base URL configured');
     final headers = <String, String>{};
     if (body != null) headers['Content-Type'] = 'application/json';
     if (auth && token.isNotEmpty) headers['Authorization'] = 'Bearer $token';
+    if (extraHeaders != null) headers.addAll(extraHeaders);
     http.Response res;
     try {
       final req = http.Request(method, _uri(path, prefixed: prefixed, query: query))
@@ -92,7 +95,12 @@ class RasapApi {
     if (res.statusCode == 401 && auth && retryOn401 && refreshToken.isNotEmpty) {
       if (await _tryRefresh()) {
         return _send(method, path,
-            body: body, auth: auth, prefixed: prefixed, query: query, retryOn401: false);
+            body: body,
+            auth: auth,
+            prefixed: prefixed,
+            query: query,
+            extraHeaders: extraHeaders,
+            retryOn401: false);
       }
     }
     dynamic json;
@@ -180,6 +188,29 @@ class RasapApi {
   Future<String?> advanceQueue() async {
     final r = await _send('POST', '/queue/advance', query: {'vendor_id': vendorId}) as Map;
     return r['nowServingOrderId'] as String?;
+  }
+
+  // Point of Sale: create a counter order (idempotent), then confirm the cash settlement so it
+  // lands on the board as paid. Items are {menuItemId, quantity}; the server prices them.
+  Future<Map> createOrder(List<Map<String, dynamic>> items) async {
+    final r = await _send('POST', '/orders',
+        extraHeaders: {'Idempotency-Key': _idemKey()},
+        body: {
+          'vendorId': vendorId,
+          'channel': 'cash',
+          'paymentIntent': 'pay_at_truck',
+          'items': items,
+        }) as Map;
+    return r;
+  }
+
+  Future<void> confirmOfflinePayment(String orderId, {String method = 'cash'}) async =>
+      _send('POST', '/payments/$orderId/confirm-offline', body: {'method': method});
+
+  static final _rnd = Random();
+  String _idemKey() {
+    const chars = '0123456789abcdef';
+    return List.generate(32, (_) => chars[_rnd.nextInt(16)]).join();
   }
 
   // menu (vendor-owned). Prices are POSITIVE integer paise as STRINGS.

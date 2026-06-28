@@ -1,17 +1,7 @@
 import 'package:flutter/material.dart';
 import 'theme.dart';
 import 'api/rasap_api.dart';
-
-/// A status pill matching the HTML suite.
-Widget statusPill(String status) {
-  final s = statusStyle(status);
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-    decoration: BoxDecoration(color: s.bg, borderRadius: BorderRadius.circular(999)),
-    child: Text(s.label,
-        style: TextStyle(color: s.fg, fontSize: 11, fontWeight: FontWeight.w800)),
-  );
-}
+import 'ui/components.dart';
 
 /// One order card with lifecycle actions driven by the order's status.
 Widget orderCard(
@@ -37,16 +27,16 @@ Widget orderCard(
       const SizedBox(width: 8),
       FilledButton.icon(
         onPressed: onReady,
-        style: FilledButton.styleFrom(backgroundColor: Zenith.accent),
+        style: FilledButton.styleFrom(backgroundColor: Zenith.accent, foregroundColor: Colors.white),
         icon: const Icon(Icons.restaurant, size: 16),
-        label: const Text('Mark Ready'),
+        label: const Text('Mark Ready', style: TextStyle(color: Colors.white)),
       ),
     ]);
   } else if (status == 'ready') {
     actions.add(FilledButton.icon(
       onPressed: onComplete,
       icon: const Icon(Icons.done_all, size: 16),
-      label: const Text('Complete'),
+      label: const Text('Complete', style: TextStyle(color: Colors.white)),
     ));
   }
 

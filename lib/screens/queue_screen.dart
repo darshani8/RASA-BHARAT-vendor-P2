@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import '../theme.dart';
 import '../api/rasap_api.dart';
 import '../realtime/realtime_client.dart';
+import '../theme.dart';
+import '../ui/components.dart';
 import '../widgets.dart';
 
-/// The KDS board — active orders sorted by ready-time (GET /api/v1/vendor/board), keyset-paginated
-/// and refreshed live whenever the realtime gateway pushes an order-lifecycle event.
+/// KDS board — active orders by ready-time (GET /vendor/board), live + keyset-paginated.
 class QueueScreen extends StatefulWidget {
   const QueueScreen({super.key});
   @override
@@ -13,10 +13,8 @@ class QueueScreen extends StatefulWidget {
 }
 
 class _QueueScreenState extends State<QueueScreen> {
-  // Bumped to force a fresh board after a manual Advance (resets pagination).
   final ValueNotifier<int> _manual = ValueNotifier<int>(0);
-  late final Listenable _refresh =
-      Listenable.merge([RealtimeClient.instance.orderTick, _manual]);
+  late final Listenable _refresh = Listenable.merge([RealtimeClient.instance.orderTick, _manual]);
 
   @override
   void dispose() {
@@ -39,19 +37,23 @@ class _QueueScreenState extends State<QueueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Zenith.canvas,
-      body: OrderBoard(
-        loader: ({cursor}) => RasapApi.instance.board(cursor: cursor),
-        refreshSignal: _refresh,
-        emptyText: 'No active orders on the board',
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _advance,
-        backgroundColor: Zenith.ink,
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.skip_next),
-        label: const Text('Advance', style: TextStyle(fontWeight: FontWeight.w800)),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(24, 22, 24, 0),
+      child: Column(
+        children: [
+          PageHeader(
+            title: 'Live Queue',
+            subtitle: 'Active orders sorted by ready-time',
+            actions: [PrimaryButton('Advance', icon: Icons.skip_next, color: Zenith.ink, onPressed: _advance)],
+          ),
+          Expanded(
+            child: OrderBoard(
+              loader: ({cursor}) => RasapApi.instance.board(cursor: cursor),
+              refreshSignal: _refresh,
+              emptyText: 'No active orders on the board',
+            ),
+          ),
+        ],
       ),
     );
   }

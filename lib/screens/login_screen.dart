@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
 import '../api/rasap_api.dart';
-import 'home_shell.dart';
+import '../ui/app_shell.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
       await RasapApi.instance.login(_phone.text.trim(), _password.text);
       if (!mounted) return;
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const HomeShell()),
+        MaterialPageRoute(builder: (_) => const AppShell()),
       );
     } catch (e) {
       setState(() => _error = '$e');
@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: _busy
                         ? const SizedBox(
                             height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
-                        : const Text('Sign in'),
+                        : const Text('Sign in', style: TextStyle(color: Colors.white)),
                   ),
                 ],
               ),
