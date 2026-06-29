@@ -1,9 +1,16 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  const apiBase = env.VITE_API_BASE || 'http://localhost:3000/api/v1';
+
+  return {
   server: { host: true, port: 8080 },
   build: { target: 'es2020' },
+  // Expose __API_BASE__ to the bundled code (src/api.js uses it as a fallback).
+  // The embedded Component reads window.__API_BASE__ which main.ts sets at runtime.
+  define: { __API_BASE__: JSON.stringify(apiBase) },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
@@ -32,4 +39,5 @@ export default defineConfig({
       },
     }),
   ],
+  };
 });

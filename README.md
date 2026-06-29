@@ -40,3 +40,20 @@ vite.config.ts          Vite + PWA config
 Hash-routed: `#/dashboard` (default) · `#/pos` · `#/orders` · `#/queue` · `#/inventory` ·
 `#/analytics` · `#/reports`. Light/dark theme + accent + density are configurable via the
 component props in `index.html` and persist to `localStorage`.
+
+## Backend wiring
+
+This PWA is wired to the RASAP2 backend via `src/api.js` (a plain `fetch`-based client with
+JWT bearer auth + refresh-token retry). Copy `.env.example` to `.env` and set:
+
+```
+VITE_API_BASE=http://localhost:3000/api/v1
+```
+
+The backend must allow the dev origin in `CORS_ALLOWED_ORIGINS` (e.g. `http://localhost:8080`).
+
+A vendor login gate is rendered before the dashboard when no valid token is stored in
+`localStorage`. After login, orders, queue, menu, and analytics are fetched from the RASAP2
+REST API and drive the live screens. A 10-second poll acts as a Socket.io fallback.
+
+See `INTEGRATION.md` for the full screen-to-endpoint mapping, status mapping, and known gaps.
