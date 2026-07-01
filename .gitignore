@@ -4,3 +4,17 @@ dev-dist
 *.local
 .DS_Store
 npm-debug.log*
+
+# Secrets / local config (keep .env.example tracked)
+.env
+.env.local
+.env.*.local
+
+# Holds a live TestSprite API key — never commit
+.mcp.json
+
+# TestSprite generated tests + raw output embed the pilot login password in
+# plaintext — never commit them. The curated report / plan / PRD (no password)
+# stay trackable.
+testsprite_tests/tmp/
+testsprite_tests/*.py
