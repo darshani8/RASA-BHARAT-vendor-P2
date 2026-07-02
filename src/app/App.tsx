@@ -5,7 +5,6 @@ import type { HeaderProps } from './components/Header';
 import { DashboardView } from './views/DashboardView';
 import { PosView } from './views/PosView';
 import { OrdersView } from './views/OrdersView';
-import { QueueView } from './views/QueueView';
 import { InventoryView } from './views/InventoryView';
 import { AnalyticsView } from './views/AnalyticsView';
 import { ReportsView } from './views/ReportsView';
@@ -55,10 +54,6 @@ function Router() {
     case 'orders':
       header = { title: 'Orders', search: 'Search orders, tokens, customers…' };
       view = <OrdersView />;
-      break;
-    case 'queue':
-      header = { title: 'Operations Hub', search: 'Search tokens…', searchMaxWidth: 340, pill: 'live' };
-      view = <QueueView />;
       break;
     case 'inventory':
       header = { title: 'Inventory Catalog' };

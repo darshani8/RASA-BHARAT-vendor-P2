@@ -51,7 +51,6 @@ export function Sidebar({ active }: { active: Route }) {
       <Group title="Operations">
         <NavItem icon="point_of_sale" label="Point of Sale" href="#/pos" active={active === 'pos'} />
         <NavItem icon="receipt_long" label="Orders" href="#/orders" active={active === 'orders'} badge="12" />
-        <NavItem icon="pending_actions" label="Queue" href="#/queue" active={active === 'queue'} />
         <NavItem icon="inventory_2" label="Inventory" href="#/inventory" active={active === 'inventory'} />
       </Group>
 
