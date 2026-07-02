@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [claude/vendor-p2-backend-wire-df7jkx]
+    branches: [main]
   workflow_dispatch:
 
 # Allow the GITHUB_TOKEN to deploy to Pages and authenticate the deployment.
