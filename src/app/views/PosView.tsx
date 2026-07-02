@@ -6,7 +6,7 @@ export function PosView() {
   const { state, add, inc, dec, clear, setPosCat, setPosMethod, onCharge, itemCategory } = useStore();
 
   const products0 = (state.menu || []).filter((m) => m.isAvailable !== false).map((m) => ({
-    id: m.id, name: m.name, cat: itemCategory(m), price: Number(m.pricePaise) || 0,
+    id: m.id, name: m.name, cat: m.category || itemCategory(m), price: Number(m.pricePaise) || 0,
     icon: iconFor(m.name), tag: m.isAvailable === false ? 'Sold out' : '', isAvailable: m.isAvailable !== false,
   }));
   const cat = state.posCat;

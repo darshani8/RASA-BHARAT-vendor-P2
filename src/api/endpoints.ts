@@ -39,11 +39,18 @@ export const createMenuItem = (input: {
   pricePaise: string;
   prepMinutes?: number;
   isAvailable?: boolean;
+  category?: string;
 }) => request<MenuItem>('/menu', { method: 'POST', body: input });
 
 export const updateMenuItem = (
   id: string,
-  patch: Partial<{ name: string; pricePaise: string; prepMinutes: number; isAvailable: boolean }>,
+  patch: Partial<{
+    name: string;
+    pricePaise: string;
+    prepMinutes: number;
+    isAvailable: boolean;
+    category: string;
+  }>,
 ) => request<MenuItem>(`/menu/${id}`, { method: 'PUT', body: patch });
 
 export const deleteMenuItem = (id: string) =>
@@ -57,10 +64,17 @@ export const setItemAvailability = (id: string, isAvailable: boolean) =>
 export const getBoard = (limit = 50, cursor?: string) =>
   request<Page<OrderRow>>('/vendor/board', { query: { limit, cursor } });
 
-export const getVendorOrders = (opts: { status?: string; limit?: number; cursor?: string } = {}) =>
+export const getVendorOrders = (
+  opts: { status?: string; lane?: 'active' | 'scheduled'; limit?: number; cursor?: string } = {},
+) =>
   request<Page<OrderRow>>('/vendors/me/orders', {
-    query: { status: opts.status, limit: opts.limit ?? 50, cursor: opts.cursor },
+    query: { status: opts.status, lane: opts.lane, limit: opts.limit ?? 50, cursor: opts.cursor },
   });
+
+// Parked / scheduled orders: customers who reserved a future pickup slot (lane='scheduled'), kept
+// off the live board until their cook-start time. Uses the backend lane filter on the vendor list.
+export const getScheduledOrders = (limit = 20, cursor?: string) =>
+  getVendorOrders({ lane: 'scheduled', limit, cursor });
 
 export const getQueue = (vendorId: string) =>
   request<Queue>('/queue', { query: { vendor_id: vendorId } });

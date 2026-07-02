@@ -22,6 +22,8 @@ export type MenuItem = {
   pricePaise: Paise;
   prepMinutes: number;
   isAvailable: boolean;
+  // Food category (e.g. 'Breakfast', 'Mains', 'Beverages', 'Sweets'); null = uncategorised.
+  category: string | null;
   createdAt: string;
   updatedAt: string;
 };

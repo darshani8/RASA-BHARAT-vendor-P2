@@ -29,7 +29,7 @@ export interface State {
   queueData: Queue | null;
   analytics: VendorAnalytics | null;
   recent: OrderRow[];
-  ordersTab: 'all' | 'active' | 'completed';
+  ordersTab: 'all' | 'active' | 'completed' | 'scheduled';
   ordersNextCursor: string | null;
   ordersPage: number; // 0-based page index, mirrored from the cursor ref for rendering
   cart: CartLine[];
@@ -105,10 +105,10 @@ export interface Store {
   onToggleOpen: () => void;
   onLogout: () => void;
   // orders
-  setOrdersTab: (tab: 'all' | 'active' | 'completed') => void;
+  setOrdersTab: (tab: 'all' | 'active' | 'completed' | 'scheduled') => void;
   ordersPrev: () => void;
   ordersNext: () => void;
-  loadOrders: (tab?: 'all' | 'active' | 'completed', cursor?: string) => void;
+  loadOrders: (tab?: 'all' | 'active' | 'completed' | 'scheduled', cursor?: string) => void;
   act: (orderId: string, fn: (id: string) => Promise<unknown>) => void;
   startReject: (id: string) => void;
   cancelReject: () => void;
@@ -197,13 +197,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return api.getMenu(vendorId());
   };
 
-  const loadOrders = async (tab?: 'all' | 'active' | 'completed', cursor?: string) => {
+  const loadOrders = async (tab?: 'all' | 'active' | 'completed' | 'scheduled', cursor?: string) => {
     const t = tab === undefined ? get().ordersTab || 'all' : tab;
     const vid = vendorId();
     try {
       let page;
       if (t === 'active') page = await api.getBoard(20, cursor);
       else if (t === 'completed') page = await api.getVendorOrders({ status: 'completed', limit: 20, cursor });
+      else if (t === 'scheduled') page = await api.getScheduledOrders(20, cursor);
       else page = await api.getVendorOrders({ limit: 20, cursor });
       const activeBoard = (await api.getBoard(50).catch(() => ({ data: get().activeBoard || [] }))).data;
       const queueData = vid ? await api.getQueue(vid).catch(() => get().queueData) : get().queueData;
@@ -241,7 +242,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const onLogout = () => { api.logout(); };
 
   // ── orders: tabs + cursor pagination ──
-  const setOrdersTab = (tab: 'all' | 'active' | 'completed') => {
+  const setOrdersTab = (tab: 'all' | 'active' | 'completed' | 'scheduled') => {
     ordersCursors.current = [undefined]; ordersPageIdx.current = 0;
     setState({ ordersTab: tab, ordersPage: 0 });
     loadOrders(tab, undefined);

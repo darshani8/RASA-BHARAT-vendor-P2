@@ -1,11 +1,36 @@
+import { useEffect, useState } from 'react';
 import { css } from '../css';
 import { useStore } from '../store';
 import { ZenithAPI } from '../../api';
 import { inr, mapStatus, statusMeta, channelMeta } from '../format';
 
+// Cook-start countdown for a parked/scheduled order. `now` is passed in (a ticking clock) so the
+// label re-renders live. Returns `due` once cook-start has arrived (the backend then auto-moves the
+// order onto the live board).
+function cookCountdown(cookStartAt: string | null, now: number): { label: string; due: boolean } {
+  if (!cookStartAt) return { label: 'scheduled', due: false };
+  const ms = new Date(cookStartAt).getTime() - now;
+  if (ms <= 0) return { label: 'cooking now', due: true };
+  // ceil so the countdown is monotonic toward zero — shows "cooks in 1 min" until due, never "0 min".
+  const mins = Math.ceil(ms / 60000);
+  if (mins < 60) return { label: `cooks in ${mins} min`, due: false };
+  const h = Math.floor(mins / 60);
+  const m = mins % 60;
+  return { label: `cooks in ${h}h ${m}m`, due: false };
+}
+
 export function OrdersView() {
   const { state, act, startReject, cancelReject, setOrdersTab, ordersPrev, ordersNext } = useStore();
   const api = ZenithAPI;
+
+  // Tick every 30s so the parked-order countdowns stay live between server polls.
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 30000);
+    return () => clearInterval(id);
+  }, []);
+
+  const tab = state.ordersTab || 'all';
   const rows = state.board || [];
   const orders = rows.map((row) => {
     const status = mapStatus(row.status);
@@ -36,21 +61,52 @@ export function OrdersView() {
       onReasonChange: (e: { target: { value: string } }) => { const v = e.target.value; if (v) { cancelReject(); act(row.orderId, (id) => api.rejectOrder(id)); } },
     };
   });
+
+  // Parked orders (lane='scheduled'): shown only on the Scheduled tab, where `state.board` holds the
+  // scheduled rows. Sorted soonest-cook-first (null cook-start last). No lifecycle actions — they
+  // auto-move to the live board at cook-time.
+  const scheduled = rows
+    .map((row) => {
+      const ch = channelMeta(row.channel);
+      const cd = cookCountdown(row.cookStartAt, now);
+      return {
+        id: row.orderNumber || '#' + String(row.orderId || '').slice(0, 4),
+        orderId: row.orderId,
+        amount: inr(row.totalPaise),
+        channel: ch.label,
+        channelIcon: ch.icon,
+        cookStartAt: row.cookStartAt,
+        cookStartLabel: row.cookStartAt
+          ? new Date(row.cookStartAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })
+          : '—',
+        countdown: cd.label,
+        due: cd.due,
+      };
+    })
+    .sort((a, b) => {
+      const at = a.cookStartAt ? new Date(a.cookStartAt).getTime() : Infinity;
+      const bt = b.cookStartAt ? new Date(b.cookStartAt).getTime() : Infinity;
+      return at - bt;
+    });
+
   const a = state.analytics;
   const active = state.activeBoard || [];
-  const tab = state.ordersTab || 'all';
   const tabOn = 'border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:7px;background:var(--card);color:var(--ink);box-shadow:var(--shadow-sm)';
   const tabOff = 'border:none;cursor:pointer;font-family:inherit;font-size:12.5px;font-weight:600;padding:6px 14px;border-radius:7px;background:transparent;color:var(--muted)';
   const page = (state.ordersPage || 0) + 1;
   const oActive = String(active.filter((r) => ['paid', 'ready', 'collected'].includes(r.status)).length);
   const oPreparing = String(active.filter((r) => r.status === 'paid').length);
   const oReady = String(active.filter((r) => r.status === 'ready').length);
-  const oToday = String(a ? a.orderCount : orders.length);
-  const oShowing = 'Page ' + page + ' · ' + orders.length + ' shown';
+  // Fall back to the live-board count (never the tab-scoped `orders`, which holds parked rows on the
+  // Scheduled tab) if analytics hasn't resolved yet.
+  const oToday = String(a ? a.orderCount : active.length);
+  const oShowing = tab === 'scheduled' ? scheduled.length + ' parked' : 'Page ' + page + ' · ' + orders.length + ' shown';
   const pillBtn = 'display:flex;align-items:center;gap:5px;font-family:inherit;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:9px;';
   const prevStyle = pillBtn + (page > 1 ? 'border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer' : 'border:1px solid var(--border);background:var(--card);color:var(--faint);cursor:default');
   const nextStyle = pillBtn + (state.ordersNextCursor ? 'border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer' : 'border:1px solid var(--border);background:var(--card);color:var(--faint);cursor:default');
   const grid = 'grid-template-columns:90px 1.3fr 1.6fr 110px 130px 150px 190px';
+  const schedGrid = 'grid-template-columns:110px 120px 1fr 1.4fr 1.3fr 130px';
+  const schedPill = 'display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:999px;color:var(--amber);background:var(--amber-soft)';
 
   return (
     <div style={css('flex:1;overflow-y:auto;padding:26px 28px 40px')}>
@@ -90,66 +146,99 @@ export function OrdersView() {
               <button onClick={() => setOrdersTab('all')} className="zbtn" style={css(tab === 'all' ? tabOn : tabOff)}>All Orders</button>
               <button onClick={() => setOrdersTab('active')} className="zbtn" style={css(tab === 'active' ? tabOn : tabOff)}>Active</button>
               <button onClick={() => setOrdersTab('completed')} className="zbtn" style={css(tab === 'completed' ? tabOn : tabOff)}>Completed</button>
+              <button onClick={() => setOrdersTab('scheduled')} className="zbtn" style={css(tab === 'scheduled' ? tabOn : tabOff)}>Scheduled</button>
             </div>
             <div style={css('font-size:12px;color:var(--muted);font-weight:600')}>{oShowing}</div>
           </div>
-          <div style={css('display:grid;' + grid + ';background:var(--card-soft);border-bottom:1px solid var(--border)')}>
-            <div style={css('padding:11px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Token</div>
-            <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Customer</div>
-            <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Items</div>
-            <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:right')}>Amount</div>
-            <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Payment</div>
-            <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Status</div>
-            <div style={css('padding:11px var(--pad)')} />
-          </div>
-          {orders.length === 0 && <div style={css('padding:48px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:600')}>No active orders right now. New orders appear here live.</div>}
-          {orders.map((o) => (
-            <div key={o.orderId} className="zrow" style={css('display:grid;' + grid + ';align-items:center;border-top:1px solid var(--border)')}>
-              <div style={css('padding:14px var(--pad);font-size:14px;font-weight:800;color:var(--ink)')}>{o.id}</div>
-              <div style={css('padding:14px 16px;font-size:13px;font-weight:600;color:var(--text)')}>{o.customer}</div>
-              <div style={css('padding:14px 16px;font-size:12.5px;color:var(--muted)')}>{o.items}</div>
-              <div style={css('padding:14px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right')}>{o.amount}</div>
-              <div style={css('padding:14px 16px')}><span style={css('display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--text)')}><span className="ms" style={css('font-size:15px;color:var(--muted)')}>{o.payIcon}</span>{o.payLabel}</span></div>
-              <div style={css('padding:14px 16px')}>
-                <div style={css('display:flex;flex-direction:column;gap:4px;align-items:flex-start')}>
-                  <span style={css(o.pillStyle)}><span className="ms" style={css('font-size:13px')}>{o.pillIcon}</span>{o.pillLabel}</span>
+
+          {tab === 'scheduled' ? (
+            <>
+              <div style={css('display:grid;' + schedGrid + ';background:var(--card-soft);border-bottom:1px solid var(--border)')}>
+                <div style={css('padding:11px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Order</div>
+                <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:right')}>Amount</div>
+                <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Channel</div>
+                <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Cook-start</div>
+                <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Countdown</div>
+                <div style={css('padding:11px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Status</div>
+              </div>
+              {scheduled.length === 0 && (
+                <div style={css('padding:48px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:600')}>No parked orders — customers who reserve a pickup slot appear here.</div>
+              )}
+              {scheduled.map((o) => (
+                <div key={o.orderId} className="zrow" style={css('display:grid;' + schedGrid + ';align-items:center;border-top:1px solid var(--border)')}>
+                  <div style={css('padding:14px var(--pad);font-size:14px;font-weight:800;color:var(--ink)')}>{o.id}</div>
+                  <div style={css('padding:14px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right')}>{o.amount}</div>
+                  <div style={css('padding:14px 16px')}><span style={css('display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--text)')}><span className="ms" style={css('font-size:15px;color:var(--muted)')}>{o.channelIcon}</span>{o.channel}</span></div>
+                  <div style={css('padding:14px 16px;font-size:12.5px;color:var(--text);font-weight:600')}>{o.cookStartLabel}</div>
+                  <div style={css('padding:14px 16px;font-size:12.5px;font-weight:700;color:' + (o.due ? 'var(--accent-ink)' : 'var(--muted)'))}>
+                    <span style={css('display:inline-flex;align-items:center;gap:5px')}><span className="ms" style={css('font-size:15px;color:' + (o.due ? 'var(--accent)' : 'var(--muted)'))}>{o.due ? 'skillet' : 'schedule'}</span>{o.countdown}</span>
+                  </div>
+                  <div style={css('padding:14px var(--pad)')}><span style={css(schedPill)}><span className="ms" style={css('font-size:13px')}>event_upcoming</span>Scheduled</span></div>
                 </div>
+              ))}
+            </>
+          ) : (
+            <>
+              <div style={css('display:grid;' + grid + ';background:var(--card-soft);border-bottom:1px solid var(--border)')}>
+                <div style={css('padding:11px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Token</div>
+                <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Customer</div>
+                <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Items</div>
+                <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-align:right')}>Amount</div>
+                <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Payment</div>
+                <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Status</div>
+                <div style={css('padding:11px var(--pad)')} />
               </div>
-              <div style={css('padding:14px var(--pad);text-align:right')}>
-                {o.showAcceptReject && (
-                  <div style={css('display:flex;gap:7px;justify-content:flex-end')}>
-                    <button onClick={o.onStartReject} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);background:var(--card);color:var(--neg);font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>close</span>Reject</button>
-                    <button onClick={o.onAccept} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>payments</span>Take Cash</button>
+              {orders.length === 0 && <div style={css('padding:48px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:600')}>No active orders right now. New orders appear here live.</div>}
+              {orders.map((o) => (
+                <div key={o.orderId} className="zrow" style={css('display:grid;' + grid + ';align-items:center;border-top:1px solid var(--border)')}>
+                  <div style={css('padding:14px var(--pad);font-size:14px;font-weight:800;color:var(--ink)')}>{o.id}</div>
+                  <div style={css('padding:14px 16px;font-size:13px;font-weight:600;color:var(--text)')}>{o.customer}</div>
+                  <div style={css('padding:14px 16px;font-size:12.5px;color:var(--muted)')}>{o.items}</div>
+                  <div style={css('padding:14px 16px;font-size:13px;font-weight:700;color:var(--ink);text-align:right')}>{o.amount}</div>
+                  <div style={css('padding:14px 16px')}><span style={css('display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--text)')}><span className="ms" style={css('font-size:15px;color:var(--muted)')}>{o.payIcon}</span>{o.payLabel}</span></div>
+                  <div style={css('padding:14px 16px')}>
+                    <div style={css('display:flex;flex-direction:column;gap:4px;align-items:flex-start')}>
+                      <span style={css(o.pillStyle)}><span className="ms" style={css('font-size:13px')}>{o.pillIcon}</span>{o.pillLabel}</span>
+                    </div>
                   </div>
-                )}
-                {o.showRejectPicker && (
-                  <div style={css('display:flex;gap:6px;justify-content:flex-end;align-items:center')}>
-                    <select onChange={o.onReasonChange} style={css('border:1px solid var(--neg);background:var(--card);color:var(--ink);font-family:inherit;font-size:11.5px;font-weight:600;padding:6px 8px;border-radius:8px;outline:none;cursor:pointer')} defaultValue="">
-                      <option value="">Select reason…</option>
-                      <option value="Out of stock">Out of stock</option>
-                      <option value="Item unavailable">Item unavailable</option>
-                      <option value="Kitchen closed">Kitchen closed</option>
-                      <option value="Payment issue">Payment issue</option>
-                      <option value="Customer cancelled">Customer cancelled</option>
-                    </select>
-                    <button onClick={o.onCancelReject} className="zbtn" style={css('border:1px solid var(--border);background:var(--card);cursor:pointer;width:30px;height:30px;border-radius:8px;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0')}><span className="ms" style={css('font-size:18px')}>close</span></button>
+                  <div style={css('padding:14px var(--pad);text-align:right')}>
+                    {o.showAcceptReject && (
+                      <div style={css('display:flex;gap:7px;justify-content:flex-end')}>
+                        <button onClick={o.onStartReject} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);background:var(--card);color:var(--neg);font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 12px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>close</span>Reject</button>
+                        <button onClick={o.onAccept} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>payments</span>Take Cash</button>
+                      </div>
+                    )}
+                    {o.showRejectPicker && (
+                      <div style={css('display:flex;gap:6px;justify-content:flex-end;align-items:center')}>
+                        <select onChange={o.onReasonChange} style={css('border:1px solid var(--neg);background:var(--card);color:var(--ink);font-family:inherit;font-size:11.5px;font-weight:600;padding:6px 8px;border-radius:8px;outline:none;cursor:pointer')} defaultValue="">
+                          <option value="">Select reason…</option>
+                          <option value="Out of stock">Out of stock</option>
+                          <option value="Item unavailable">Item unavailable</option>
+                          <option value="Kitchen closed">Kitchen closed</option>
+                          <option value="Payment issue">Payment issue</option>
+                          <option value="Customer cancelled">Customer cancelled</option>
+                        </select>
+                        <button onClick={o.onCancelReject} className="zbtn" style={css('border:1px solid var(--border);background:var(--card);cursor:pointer;width:30px;height:30px;border-radius:8px;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0')}><span className="ms" style={css('font-size:18px')}>close</span></button>
+                      </div>
+                    )}
+                    {o.showPrepared && (
+                      <button onClick={o.onPrepared} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:none;background:var(--amber);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>skillet</span>Mark Ready</button>
+                    )}
+                    {o.showCollect && (
+                      <button onClick={o.onCollect} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>shopping_bag</span>Picked Up</button>
+                    )}
+                    {o.showComplete && (
+                      <button onClick={o.onComplete} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent-ink);font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>done_all</span>Complete</button>
+                    )}
+                    {o.showMore && (
+                      <button className="zmore zbtn" style={css('border:none;background:transparent;cursor:pointer;color:var(--muted);width:30px;height:30px;border-radius:8px')}><span className="ms" style={css('font-size:20px')}>more_vert</span></button>
+                    )}
                   </div>
-                )}
-                {o.showPrepared && (
-                  <button onClick={o.onPrepared} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:none;background:var(--amber);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>skillet</span>Mark Ready</button>
-                )}
-                {o.showCollect && (
-                  <button onClick={o.onCollect} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>shopping_bag</span>Picked Up</button>
-                )}
-                {o.showComplete && (
-                  <button onClick={o.onComplete} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent-ink);font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>done_all</span>Complete</button>
-                )}
-                {o.showMore && (
-                  <button className="zmore zbtn" style={css('border:none;background:transparent;cursor:pointer;color:var(--muted);width:30px;height:30px;border-radius:8px')}><span className="ms" style={css('font-size:20px')}>more_vert</span></button>
-                )}
-              </div>
-            </div>
-          ))}
+                </div>
+              ))}
+            </>
+          )}
+
           <div style={css('padding:14px var(--pad);display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)')}>
             <button onClick={ordersPrev} className="zbtn" style={css(prevStyle)}><span className="ms" style={css('font-size:17px')}>chevron_left</span>Prev</button>
             <div style={css('display:flex;align-items:center;gap:8px;font-size:12.5px;font-weight:700;color:var(--ink)')}>Page {page}</div>
