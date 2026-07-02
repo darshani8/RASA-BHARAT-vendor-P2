@@ -30,6 +30,10 @@ export function OrdersView() {
     return () => clearInterval(id);
   }, []);
 
+  // QR verify-pickup: which ready order is being verified + the scanned/typed pickup code. (C4)
+  const [verifyId, setVerifyId] = useState<string | null>(null);
+  const [qr, setQr] = useState('');
+
   const tab = state.ordersTab || 'all';
   const rows = state.board || [];
   const orders = rows.map((row) => {
@@ -37,6 +41,7 @@ export function OrdersView() {
     const m = statusMeta(status);
     const ch = channelMeta(row.channel);
     const rejecting = state.rejectingId === row.orderId;
+    const verifying = verifyId === row.orderId;
     return {
       id: row.orderNumber || '#' + String(row.orderId || '').slice(0, 4),
       orderId: row.orderId,
@@ -49,13 +54,26 @@ export function OrdersView() {
       showAcceptReject: status === 'pending' && !rejecting,
       showRejectPicker: status === 'pending' && rejecting,
       showPrepared: status === 'preparing',
-      showCollect: status === 'ready',
-      showComplete: status === 'collected',
-      showMore: status === 'completed' || status === 'rejected',
+      // A ready order is closed by verifying the customer's QR (ready → collected), NOT by calling
+      // complete (which the backend allows only FROM ready and skips the QR proof). (C4)
+      showCollect: status === 'ready' && !verifying,
+      showVerifyInput: status === 'ready' && verifying,
+      // 'collected' is terminal — the old "Complete" button here called complete() on a collected
+      // order, which the backend rejects (completed only from 'ready') → a guaranteed 400. (C4)
+      showMore: status === 'completed' || status === 'rejected' || status === 'collected',
       onAccept: () => act(row.orderId, (id) => api.confirmOffline(id, 'cash')),
       onPrepared: () => act(row.orderId, (id) => api.markReady(id)),
-      onCollect: () => act(row.orderId, (id) => api.completeOrder(id)),
-      onComplete: () => act(row.orderId, (id) => api.completeOrder(id)),
+      onCollect: () => { setVerifyId(row.orderId); setQr(''); },
+      onVerifySubmit: () => {
+        const token = qr.trim();
+        if (!token) return;
+        act(row.orderId, async (id) => {
+          const r = await api.verifyPickup(id, token);
+          if (r.status === 'invalid_or_expired') throw new Error('Invalid or expired pickup code — check the customer’s QR.');
+        });
+        setVerifyId(null); setQr('');
+      },
+      onCancelVerify: () => { setVerifyId(null); setQr(''); },
       onStartReject: () => startReject(row.orderId),
       onCancelReject: () => cancelReject(),
       onReasonChange: (e: { target: { value: string } }) => { const v = e.target.value; if (v) { cancelReject(); act(row.orderId, (id) => api.rejectOrder(id)); } },
@@ -225,10 +243,21 @@ export function OrdersView() {
                       <button onClick={o.onPrepared} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:none;background:var(--amber);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>skillet</span>Mark Ready</button>
                     )}
                     {o.showCollect && (
-                      <button onClick={o.onCollect} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>shopping_bag</span>Picked Up</button>
+                      <button onClick={o.onCollect} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:none;background:var(--accent);color:#fff;font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>qr_code_scanner</span>Verify Pickup</button>
                     )}
-                    {o.showComplete && (
-                      <button onClick={o.onComplete} className="zbtn" style={css('display:inline-flex;align-items:center;gap:5px;border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent-ink);font-family:inherit;font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:8px;cursor:pointer')}><span className="ms" style={css('font-size:15px')}>done_all</span>Complete</button>
+                    {o.showVerifyInput && (
+                      <div style={css('display:flex;gap:6px;justify-content:flex-end;align-items:center')}>
+                        <input
+                          autoFocus
+                          value={qr}
+                          onChange={(e) => setQr(e.target.value)}
+                          onKeyDown={(e) => { if (e.key === 'Enter') o.onVerifySubmit(); if (e.key === 'Escape') o.onCancelVerify(); }}
+                          placeholder="Scan / enter pickup code"
+                          style={css('width:150px;border:1px solid var(--accent);background:var(--card);color:var(--ink);font-family:inherit;font-size:11.5px;font-weight:600;padding:6px 9px;border-radius:8px;outline:none')}
+                        />
+                        <button onClick={o.onVerifySubmit} className="zbtn" style={css('border:none;background:var(--accent);color:#fff;cursor:pointer;width:30px;height:30px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0')}><span className="ms" style={css('font-size:18px')}>check</span></button>
+                        <button onClick={o.onCancelVerify} className="zbtn" style={css('border:1px solid var(--border);background:var(--card);cursor:pointer;width:30px;height:30px;border-radius:8px;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0')}><span className="ms" style={css('font-size:18px')}>close</span></button>
+                      </div>
                     )}
                     {o.showMore && (
                       <button className="zmore zbtn" style={css('border:none;background:transparent;cursor:pointer;color:var(--muted);width:30px;height:30px;border-radius:8px')}><span className="ms" style={css('font-size:20px')}>more_vert</span></button>

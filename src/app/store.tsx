@@ -6,6 +6,7 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { ZenithAPI } from '../api';
 import type { MenuItem, OrderRow, Queue, Vendor, VendorAnalytics } from '../api/types';
+import type { RatingSummary } from '../api/endpoints';
 import { errMsg, todayISO } from './format';
 
 export type Route = 'dashboard' | 'pos' | 'orders' | 'queue' | 'inventory' | 'analytics' | 'reports';
@@ -28,6 +29,7 @@ export interface State {
   activeBoard: OrderRow[];
   queueData: Queue | null;
   analytics: VendorAnalytics | null;
+  ratingSummary: RatingSummary | null;
   recent: OrderRow[];
   ordersTab: 'all' | 'active' | 'completed' | 'scheduled';
   ordersNextCursor: string | null;
@@ -71,6 +73,7 @@ function initialState(): State {
     activeBoard: [],
     queueData: null,
     analytics: null,
+    ratingSummary: null,
     recent: [],
     ordersTab: 'all',
     ordersNextCursor: null,
@@ -104,6 +107,7 @@ export interface Store {
   // header
   onToggleOpen: () => void;
   onLogout: () => void;
+  clearError: () => void;
   // orders
   setOrdersTab: (tab: 'all' | 'active' | 'completed' | 'scheduled') => void;
   ordersPrev: () => void;
@@ -222,6 +226,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     loadOrders();
     if (vid) api.getVendor(vid).then((vendor) => setState({ vendor })).catch(() => {});
     api.getAnalytics(todayISO()).then((analytics) => setState({ analytics })).catch(() => {});
+    if (vid) api.getRatingSummary(vid).then((ratingSummary) => setState({ ratingSummary })).catch(() => {});
     api.getVendorOrders({ limit: 6 }).then((p) => setState({ recent: p.data })).catch(() => {});
   };
 
@@ -240,6 +245,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     api.setAcceptingOrders(vendorId(), !open).then((vendor) => setState({ vendor })).catch((e) => setState({ loadErr: errMsg(e) }));
   };
   const onLogout = () => { api.logout(); };
+  const clearError = () => setState({ loadErr: '' });
 
   // ── orders: tabs + cursor pagination ──
   const setOrdersTab = (tab: 'all' | 'active' | 'completed' | 'scheduled') => {
@@ -360,7 +366,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const store: Store = {
     state,
-    onToggleOpen, onLogout,
+    onToggleOpen, onLogout, clearError,
     setOrdersTab, ordersPrev, ordersNext, loadOrders, act, startReject, cancelReject,
     add, inc, dec, clear, setPosCat, setPosMethod, onCharge,
     itemCategory, setInvCatFilter, openAddItem, openEditItem, closeItemModal,

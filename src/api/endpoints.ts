@@ -88,8 +88,9 @@ export const getOrder = (orderId: string) => request<OrderDetail>(`/orders/${ord
 export const markReady = (orderId: string) =>
   request<{ status: 'ready' }>(`/orders/${orderId}/ready`, { method: 'POST' });
 
+// The backend responds { status } (NOT { verdict }) with 'invalid_or_expired' for a bad/forged code.
 export const verifyPickup = (orderId: string, qrToken: string) =>
-  request<{ verdict: 'collected' | 'already_collected' | 'rejected' }>(
+  request<{ status: 'collected' | 'already_collected' | 'invalid_or_expired' }>(
     `/orders/${orderId}/verify-pickup`,
     { method: 'POST', body: { qrToken } },
   );
@@ -109,6 +110,13 @@ export const confirmOffline = (orderId: string, method: 'cash' | 'vendor_upi' | 
 
 export const getPaymentByOrder = (orderId: string) =>
   request<Payment>(`/payments/by-order/${orderId}`);
+
+// ── Ratings ─────────────────────────────────────────────────────────────────
+// A vendor's aggregate rating. The contract is { vendorId, averageStars, count }
+// (NOT averageRating/totalReviews — an earlier client read the wrong field names).
+export type RatingSummary = { vendorId: string; averageStars: number | null; count: number };
+export const getRatingSummary = (vendorId: string) =>
+  request<RatingSummary>(`/ratings/vendor/${vendorId}`);
 
 // ── Vendor walk-in / counter order (POS "Charge") ───────────────────────────
 // NOT YET IN THE BACKEND — see docs/POS_CHARGE_BACKEND_PROMPT.md for the spec to

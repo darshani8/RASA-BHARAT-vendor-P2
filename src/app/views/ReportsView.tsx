@@ -19,6 +19,10 @@ export function ReportsView() {
       onRequest: () => request(o.num), onReply: () => reply(o.num),
     };
   });
+  // Real vendor rating summary from GET /ratings/vendor/:id → { averageStars, count }. (C5)
+  const rs = state.ratingSummary;
+  const avgLabel = rs && rs.averageStars != null ? rs.averageStars.toFixed(1) : '—';
+  const countLabel = rs ? String(rs.count) : '—';
   const awaitingCount = all.filter((o) => !o.reviewed).length;
   const countAll = all.length;
   const countGood = all.filter((o) => o.reviewed && (o.rating || 0) >= 4).length;
@@ -44,13 +48,13 @@ export function ReportsView() {
         <section style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:16px')}>
           <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)')}>
             <div style={css('display:flex;align-items:center;justify-content:space-between')}><span style={css('font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)')}>Avg Rating</span><span className="ms" style={css('font-size:20px;color:var(--amber)')}>star</span></div>
-            <div style={css('display:flex;align-items:baseline;gap:6px;margin-top:14px')}><span style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1')}>4.7</span><span style={css('font-size:13px;color:var(--faint);font-weight:600')}>/ 5.0</span></div>
-            <div style={css('font-size:11.5px;color:var(--faint);font-weight:500;margin-top:12px')}>Across 128 reviews</div>
+            <div style={css('display:flex;align-items:baseline;gap:6px;margin-top:14px')}><span style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1')}>{avgLabel}</span><span style={css('font-size:13px;color:var(--faint);font-weight:600')}>/ 5.0</span></div>
+            <div style={css('font-size:11.5px;color:var(--faint);font-weight:500;margin-top:12px')}>Across {countLabel} reviews</div>
           </div>
           <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)')}>
             <div style={css('display:flex;align-items:center;justify-content:space-between')}><span style={css('font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)')}>Reviews Collected</span><span className="ms" style={css('font-size:20px;color:var(--accent)')}>reviews</span></div>
-            <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>128</div>
-            <div style={css('font-size:11.5px;color:var(--faint);font-weight:500;margin-top:12px')}>68% response rate</div>
+            <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>{countLabel}</div>
+            <div style={css('font-size:11.5px;color:var(--faint);font-weight:500;margin-top:12px')}>Verified customer ratings</div>
           </div>
           <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)')}>
             <div style={css('display:flex;align-items:center;justify-content:space-between')}><span style={css('font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)')}>Awaiting Review</span><span className="ms" style={css('font-size:20px;color:var(--muted)')}>hourglass_empty</span></div>

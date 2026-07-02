@@ -26,8 +26,12 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
-      # Project Pages serve under /<repo>/, so build with that base.
+      # Project Pages serve under /<repo>/, so build with that base. The backend API base comes
+      # from a repository secret — without it the app fails loudly at boot (see src/api/config.ts).
+      # NOTE for ops: also add the Pages origin to the backend CORS allowlist (shared/http/security.ts).
       - run: npx vite build --base=/RASA-BHARAT-vendor-P2/
+        env:
+          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
       - uses: actions/configure-pages@v5
         with:
           enablement: true

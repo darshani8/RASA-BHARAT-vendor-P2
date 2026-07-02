@@ -4,7 +4,17 @@
 
 const rawBase = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim();
 
-// Default to same-origin in production builds, localhost in dev.
+// A production build MUST be told where the backend is. A static Pages deploy has no same-origin
+// API, so silently defaulting to '' (same-origin) ships a dashboard that 404s every call. Fail
+// loudly at boot instead — the deploy workflow passes VITE_API_BASE_URL from a secret. (C2)
+if (import.meta.env.PROD && !rawBase) {
+  throw new Error(
+    'VITE_API_BASE_URL is not set. A production build must be given the backend API base URL ' +
+      '(configure it as a repository secret and pass it to the build step).',
+  );
+}
+
+// Dev falls back to localhost; prod always has rawBase (guaranteed by the check above).
 const fallbackBase = import.meta.env.DEV ? 'http://localhost:3000' : '';
 
 /** Backend host, no trailing slash, no version suffix. */

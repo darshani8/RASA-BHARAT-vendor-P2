@@ -34,11 +34,14 @@ function LoginScreen({ onLoggedIn }: { onLoggedIn: () => void }) {
     setError('');
     setBusy(true);
     try {
+      // Backend phone regex is ^\+?[0-9]{8,15}$ — spaces/dashes are rejected. The placeholder shows
+      // a friendly "+91 98765 43210", so strip all whitespace/dashes (not just trim). (C10)
+      const cleanPhone = phone.replace(/[\s-]/g, '');
       if (mode === 'login') {
-        await ZenithAPI.login(phone.trim(), password);
+        await ZenithAPI.login(cleanPhone, password);
         onLoggedIn();
       } else {
-        await ZenithAPI.apply({ name: name.trim(), phone: phone.trim(), password });
+        await ZenithAPI.apply({ name: name.trim(), phone: cleanPhone, password });
         setApplied(true);
       }
     } catch (err) {
