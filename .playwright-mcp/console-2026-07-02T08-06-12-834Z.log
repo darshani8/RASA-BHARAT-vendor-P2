@@ -1,3 +1,0 @@
-[    9853ms] [ERROR] Failed to load resource: net::ERR_CERT_AUTHORITY_INVALID @ https://static.doubleclick.net/instream/ad_status.js:0
-[   18638ms] [ERROR] Refused to execute script from 'https://www.ag-grid.com/example/' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled. @ https://www.ag-grid.com/examples/getting-started/quick-start-example/reactFunctional/example-runner/:0
-[   25671ms] [ERROR] Refused to execute script from 'https://www.ag-grid.com/example/' because its MIME type ('text/html') is not executable, and strict MIME type checking is enabled. @ https://www.ag-grid.com/examples/getting-started/quick-start-example/reactFunctional/example-runner/:0

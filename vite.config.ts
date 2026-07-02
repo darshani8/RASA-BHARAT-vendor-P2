@@ -4,6 +4,10 @@ import { VitePWA } from 'vite-plugin-pwa';
 export default defineConfig({
   server: { host: true, port: 8080 },
   build: { target: 'es2020' },
+  // Use React 17+ automatic JSX runtime (matches tsconfig "jsx": "react-jsx").
+  // Without this, plain Vite/esbuild emits the classic React.createElement transform,
+  // which throws "React is not defined" in the 13 tsx files that don't import React.
+  esbuild: { jsx: 'automatic', jsxImportSource: 'react' },
   plugins: [
     VitePWA({
       registerType: 'autoUpdate',
