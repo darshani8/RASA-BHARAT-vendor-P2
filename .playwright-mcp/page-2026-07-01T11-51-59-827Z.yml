@@ -1,0 +1,206 @@
+- generic [ref=e18]:
+  - complementary [ref=e19]:
+    - generic [ref=e20]:
+      - generic [ref=e22]: Z
+      - generic [ref=e23]:
+        - generic [ref=e24]: Zenith
+        - generic [ref=e25]: Retail Cloud
+    - generic [ref=e26]:
+      - generic [ref=e27]: Overview
+      - link "space_dashboard Dashboard" [ref=e28] [cursor=pointer]:
+        - /url: "#/dashboard"
+        - generic [ref=e30]: space_dashboard
+        - text: Dashboard
+    - generic [ref=e31]:
+      - generic [ref=e32]: Operations
+      - link "point_of_sale Point of Sale" [ref=e33] [cursor=pointer]:
+        - /url: "#/pos"
+        - generic [ref=e34]: point_of_sale
+        - text: Point of Sale
+      - link "receipt_long Orders 12" [ref=e35] [cursor=pointer]:
+        - /url: "#/orders"
+        - generic [ref=e36]: receipt_long
+        - text: Orders
+        - generic [ref=e37]: "12"
+      - link "pending_actions Queue" [ref=e38] [cursor=pointer]:
+        - /url: "#/queue"
+        - generic [ref=e39]: pending_actions
+        - text: Queue
+      - link "inventory_2 Inventory" [ref=e40] [cursor=pointer]:
+        - /url: "#/inventory"
+        - generic [ref=e41]: inventory_2
+        - text: Inventory
+    - generic [ref=e42]:
+      - generic [ref=e43]: Insights
+      - link "monitoring Analytics" [ref=e44] [cursor=pointer]:
+        - /url: "#/analytics"
+        - generic [ref=e45]: monitoring
+        - text: Analytics
+      - link "workspace_premium Reports" [ref=e46] [cursor=pointer]:
+        - /url: "#/reports"
+        - generic [ref=e47]: workspace_premium
+        - text: Reports
+    - generic [ref=e48]:
+      - link "help Support" [ref=e49] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=e50]: help
+        - text: Support
+      - generic [ref=e51]:
+        - generic [ref=e52]: AD
+        - generic [ref=e53]:
+          - generic [ref=e54]: Avery Donovan
+          - generic [ref=e55]: Store Manager
+        - generic [ref=e56]: unfold_more
+  - main [ref=e57]:
+    - generic [ref=e58]:
+      - generic [ref=e59]:
+        - generic [ref=e60]: Terminal 01 · Main Counter
+        - generic [ref=e61]: Dashboard
+      - generic [ref=e62]:
+        - generic [ref=e63]: search
+        - textbox "Search orders, items, customers…" [ref=e64]
+      - generic [ref=e65]:
+        - generic "Tap to open or close your stall" [ref=e66] [cursor=pointer]:
+          - generic [ref=e68]: Register Open
+        - link "add New Order" [ref=e69] [cursor=pointer]:
+          - /url: "#/pos"
+          - generic [ref=e70]: add
+          - text: New Order
+        - generic [ref=e71]:
+          - button "notifications" [ref=e72] [cursor=pointer]:
+            - generic [ref=e73]: notifications
+          - generic "Sign out" [ref=e75] [cursor=pointer]: AD
+    - generic [ref=e77]:
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - heading "Welcome, Pilot Canteen (staging)" [level=1] [ref=e80]
+          - paragraph [ref=e81]: Here's how your stall is performing today · Wednesday, Jul 1
+        - generic [ref=e82]:
+          - button "calendar_today Today" [ref=e83] [cursor=pointer]:
+            - generic [ref=e84]: calendar_today
+            - text: Today
+          - button "ios_share Export" [ref=e85] [cursor=pointer]:
+            - generic [ref=e86]: ios_share
+            - text: Export
+      - generic [ref=e87]:
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - generic [ref=e90]: Today's Revenue
+            - generic [ref=e91]:
+              - generic [ref=e92]: trending_up
+              - text: 12.5%
+          - generic [ref=e93]: ₹545.00
+          - generic [ref=e94]:
+            - generic [ref=e95]: gross revenue today
+            - img [ref=e96]
+        - generic [ref=e98]:
+          - generic [ref=e99]:
+            - generic [ref=e100]: Orders Today
+            - generic [ref=e101]:
+              - generic [ref=e102]: receipt_long
+              - text: live
+          - generic [ref=e103]: "3"
+          - generic [ref=e104]:
+            - generic [ref=e105]: orders placed today
+            - img [ref=e106]
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - generic [ref=e110]: Avg Handle Time
+            - generic [ref=e111]:
+              - generic [ref=e112]: trending_down
+              - text: 30s
+          - generic [ref=e113]: 4m 12s
+          - generic [ref=e114]:
+            - generic [ref=e115]: target 4m 45s
+            - img [ref=e116]
+        - generic [ref=e118]:
+          - generic [ref=e119]:
+            - generic [ref=e120]: Completion Rate
+            - generic [ref=e121]: SLA
+          - generic [ref=e122]: 98.2%
+          - generic [ref=e126]: 307 of 312 fulfilled
+      - generic [ref=e127]:
+        - generic [ref=e128]:
+          - generic [ref=e129]:
+            - generic [ref=e130]:
+              - generic [ref=e131]: Revenue Flow
+              - generic [ref=e132]: Hourly net sales · 9:00 — 19:00
+            - generic [ref=e133]:
+              - button "Today" [ref=e134] [cursor=pointer]
+              - button "Week" [ref=e135] [cursor=pointer]
+              - button "Month" [ref=e136] [cursor=pointer]
+          - generic [ref=e137]:
+            - generic [ref=e138]: ₹545.00
+            - generic [ref=e139]:
+              - generic [ref=e140]: schedule
+              - text: today
+          - generic [ref=e164]:
+            - generic [ref=e165]: 9a
+            - generic [ref=e166]: 11a
+            - generic [ref=e167]: 1p
+            - generic [ref=e168]: 3p
+            - generic [ref=e169]: 5p
+            - generic [ref=e170]: 7p
+        - generic [ref=e171]:
+          - generic [ref=e172]:
+            - generic [ref=e173]: Live Queue
+            - generic [ref=e174]: 0 active
+          - generic [ref=e175]:
+            - generic [ref=e176]: No one in the queue right now.
+            - generic [ref=e177]:
+              - button "pause_circle Pause" [ref=e178] [cursor=pointer]:
+                - generic [ref=e179]: pause_circle
+                - text: Pause
+              - button "campaign Announce" [ref=e180] [cursor=pointer]:
+                - generic [ref=e181]: campaign
+                - text: Announce
+      - generic [ref=e182]:
+        - generic [ref=e183]:
+          - generic [ref=e184]:
+            - generic [ref=e185]: Recent Transactions
+            - generic [ref=e186]: Last 6 completed orders
+          - button "View all arrow_forward" [ref=e187] [cursor=pointer]:
+            - text: View all
+            - generic [ref=e188]: arrow_forward
+        - generic [ref=e189]:
+          - generic [ref=e190]: Order
+          - generic [ref=e191]: Time
+          - generic [ref=e192]: Channel
+          - generic [ref=e193]: Amount
+          - generic [ref=e194]: Status
+        - generic [ref=e195]:
+          - generic [ref=e196]: R2-000015
+          - generic [ref=e197]: 04:13 pm
+          - generic [ref=e198]: At truck
+          - generic [ref=e199]: ₹275.00
+          - generic [ref=e201]: Completed
+        - generic [ref=e202]:
+          - generic [ref=e203]: R2-000014
+          - generic [ref=e204]: 03:57 pm
+          - generic [ref=e205]: At truck
+          - generic [ref=e206]: ₹90.00
+          - generic [ref=e208]: Completed
+        - generic [ref=e209]:
+          - generic [ref=e210]: R2-000013
+          - generic [ref=e211]: 03:38 pm
+          - generic [ref=e212]: At truck
+          - generic [ref=e213]: ₹180.00
+          - generic [ref=e215]: Completed
+        - generic [ref=e216]:
+          - generic [ref=e217]: R2-000012
+          - generic [ref=e218]: 06:56 pm
+          - generic [ref=e219]: At truck
+          - generic [ref=e220]: ₹70.00
+          - generic [ref=e222]: Completed
+        - generic [ref=e223]:
+          - generic [ref=e224]: R2-000011
+          - generic [ref=e225]: 06:51 pm
+          - generic [ref=e226]: At truck
+          - generic [ref=e227]: ₹70.00
+          - generic [ref=e229]: Completed
+        - generic [ref=e230]:
+          - generic [ref=e231]: R2-000010
+          - generic [ref=e232]: 06:48 pm
+          - generic [ref=e233]: At truck
+          - generic [ref=e234]: ₹70.00
+          - generic [ref=e236]: Completed

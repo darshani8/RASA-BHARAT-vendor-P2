@@ -1,0 +1,48 @@
+[   18768ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  248035ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=50:0
+[  248040ms] [ERROR] Failed to load resource: the server responded with a status of 400 (Bad Request) @ http://localhost:3005/api/v1/vendors/me/orders?lane=active&limit=50:0
+[  387465ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  391380ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  391694ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  396051ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  396703ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  401684ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  403411ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  406674ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  410762ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  411678ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  416678ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  418145ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  421693ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  425541ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  426692ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  431673ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  432904ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  436680ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  440269ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  441688ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  446690ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  447674ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  451696ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  455127ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  456692ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  461678ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  462535ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  466698ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  470161ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  471687ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  476703ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  477794ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  481679ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  486014ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[  486687ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[  580238ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:8080/@vite/client:559
+[  580242ms] [ERROR] Failed to load resource: net::ERR_NETWORK_IO_SUSPENDED @ http://localhost:8080/:0
+[57230278ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:3005/api/v1/vendors/me/orders?lane=scheduled&limit=20:0
+[57230470ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ http://localhost:8080/node_modules/.vite/deps/react-dom_client.js?v=dca50775:21550
+[57230614ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://localhost:3005/api/v1/vendors/me/menu:0
+[57230616ms] [WARNING] <meta name="apple-mobile-web-app-capable" content="yes"> is deprecated. Please include <meta name="mobile-web-app-capable" content="yes"> @ http://localhost:8080/#/orders:0
+[59904271ms] [ERROR] Failed to load resource: the server responded with a status of 401 (Unauthorized) @ http://localhost:3005/api/v1/vendors/me/orders?limit=20:0
+[60149384ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[60152826ms] [ERROR] WebSocket connection to 'ws://localhost:3005/socket.io/?EIO=4&transport=websocket' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED @ http://localhost:8080/node_modules/.vite/deps/socket__io-client.js?v=dca50775:1523
+[60153184ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_REFUSED @ http://localhost:3005/api/v1/vendors/me/orders?limit=20:0

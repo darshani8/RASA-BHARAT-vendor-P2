@@ -1,0 +1,181 @@
+- generic [ref=f6e3]:
+  - complementary [ref=f6e4]:
+    - generic [ref=f6e5]:
+      - generic [ref=f6e7]: Z
+      - generic [ref=f6e8]:
+        - generic [ref=f6e9]: Zenith
+        - generic [ref=f6e10]: Retail Cloud
+    - generic [ref=f6e11]:
+      - generic [ref=f6e12]: Overview
+      - link "space_dashboard Dashboard" [ref=f6e13] [cursor=pointer]:
+        - /url: "#/dashboard"
+        - generic [ref=f6e14]: space_dashboard
+        - text: Dashboard
+    - generic [ref=f6e15]:
+      - generic [ref=f6e16]: Operations
+      - link "point_of_sale Point of Sale" [ref=f6e17] [cursor=pointer]:
+        - /url: "#/pos"
+        - generic [ref=f6e18]: point_of_sale
+        - text: Point of Sale
+      - link "receipt_long Orders 12" [ref=f6e19] [cursor=pointer]:
+        - /url: "#/orders"
+        - generic [ref=f6e21]: receipt_long
+        - text: Orders
+        - generic [ref=f6e22]: "12"
+      - link "pending_actions Queue" [ref=f6e23] [cursor=pointer]:
+        - /url: "#/queue"
+        - generic [ref=f6e24]: pending_actions
+        - text: Queue
+      - link "inventory_2 Inventory" [ref=f6e25] [cursor=pointer]:
+        - /url: "#/inventory"
+        - generic [ref=f6e26]: inventory_2
+        - text: Inventory
+    - generic [ref=f6e27]:
+      - generic [ref=f6e28]: Insights
+      - link "monitoring Analytics" [ref=f6e29] [cursor=pointer]:
+        - /url: "#/analytics"
+        - generic [ref=f6e30]: monitoring
+        - text: Analytics
+      - link "workspace_premium Reports" [ref=f6e31] [cursor=pointer]:
+        - /url: "#/reports"
+        - generic [ref=f6e32]: workspace_premium
+        - text: Reports
+    - generic [ref=f6e33]:
+      - link "help Support" [ref=f6e34] [cursor=pointer]:
+        - /url: "#"
+        - generic [ref=f6e35]: help
+        - text: Support
+      - generic [ref=f6e36]:
+        - generic [ref=f6e37]: AD
+        - generic [ref=f6e38]:
+          - generic [ref=f6e39]: Avery Donovan
+          - generic [ref=f6e40]: Store Manager
+        - generic [ref=f6e41]: unfold_more
+  - main [ref=f6e42]:
+    - generic [ref=f6e43]:
+      - generic [ref=f6e44]:
+        - generic [ref=f6e45]: Terminal 01 · Main Counter
+        - generic [ref=f6e46]: Orders
+      - generic [ref=f6e47]:
+        - generic [ref=f6e48]: search
+        - textbox "Search orders, tokens, customers…" [ref=f6e49]
+      - generic [ref=f6e50]:
+        - generic "Tap to open or close your stall" [ref=f6e51] [cursor=pointer]:
+          - generic [ref=f6e53]: Register Open
+        - link "add New Order" [ref=f6e54] [cursor=pointer]:
+          - /url: "#/pos"
+          - generic [ref=f6e55]: add
+          - text: New Order
+        - generic [ref=f6e56]:
+          - button "notifications" [ref=f6e57] [cursor=pointer]:
+            - generic [ref=f6e58]: notifications
+          - generic "Sign out" [ref=f6e60] [cursor=pointer]: AD
+    - generic [ref=f6e62]:
+      - generic [ref=f6e63]:
+        - heading "Pipeline Management" [level=1] [ref=f6e64]
+        - paragraph [ref=f6e65]: Live tracking and historical order records across the counter.
+      - generic [ref=f6e66]:
+        - generic [ref=f6e67]:
+          - generic [ref=f6e68]:
+            - generic [ref=f6e69]: Active Queue
+            - generic [ref=f6e70]: pending_actions
+          - generic [ref=f6e71]: "1"
+          - generic [ref=f6e72]:
+            - generic [ref=f6e73]: bolt
+            - text: live
+            - generic [ref=f6e74]: on the board
+        - generic [ref=f6e75]:
+          - generic [ref=f6e76]:
+            - generic [ref=f6e77]: Preparing
+            - generic [ref=f6e78]: skillet
+          - generic [ref=f6e79]: "1"
+          - generic [ref=f6e80]: orders cooking now
+        - generic [ref=f6e81]:
+          - generic [ref=f6e82]:
+            - generic [ref=f6e83]: Ready for Pickup
+            - generic [ref=f6e84]: check_circle
+          - generic [ref=f6e85]: "0"
+          - generic [ref=f6e86]: awaiting pickup
+        - generic [ref=f6e87]:
+          - generic [ref=f6e88]: monitoring
+          - generic [ref=f6e89]:
+            - text: Completed Today
+            - generic [ref=f6e90]: "0"
+            - generic [ref=f6e91]:
+              - generic [ref=f6e92]: trending_up
+              - text: orders placed today
+      - generic [ref=f6e93]:
+        - generic [ref=f6e94]:
+          - generic [ref=f6e95]:
+            - button "All Orders" [ref=f6e96] [cursor=pointer]
+            - button "Active" [ref=f6e97] [cursor=pointer]
+            - button "Completed" [ref=f6e98] [cursor=pointer]
+            - button "Scheduled" [active] [ref=f6e99] [cursor=pointer]
+          - generic [ref=f6e100]: 4 parked
+        - generic [ref=f6e101]:
+          - generic [ref=f6e102]: Order
+          - generic [ref=f6e103]: Amount
+          - generic [ref=f6e104]: Channel
+          - generic [ref=f6e105]: Cook-start
+          - generic [ref=f6e106]: Countdown
+          - generic [ref=f6e107]: Status
+        - generic [ref=f6e109]:
+          - generic [ref=f6e110]: R2-000016
+          - generic [ref=f6e111]: ₹300.00
+          - generic [ref=f6e355]:
+            - generic [ref=f6e356]: language
+            - text: Online
+          - generic [ref=f6e113]: 02 Jul, 10:11 am
+          - generic [ref=f6e115]:
+            - generic [ref=f6e116]: schedule
+            - text: cooks in 3 min
+          - generic [ref=f6e357]:
+            - generic [ref=f6e358]: event_upcoming
+            - text: Scheduled
+        - generic [ref=f6e359]:
+          - generic [ref=f6e360]: R2-000015
+          - generic [ref=f6e361]: ₹275.00
+          - generic [ref=f6e363]:
+            - generic [ref=f6e364]: storefront
+            - text: At truck
+          - generic [ref=f6e365]: 02 Jul, 10:26 am
+          - generic [ref=f6e367]:
+            - generic [ref=f6e368]: schedule
+            - text: cooks in 18 min
+          - generic [ref=f6e370]:
+            - generic [ref=f6e371]: event_upcoming
+            - text: Scheduled
+        - generic [ref=f6e372]:
+          - generic [ref=f6e373]: R2-000014
+          - generic [ref=f6e374]: ₹90.00
+          - generic [ref=f6e376]:
+            - generic [ref=f6e377]: storefront
+            - text: At truck
+          - generic [ref=f6e378]: 02 Jul, 11:00 am
+          - generic [ref=f6e380]:
+            - generic [ref=f6e381]: schedule
+            - text: cooks in 52 min
+          - generic [ref=f6e383]:
+            - generic [ref=f6e384]: event_upcoming
+            - text: Scheduled
+        - generic [ref=f6e385]:
+          - generic [ref=f6e386]: R2-000013
+          - generic [ref=f6e387]: ₹180.00
+          - generic [ref=f6e389]:
+            - generic [ref=f6e390]: storefront
+            - text: At truck
+          - generic [ref=f6e391]: 02 Jul, 11:43 am
+          - generic [ref=f6e393]:
+            - generic [ref=f6e394]: schedule
+            - text: cooks in 1h 35m
+          - generic [ref=f6e396]:
+            - generic [ref=f6e397]: event_upcoming
+            - text: Scheduled
+        - generic [ref=f6e349]:
+          - button "chevron_left Prev" [ref=f6e350]:
+            - generic [ref=f6e351]: chevron_left
+            - text: Prev
+          - generic [ref=f6e352]: Page 1
+          - button "Next chevron_right" [ref=f6e353]:
+            - text: Next
+            - generic [ref=f6e354]: chevron_right
