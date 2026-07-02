@@ -67,11 +67,15 @@ export function OrdersView() {
       onVerifySubmit: () => {
         const token = qr.trim();
         if (!token) return;
+        // Do NOT dismiss the input synchronously: act() is fire-and-forget, so closing here would
+        // hide the field before verifyPickup resolves. Instead let the outcome drive it — on success
+        // the reload flips the order to 'collected', so showVerifyInput (which requires status
+        // 'ready') hides it; on an invalid code the order stays 'ready', so the input stays open with
+        // the typed code for an immediate retry, alongside the error toast. (C4 review)
         act(row.orderId, async (id) => {
           const r = await api.verifyPickup(id, token);
           if (r.status === 'invalid_or_expired') throw new Error('Invalid or expired pickup code — check the customer’s QR.');
         });
-        setVerifyId(null); setQr('');
       },
       onCancelVerify: () => { setVerifyId(null); setQr(''); },
       onStartReject: () => startReject(row.orderId),

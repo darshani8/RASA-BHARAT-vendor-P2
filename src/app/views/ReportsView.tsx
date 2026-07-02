@@ -134,9 +134,22 @@ export function ReportsView() {
           ))}
           {reviews.length === 0 && (
             <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:48px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center')}>
-              <span className="ms" style={css('font-size:38px;color:var(--faint)')}>filter_alt_off</span>
-              <div style={css('font-size:14px;font-weight:800;color:var(--ink)')}>No reviews match this filter</div>
-              <div style={css('font-size:12.5px;color:var(--muted);font-weight:500')}>Try a different rating band or clear the filter.</div>
+              {countAll === 0 ? (
+                <>
+                  {/* The aggregate rating (cards above) is real; individual review TEXT isn't exposed
+                      by the backend yet, so the per-order list is empty. Explain that rather than let
+                      the real count read as contradicting an empty list. (C5 review) */}
+                  <span className="ms" style={css('font-size:38px;color:var(--faint)')}>rate_review</span>
+                  <div style={css('font-size:14px;font-weight:800;color:var(--ink)')}>Individual reviews aren’t available yet</div>
+                  <div style={css('font-size:12.5px;color:var(--muted);font-weight:500;max-width:420px')}>The cards above show your live aggregate rating from all customers. Per-order review text will appear here once the backend exposes it.</div>
+                </>
+              ) : (
+                <>
+                  <span className="ms" style={css('font-size:38px;color:var(--faint)')}>filter_alt_off</span>
+                  <div style={css('font-size:14px;font-weight:800;color:var(--ink)')}>No reviews match this filter</div>
+                  <div style={css('font-size:12.5px;color:var(--muted);font-weight:500')}>Try a different rating band or clear the filter.</div>
+                </>
+              )}
             </div>
           )}
         </section>
