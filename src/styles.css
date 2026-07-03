@@ -299,13 +299,13 @@
 
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
-  body{background:#0E1116;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{background:#2A1B22;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
   .ms{font-family:'Material Symbols Outlined';font-weight:normal;font-style:normal;line-height:1;letter-spacing:normal;text-transform:none;display:inline-block;white-space:nowrap;direction:ltr;font-feature-settings:'liga';-webkit-font-smoothing:antialiased}
   ::-webkit-scrollbar{width:10px;height:10px}
   ::-webkit-scrollbar-track{background:transparent}
   ::-webkit-scrollbar-thumb{background:rgba(120,130,145,.28);border-radius:8px;border:3px solid transparent;background-clip:content-box}
   ::-webkit-scrollbar-thumb:hover{background:rgba(120,130,145,.5);background-clip:content-box}
-  @keyframes zpulse{0%{box-shadow:0 0 0 0 rgba(18,138,99,.45)}70%{box-shadow:0 0 0 6px rgba(18,138,99,0)}100%{box-shadow:0 0 0 0 rgba(18,138,99,0)}}
+  @keyframes zpulse{0%{box-shadow:0 0 0 0 rgba(125,21,53,.45)}70%{box-shadow:0 0 0 6px rgba(125,21,53,0)}100%{box-shadow:0 0 0 0 rgba(125,21,53,0)}}
   @keyframes zspin{to{transform:rotate(360deg)}}
   @keyframes zfade{from{opacity:0}to{opacity:1}}
   @keyframes zpop{from{opacity:0;transform:translate(-50%,-50%) scale(.96)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}

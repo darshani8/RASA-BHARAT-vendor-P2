@@ -36,6 +36,38 @@ export function OrdersView() {
 
   const tab = state.ordersTab || 'all';
   const rows = state.board || [];
+
+  // Real ordered items per row. The board/list endpoints deliberately return rows WITHOUT line
+  // items, so the "Items" column fetches each order's detail once and caches a
+  // "2× Masala Dosa · 1× Filter Coffee" summary. '' marks a failed fetch so the cell falls back
+  // to the channel label instead of retrying forever.
+  const [itemsByOrder, setItemsByOrder] = useState<Record<string, string>>({});
+  useEffect(() => {
+    const missing = rows.filter((r) => r.orderId && itemsByOrder[r.orderId] === undefined);
+    if (missing.length === 0) return;
+    let alive = true;
+    void Promise.all(
+      missing.map(async (r) => {
+        try {
+          const detail = await api.getOrder(r.orderId);
+          const summary = (detail.items || []).map((i) => i.quantity + '× ' + i.name).join(' · ');
+          return [r.orderId, summary] as const;
+        } catch {
+          return [r.orderId, ''] as const;
+        }
+      })
+    ).then((entries) => {
+      if (!alive) return;
+      setItemsByOrder((prev) => {
+        const next = { ...prev };
+        for (const [id, summary] of entries) next[id] = summary;
+        return next;
+      });
+    });
+    return () => {
+      alive = false;
+    };
+  }, [rows, itemsByOrder, api]);
   const orders = rows.map((row) => {
     const status = mapStatus(row.status);
     const m = statusMeta(status);
@@ -46,7 +78,7 @@ export function OrdersView() {
       id: row.orderNumber || '#' + String(row.orderId || '').slice(0, 4),
       orderId: row.orderId,
       customer: 'Order ' + (row.orderNumber || ''),
-      items: ch.label + (row.prepMinutes ? ' · ' + row.prepMinutes + ' min prep' : ''),
+      items: itemsByOrder[row.orderId] || ch.label + (row.prepMinutes ? ' · ' + row.prepMinutes + ' min prep' : ''),
       amount: inr(row.totalPaise),
       payLabel: ch.label, payIcon: ch.icon,
       status,

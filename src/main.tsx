@@ -57,7 +57,7 @@ function LoginScreen({ onLoggedIn }: { onLoggedIn: () => void }) {
     zIndex: 2147483000,
     display: 'grid',
     placeItems: 'center',
-    background: '#0E1116',
+    background: '#2A1B22',
     fontFamily: "'Manrope', system-ui, sans-serif",
     padding: 20,
   };
@@ -95,7 +95,7 @@ function LoginScreen({ onLoggedIn }: { onLoggedIn: () => void }) {
     fontWeight: 800,
     fontFamily: 'inherit',
     color: '#fff',
-    background: busy ? '#5b6b64' : '#0F1217',
+    background: busy ? '#9E2A48' : '#7D1535',
     cursor: busy ? 'default' : 'pointer',
   };
 
@@ -103,13 +103,13 @@ function LoginScreen({ onLoggedIn }: { onLoggedIn: () => void }) {
     return (
       <div style={wrap}>
         <div style={{ ...card, textAlign: 'center' }}>
-          <div style={brandMark}>Z</div>
-          <h2 style={{ margin: '18px 0 8px', color: '#0F1217' }}>Application received</h2>
+          <div style={brandMark}>R</div>
+          <h2 style={{ margin: '18px 0 8px', color: '#2A1B22' }}>Application received</h2>
           <p style={{ color: '#7B828C', fontSize: 14, lineHeight: 1.5 }}>
             Your stall is awaiting approval. You’ll be able to sign in once an admin activates your
             account.
           </p>
-          <button style={{ ...button, background: '#0F1217' }} onClick={() => { setApplied(false); setMode('login'); }}>
+          <button style={{ ...button, background: '#7D1535' }} onClick={() => { setApplied(false); setMode('login'); }}>
             Back to sign in
           </button>
         </div>
@@ -121,16 +121,16 @@ function LoginScreen({ onLoggedIn }: { onLoggedIn: () => void }) {
     <div style={wrap}>
       <form style={card} onSubmit={submit}>
         <div style={brandRow}>
-          <div style={brandMark}>Z</div>
+          <div style={brandMark}>R</div>
           <div>
-            <div style={{ fontWeight: 800, color: '#0F1217', fontSize: 16, lineHeight: 1.1 }}>Zenith</div>
+            <div style={{ fontWeight: 800, color: '#2A1B22', fontSize: 16, lineHeight: 1.1 }}>Rasa</div>
             <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: 1, color: '#9aa0a8' }}>
-              RETAIL CLOUD
+              VENDOR
             </div>
           </div>
         </div>
 
-        <h1 style={{ fontSize: 20, color: '#0F1217', margin: '22px 0 2px' }}>
+        <h1 style={{ fontSize: 20, color: '#2A1B22', margin: '22px 0 2px' }}>
           {mode === 'login' ? 'Vendor sign in' : 'Apply as a vendor'}
         </h1>
         <p style={{ color: '#7B828C', fontSize: 13, margin: 0 }}>
@@ -198,7 +198,7 @@ const brandMark: React.CSSProperties = {
   width: 40,
   height: 40,
   borderRadius: 11,
-  background: '#128A63',
+  background: '#7D1535',
   color: '#fff',
   display: 'grid',
   placeItems: 'center',
@@ -207,7 +207,7 @@ const brandMark: React.CSSProperties = {
   margin: '0 auto',
 };
 const brandRow: React.CSSProperties = { display: 'flex', alignItems: 'center', gap: 12 };
-const linkStyle: React.CSSProperties = { color: '#128A63', fontWeight: 700, cursor: 'pointer' };
+const linkStyle: React.CSSProperties = { color: '#7D1535', fontWeight: 700, cursor: 'pointer' };
 
 // ── bootstrap ────────────────────────────────────────────────────────────────
 const root = createRoot(document.getElementById('root') as HTMLElement);

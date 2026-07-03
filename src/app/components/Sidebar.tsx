@@ -34,12 +34,12 @@ export function Sidebar({ active }: { active: Route }) {
   return (
     <aside style={css('width:256px;flex-shrink:0;background:var(--side-bg);border-right:1px solid var(--side-border);display:flex;flex-direction:column;padding:22px 16px 18px')}>
       <div style={css('display:flex;align-items:center;gap:11px;padding:6px 8px 0')}>
-        <div style={css('width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(18,138,99,.35)')}>
-          <span style={css('color:#fff;font-weight:800;font-size:17px;letter-spacing:-.04em')}>Z</span>
+        <div style={css('width:34px;height:34px;border-radius:9px;background:linear-gradient(145deg,#9E2A48,#5E0F27);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(125,21,53,.35)')}>
+          <span style={css('color:#fff;font-weight:800;font-size:17px;letter-spacing:-.04em')}>R</span>
         </div>
         <div>
-          <div style={css('color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em')}>Zenith</div>
-          <div style={css('color:var(--faint);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase')}>Retail Cloud</div>
+          <div style={css('color:#fff;font-weight:800;font-size:15px;letter-spacing:-.01em')}>Rasa</div>
+          <div style={css('color:var(--faint);font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase')}>Vendor</div>
         </div>
       </div>
 
