@@ -73,6 +73,19 @@ export function SlotsView() {
   }, [slots, vendorId]);
 
   const nameOf = (id: string) => menu.find((m) => m.id === id)?.name || '';
+
+  // Options grouped by food category (Veg / Non-veg / Breakfast / ...) so the pickers integrate
+  // with the same categories the Inventory item form uses.
+  const menuByCategory = useMemo(() => {
+    const groups = new Map<string, typeof menu>();
+    for (const m of menu) {
+      const cat = m.category || 'Other';
+      const list = groups.get(cat) || [];
+      list.push(m);
+      groups.set(cat, list);
+    }
+    return [...groups.entries()];
+  }, [menu]);
   const duration = DURATIONS[durationIdx] || DURATIONS[3];
 
   // ＋ adds another dropdown row below the previous one; － (only shown when removable) drops the
@@ -184,8 +197,12 @@ export function SlotsView() {
                 {dishIds.map((id, i) => (
                   <select key={i} value={id} onChange={(e) => setDishAt(i, e.target.value)} style={css(selectStyle)}>
                     {menu.length === 0 && <option value="">No menu items</option>}
-                    {menu.map((m) => (
-                      <option key={m.id} value={m.id}>{m.name}</option>
+                    {menuByCategory.map(([cat, items]) => (
+                      <optgroup key={cat} label={cat}>
+                        {items.map((m) => (
+                          <option key={m.id} value={m.id}>{m.name}</option>
+                        ))}
+                      </optgroup>
                     ))}
                   </select>
                 ))}
@@ -204,8 +221,12 @@ export function SlotsView() {
                 {comboIds.map((id, i) => (
                   <select key={i} value={id} onChange={(e) => setComboAt(i, e.target.value)} style={css(selectStyle)}>
                     <option value="">None</option>
-                    {menu.map((m) => (
-                      <option key={m.id} value={m.id}>{m.name}</option>
+                    {menuByCategory.map(([cat, items]) => (
+                      <optgroup key={cat} label={cat}>
+                        {items.map((m) => (
+                          <option key={m.id} value={m.id}>{m.name}</option>
+                        ))}
+                      </optgroup>
                     ))}
                   </select>
                 ))}

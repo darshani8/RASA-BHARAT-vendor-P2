@@ -92,4 +92,4 @@ export function matches(o: { reviewed?: boolean; rating?: number }, f: string): 
 export const THEME_VARS =
   '--canvas:#FAF6F3;--card:#FFFFFF;--card-soft:#FBF8F5;--border:#ECE6DB;--border-strong:#DDD4C7;--hover:#F7F2EC;--ink:#2A1B22;--text:#3B2630;--muted:#6F6A7D;--faint:#9A93A6;--side-bg:#2A1B22;--side-bg-2:#3B2630;--side-text:#B8A8B0;--side-active-text:#FFFFFF;--nav-hover:rgba(255,255,255,.05);--nav-active:rgba(255,255,255,.08);--side-border:rgba(255,255,255,.07);--accent:#7D1535;--accent-ink:#5E0F27;--accent-soft:rgba(125,21,53,.10);--pos:#7D1535;--neg:#C0392B;--neg-soft:rgba(192,57,43,.10);--amber:#B7791F;--amber-soft:rgba(183,121,31,.12);--shadow-sm:0 1px 2px rgba(16,24,40,.05),0 1px 3px rgba(16,24,40,.04);--shadow-md:0 10px 34px -8px rgba(16,24,40,.14);--pad:22px';
 
-export const CATEGORY_OPTIONS = ['Breakfast', 'Mains', 'Beverages', 'Sweets', 'Other'];
+export const CATEGORY_OPTIONS = ['Breakfast', 'Veg', 'Non-veg', 'Mains', 'Beverages', 'Sweets', 'Other'];
