@@ -51,7 +51,7 @@ export function Sidebar({ active }: { active: Route }) {
       <Group title="Operations">
         <NavItem icon="point_of_sale" label="Point of Sale" href="#/pos" active={active === 'pos'} />
         <NavItem icon="receipt_long" label="Orders" href="#/orders" active={active === 'orders'} badge="12" />
-        <NavItem icon="inventory_2" label="Inventory" href="#/inventory" active={active === 'inventory' || active === 'slots'} />
+        <NavItem icon="inventory_2" label="Inventory" href="#/inventory" active={active === 'inventory'} />
       </Group>
 
       <Group title="Insights">
@@ -84,7 +84,7 @@ export function MobileNav({ active }: { active: Route }) {
     { icon: 'space_dashboard', label: 'Home', href: '#/dashboard', match: ['dashboard'] },
     { icon: 'point_of_sale', label: 'POS', href: '#/pos', match: ['pos'] },
     { icon: 'receipt_long', label: 'Orders', href: '#/orders', match: ['orders'] },
-    { icon: 'inventory_2', label: 'Inventory', href: '#/inventory', match: ['inventory', 'slots'] },
+    { icon: 'inventory_2', label: 'Inventory', href: '#/inventory', match: ['inventory'] },
     { icon: 'monitoring', label: 'Analytics', href: '#/analytics', match: ['analytics'] },
     { icon: 'workspace_premium', label: 'Reports', href: '#/reports', match: ['reports'] },
   ];
