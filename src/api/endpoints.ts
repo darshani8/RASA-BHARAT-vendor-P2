@@ -79,6 +79,17 @@ export const getScheduledOrders = (limit = 20, cursor?: string) =>
 export const getQueue = (vendorId: string) =>
   request<Queue>('/queue', { query: { vendor_id: vendorId } });
 
+// ── Park-order slots (vendor rules) ─────────────────────────────────────────
+// Sets the live per-vendor slot windows the customer app books against
+// (slotMinutes <= 120, capacityPerSlot >= 1, lookaheadMinutes <= 1440).
+export const setSlotConfig = (config: {
+  vendorId: string;
+  slotMinutes: number;
+  capacityPerSlot: number;
+  lookaheadMinutes: number;
+  enabled: boolean;
+}) => request<{ ok: boolean }>('/slots/config', { method: 'PUT', body: config });
+
 export const getAnalytics = (date: string) =>
   request<VendorAnalytics>('/vendor/analytics', { query: { date } });
 

@@ -6,6 +6,7 @@ import { DashboardView } from './views/DashboardView';
 import { PosView } from './views/PosView';
 import { OrdersView } from './views/OrdersView';
 import { InventoryView } from './views/InventoryView';
+import { SlotsView } from './views/SlotsView';
 import { AnalyticsView } from './views/AnalyticsView';
 import { ReportsView } from './views/ReportsView';
 import type { ReactNode } from 'react';
@@ -58,6 +59,10 @@ function Router() {
     case 'inventory':
       header = { title: 'Inventory Catalog' };
       view = <InventoryView />;
+      break;
+    case 'slots':
+      header = { title: 'Slots Management' };
+      view = <SlotsView />;
       break;
     case 'analytics':
       header = { title: 'Business Intelligence', search: 'Search analytics…', searchMaxWidth: 340 };
