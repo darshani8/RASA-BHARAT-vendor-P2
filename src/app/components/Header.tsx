@@ -14,7 +14,7 @@ export function Header({ title, search, searchMaxWidth = 380, pill = 'register',
   const v = state.vendor;
   const open = v ? v.acceptingOrders !== false : true;
   const pillBase = 'display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;cursor:pointer;border:1px solid ';
-  const registerPillStyle = pillBase + (open ? 'rgba(18,138,99,.2);background:var(--accent-soft)' : 'rgba(197,65,58,.25);background:var(--neg-soft)');
+  const registerPillStyle = pillBase + (open ? 'rgba(125,21,53,.2);background:var(--accent-soft)' : 'rgba(197,65,58,.25);background:var(--neg-soft)');
   const registerInk = open ? 'var(--accent-ink)' : 'var(--neg)';
   const registerDot = open ? 'var(--accent)' : 'var(--neg)';
   const registerLabel = open ? 'Register Open' : 'Register Closed';
@@ -42,7 +42,7 @@ export function Header({ title, search, searchMaxWidth = 380, pill = 'register',
             <span style={css(`font-size:12px;font-weight:700;color:${registerInk}`)}>{registerLabel}</span>
           </div>
         ) : (
-          <div style={css('display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(18,138,99,.2)')}>
+          <div style={css('display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:var(--accent-soft);border:1px solid rgba(125,21,53,.2)')}>
             <span style={css('width:7px;height:7px;border-radius:50%;background:var(--accent);animation:zpulse 2.4s infinite')} />
             <span style={css('font-size:12px;font-weight:700;color:var(--accent-ink)')}>Live Updates</span>
           </div>
@@ -63,7 +63,7 @@ export function Header({ title, search, searchMaxWidth = 380, pill = 'register',
             <span className="ms" style={css('font-size:21px')}>notifications</span>
             <span style={css('position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--neg);border:1.5px solid var(--card)')} />
           </button>
-          <div onClick={onLogout} title="Sign out" style={css('width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#1BA576,#0C6347);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;margin-left:4px;cursor:pointer')}>AD</div>
+          <div onClick={onLogout} title="Sign out" style={css('width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,#9E2A48,#5E0F27);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12.5px;margin-left:4px;cursor:pointer')}>AD</div>
         </div>
       </div>
     </header>

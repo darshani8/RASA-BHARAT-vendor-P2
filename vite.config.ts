@@ -13,11 +13,11 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.png', 'icons/*.png', 'fonts/*.woff2'],
       manifest: {
-        name: 'Zenith Retail Cloud',
-        short_name: 'Zenith',
-        description: 'Zenith Retail Cloud — vendor point-of-sale & operations dashboard',
-        theme_color: '#0E1116',
-        background_color: '#0E1116',
+        name: 'Rasa Vendor',
+        short_name: 'Rasa',
+        description: 'Rasa Vendor — food-truck point-of-sale & operations dashboard',
+        theme_color: '#7D1535',
+        background_color: '#2A1B22',
         display: 'standalone',
         orientation: 'any',
         // Relative so the installed PWA opens at the deploy base (works under /<repo>/ on Pages).

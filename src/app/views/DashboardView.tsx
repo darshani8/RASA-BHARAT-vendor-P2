@@ -101,7 +101,7 @@ export function DashboardView() {
             </div>
             <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>98.2%</div>
             <div style={css('margin-top:16px')}>
-              <div style={css('height:6px;border-radius:999px;background:var(--hover);overflow:hidden')}><div style={css('height:100%;width:98.2%;border-radius:999px;background:linear-gradient(90deg,#1BA576,#0C6347)')} /></div>
+              <div style={css('height:6px;border-radius:999px;background:var(--hover);overflow:hidden')}><div style={css('height:100%;width:98.2%;border-radius:999px;background:linear-gradient(90deg,#9E2A48,#5E0F27)')} /></div>
               <div style={css('font-size:11.5px;color:var(--faint);font-weight:500;margin-top:8px')}>307 of 312 fulfilled</div>
             </div>
           </div>
