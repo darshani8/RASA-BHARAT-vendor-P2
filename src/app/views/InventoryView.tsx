@@ -58,7 +58,8 @@ export function InventoryView() {
                 <option value="Sweets">Sweets</option>
                 <option value="Other">Other</option>
               </select>
-              <button onClick={openAddItem} className="zbtn" style={css('margin-left:auto;display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:10px')}><span className="ms" style={css('font-size:18px')}>add</span>Add Item</button>
+              <button onClick={() => { location.hash = '#/slots'; }} className="zbtn" style={css('margin-left:auto;display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--accent);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:10px')}><span className="ms" style={css('font-size:18px')}>calendar_month</span>Slots Management</button>
+              <button onClick={openAddItem} className="zbtn" style={css('display:flex;align-items:center;gap:7px;border:none;cursor:pointer;background:var(--ink);color:#fff;font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 16px;border-radius:10px')}><span className="ms" style={css('font-size:18px')}>add</span>Add Item</button>
             </div>
             <div style={css('display:grid;' + grid + ';background:var(--card-soft);border-bottom:1px solid var(--border)')}>
               <div style={css('padding:11px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Item</div>

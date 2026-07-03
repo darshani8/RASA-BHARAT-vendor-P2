@@ -9,8 +9,8 @@ import type { MenuItem, OrderRow, Queue, Vendor, VendorAnalytics } from '../api/
 import type { RatingSummary } from '../api/endpoints';
 import { errMsg, todayISO } from './format';
 
-export type Route = 'dashboard' | 'pos' | 'orders' | 'inventory' | 'analytics' | 'reports';
-const VALID: Route[] = ['dashboard', 'pos', 'orders', 'inventory', 'analytics', 'reports'];
+export type Route = 'dashboard' | 'pos' | 'orders' | 'inventory' | 'analytics' | 'reports' | 'slots';
+const VALID: Route[] = ['dashboard', 'pos', 'orders', 'inventory', 'analytics', 'reports', 'slots'];
 
 export function routeFromHash(): Route {
   const h = (location.hash || '').replace(/^#\/?/, '').trim();
