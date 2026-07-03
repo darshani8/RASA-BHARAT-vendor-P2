@@ -51,7 +51,7 @@ export function Sidebar({ active }: { active: Route }) {
       <Group title="Operations">
         <NavItem icon="point_of_sale" label="Point of Sale" href="#/pos" active={active === 'pos'} />
         <NavItem icon="receipt_long" label="Orders" href="#/orders" active={active === 'orders'} badge="12" />
-        <NavItem icon="inventory_2" label="Inventory" href="#/inventory" active={active === 'inventory'} />
+        <NavItem icon="inventory_2" label="Inventory" href="#/inventory" active={active === 'inventory' || active === 'slots'} />
       </Group>
 
       <Group title="Insights">
@@ -73,5 +73,37 @@ export function Sidebar({ active }: { active: Route }) {
         </div>
       </div>
     </aside>
+  );
+}
+
+
+// Compact horizontal nav for phones — the 256px sidebar cannot fit a mobile viewport, so the
+// shell swaps it for this scrollable strip (same routes, same accent language).
+export function MobileNav({ active }: { active: Route }) {
+  const items: Array<{ icon: string; label: string; href: string; match: Route[] }> = [
+    { icon: 'space_dashboard', label: 'Home', href: '#/dashboard', match: ['dashboard'] },
+    { icon: 'point_of_sale', label: 'POS', href: '#/pos', match: ['pos'] },
+    { icon: 'receipt_long', label: 'Orders', href: '#/orders', match: ['orders'] },
+    { icon: 'inventory_2', label: 'Inventory', href: '#/inventory', match: ['inventory', 'slots'] },
+    { icon: 'monitoring', label: 'Analytics', href: '#/analytics', match: ['analytics'] },
+    { icon: 'workspace_premium', label: 'Reports', href: '#/reports', match: ['reports'] },
+  ];
+  return (
+    <div style={css('display:flex;align-items:center;gap:6px;background:var(--side-bg);padding:10px 12px;overflow-x:auto;flex-shrink:0;-webkit-overflow-scrolling:touch')}>
+      <div style={css('width:30px;height:30px;border-radius:8px;background:linear-gradient(145deg,#9E2A48,#5E0F27);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:4px')}>
+        <span style={css('color:#fff;font-weight:800;font-size:15px')}>R</span>
+      </div>
+      {items.map((it) => {
+        const on = it.match.includes(active);
+        return (
+          <a key={it.href} href={it.href} className="znav" style={css(
+            'display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;' +
+            (on ? 'background:var(--nav-active);color:var(--side-active-text)' : 'color:var(--side-text)')
+          )}>
+            <span className="ms" style={css('font-size:17px' + (on ? ';color:var(--accent)' : ''))}>{it.icon}</span>{it.label}
+          </a>
+        );
+      })}
+    </div>
   );
 }
