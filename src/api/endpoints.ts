@@ -71,24 +71,9 @@ export const getVendorOrders = (
     query: { status: opts.status, lane: opts.lane, limit: opts.limit ?? 50, cursor: opts.cursor },
   });
 
-// Parked / scheduled orders: customers who reserved a future pickup slot (lane='scheduled'), kept
-// off the live board until their cook-start time. Uses the backend lane filter on the vendor list.
-export const getScheduledOrders = (limit = 20, cursor?: string) =>
-  getVendorOrders({ lane: 'scheduled', limit, cursor });
-
 export const getQueue = (vendorId: string) =>
   request<Queue>('/queue', { query: { vendor_id: vendorId } });
 
-// ── Park-order slots (vendor rules) ─────────────────────────────────────────
-// Sets the live per-vendor slot windows the customer app books against
-// (slotMinutes <= 120, capacityPerSlot >= 1, lookaheadMinutes <= 1440).
-export const setSlotConfig = (config: {
-  vendorId: string;
-  slotMinutes: number;
-  capacityPerSlot: number;
-  lookaheadMinutes: number;
-  enabled: boolean;
-}) => request<{ ok: boolean }>('/slots/config', { method: 'PUT', body: config });
 
 export const getAnalytics = (date: string) =>
   request<VendorAnalytics>('/vendor/analytics', { query: { date } });
