@@ -53,7 +53,9 @@ export function OrdersView() {
     const rejecting = state.rejectingId === row.orderId;
     const verifying = verifyId === row.orderId;
     return {
-      id: row.orderNumber || '#' + String(row.orderId || '').slice(0, 4),
+      // The Token column shows the queue token — the SAME number the customer's queue page
+      // shows and calls out at the counter. Older rows fall back to the global order number.
+      id: row.queueToken || row.orderNumber || '#' + String(row.orderId || '').slice(0, 4),
       orderId: row.orderId,
       customer: 'Order ' + (row.orderNumber || ''),
       items: itemsByOrder[row.orderId] || ch.label + (row.prepMinutes ? ' · ' + row.prepMinutes + ' min prep' : ''),
