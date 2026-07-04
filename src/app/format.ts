@@ -78,13 +78,11 @@ export function initials(name: string): string {
   return name.split(' ').map((p) => p[0]).slice(0, 2).join('').toUpperCase();
 }
 
-export function matches(o: { reviewed?: boolean; rating?: number }, f: string): boolean {
-  if (f === 'all') return true;
-  if (f === 'good') return !!o.reviewed && (o.rating || 0) >= 4;
-  if (f === 'average') return !!o.reviewed && o.rating === 3;
-  if (f === 'bad') return !!o.reviewed && (o.rating || 0) <= 2;
-  if (f === 'awaiting') return !o.reviewed;
-  return true;
+export function matches(o: { stars: number }, f: string): boolean {
+  if (f === 'good') return o.stars >= 4;
+  if (f === 'average') return o.stars === 3;
+  if (f === 'bad') return o.stars <= 2;
+  return true; // 'all'
 }
 
 // The exact light-theme CSS custom properties every view root carried inline.

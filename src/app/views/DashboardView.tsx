@@ -3,7 +3,7 @@ import { useStore } from '../store';
 import { inr, mapStatus, statusMeta, channelMeta } from '../format';
 
 export function DashboardView() {
-  const { state } = useStore();
+  const { state, onToggleOpen } = useStore();
   const a = state.analytics;
   const q = state.queueData;
   const name = state.vendor && state.vendor.name ? state.vendor.name : 'there';
@@ -43,6 +43,26 @@ export function DashboardView() {
   const dashOrders = String(a ? a.orderCount : 0);
   const liveQueueCount = String(entries.length) + ' active';
 
+  // Both fields are a rolling-out backend addition — absent (older server) or null (no
+  // completions yet today) must render as "—", never a made-up number.
+  const completedCount = a?.completedCount;
+  const completionRatePct =
+    a && a.orderCount > 0 && completedCount !== undefined
+      ? Math.round((completedCount / a.orderCount) * 100)
+      : null;
+  const completionRateLabel = completionRatePct != null ? completionRatePct + '%' : '—';
+  const completionSubLabel =
+    a && a.orderCount > 0 && completedCount !== undefined
+      ? completedCount + ' of ' + a.orderCount + ' fulfilled'
+      : 'not enough data yet';
+  const avgHandleMinutes = a?.avgHandleMinutes;
+  const avgHandleLabel =
+    avgHandleMinutes != null ? Math.round(avgHandleMinutes) + 'm' : '—';
+
+  const accepting = state.vendor ? state.vendor.acceptingOrders !== false : true;
+  const pauseLabel = accepting ? 'Pause' : 'Resume';
+  const pauseIcon = accepting ? 'pause_circle' : 'play_circle';
+
   return (
     <div style={css('flex:1;overflow-y:auto;padding:26px 28px 40px')}>
       <div style={css('max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:18px')}>
@@ -52,22 +72,17 @@ export function DashboardView() {
             <h1 style={css('font-size:25px;font-weight:800;color:var(--ink);letter-spacing:-.025em;line-height:1.1')}>{dashGreeting}</h1>
             <p style={css('font-size:13.5px;color:var(--muted);margin-top:5px;font-weight:500')}>Here's how your stall is performing today · {dashDate}</p>
           </div>
-          <div style={css('display:flex;gap:8px')}>
-            <button className="zbtn" style={css('display:flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer')}><span className="ms" style={css('font-size:18px;color:var(--muted)')}>calendar_today</span>Today</button>
-            <button className="zbtn" style={css('display:flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:10px;cursor:pointer')}><span className="ms" style={css('font-size:18px;color:var(--muted)')}>ios_share</span>Export</button>
-          </div>
+          <div style={css('display:flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:10px')}><span className="ms" style={css('font-size:18px;color:var(--muted)')}>calendar_today</span>Today</div>
         </div>
 
         <section style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:16px')}>
           <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)')}>
             <div style={css('display:flex;align-items:center;justify-content:space-between')}>
               <span style={css('font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)')}>Today's Revenue</span>
-              <span style={css('display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--pos);background:var(--accent-soft);padding:3px 7px;border-radius:7px')}><span className="ms" style={css('font-size:14px')}>trending_up</span>12.5%</span>
             </div>
             <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>{dashRevenue}</div>
-            <div style={css('display:flex;align-items:flex-end;justify-content:space-between;margin-top:12px')}>
+            <div style={css('margin-top:12px')}>
               <span style={css('font-size:11.5px;color:var(--faint);font-weight:500')}>gross revenue today</span>
-              <svg viewBox="0 0 120 34" width="74" height="22" fill="none" preserveAspectRatio="none"><path d="M0,28 L17,24 L34,26 L51,17 L68,20 L85,11 L102,13 L120,4" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
             </div>
           </div>
 
@@ -77,33 +92,29 @@ export function DashboardView() {
               <span style={css('display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--pos);background:var(--accent-soft);padding:3px 7px;border-radius:7px')}><span className="ms" style={css('font-size:14px')}>receipt_long</span>live</span>
             </div>
             <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>{dashOrders}</div>
-            <div style={css('display:flex;align-items:flex-end;justify-content:space-between;margin-top:12px')}>
+            <div style={css('margin-top:12px')}>
               <span style={css('font-size:11.5px;color:var(--faint);font-weight:500')}>orders placed today</span>
-              <svg viewBox="0 0 120 34" width="74" height="22" fill="none" preserveAspectRatio="none"><path d="M0,22 L17,18 L34,23 L51,14 L68,22 L85,16 L102,9 L120,12" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
             </div>
           </div>
 
           <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)')}>
             <div style={css('display:flex;align-items:center;justify-content:space-between')}>
               <span style={css('font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)')}>Avg Handle Time</span>
-              <span style={css('display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--pos);background:var(--accent-soft);padding:3px 7px;border-radius:7px')}><span className="ms" style={css('font-size:14px')}>trending_down</span>30s</span>
             </div>
-            <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>4m 12s</div>
-            <div style={css('display:flex;align-items:flex-end;justify-content:space-between;margin-top:12px')}>
-              <span style={css('font-size:11.5px;color:var(--faint);font-weight:500')}>target 4m 45s</span>
-              <svg viewBox="0 0 120 34" width="74" height="22" fill="none" preserveAspectRatio="none"><path d="M0,8 L17,12 L34,10 L51,16 L68,14 L85,20 L102,18 L120,24" stroke="var(--accent)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"></path></svg>
+            <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>{avgHandleLabel}</div>
+            <div style={css('margin-top:12px')}>
+              <span style={css('font-size:11.5px;color:var(--faint);font-weight:500')}>payment to ready, today's average</span>
             </div>
           </div>
 
           <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)')}>
             <div style={css('display:flex;align-items:center;justify-content:space-between')}>
               <span style={css('font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)')}>Completion Rate</span>
-              <span style={css('display:inline-flex;align-items:center;gap:3px;font-size:11.5px;font-weight:700;color:var(--amber);background:var(--amber-soft);padding:3px 7px;border-radius:7px')}>SLA</span>
             </div>
-            <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>98.2%</div>
+            <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>{completionRateLabel}</div>
             <div style={css('margin-top:16px')}>
-              <div style={css('height:6px;border-radius:999px;background:var(--hover);overflow:hidden')}><div style={css('height:100%;width:98.2%;border-radius:999px;background:linear-gradient(90deg,#9E2A48,#5E0F27)')} /></div>
-              <div style={css('font-size:11.5px;color:var(--faint);font-weight:500;margin-top:8px')}>307 of 312 fulfilled</div>
+              <div style={css('height:6px;border-radius:999px;background:var(--hover);overflow:hidden')}><div style={css('height:100%;width:' + (completionRatePct ?? 0) + '%;border-radius:999px;background:linear-gradient(90deg,#9E2A48,#5E0F27)')} /></div>
+              <div style={css('font-size:11.5px;color:var(--faint);font-weight:500;margin-top:8px')}>{completionSubLabel}</div>
             </div>
           </div>
         </section>
@@ -115,10 +126,8 @@ export function DashboardView() {
                 <div style={css('font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em')}>Revenue Flow</div>
                 <div style={css('font-size:12px;color:var(--muted);margin-top:3px;font-weight:500')}>Hourly net sales · 9:00 — 19:00</div>
               </div>
-              <div style={css('display:flex;gap:2px;background:var(--hover);padding:3px;border-radius:9px')}>
-                <button className="ztab" style={css('border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:700;padding:5px 12px;border-radius:7px;background:var(--card);color:var(--ink);box-shadow:var(--shadow-sm)')}>Today</button>
-                <button className="ztab" style={css('border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:7px;background:transparent;color:var(--muted)')}>Week</button>
-                <button className="ztab" style={css('border:none;cursor:pointer;font-family:inherit;font-size:12px;font-weight:600;padding:5px 12px;border-radius:7px;background:transparent;color:var(--muted)')}>Month</button>
+              <div style={css('display:flex;background:var(--hover);padding:3px;border-radius:9px')}>
+                <span style={css('font-family:inherit;font-size:12px;font-weight:700;padding:5px 12px;border-radius:7px;background:var(--card);color:var(--ink);box-shadow:var(--shadow-sm)')}>Today</span>
               </div>
             </div>
 
@@ -155,9 +164,8 @@ export function DashboardView() {
                   <span style={css('flex-shrink:0;' + e.pillStyle)}>{e.pillLabel}</span>
                 </div>
               ))}
-              <div style={css('padding:12px;border-top:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:8px')}>
-                <button className="zbtn" style={css('display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:9px;border-radius:10px;cursor:pointer')}><span className="ms" style={css('font-size:17px;color:var(--muted)')}>pause_circle</span>Pause</button>
-                <button className="zbtn" style={css('display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:9px;border-radius:10px;cursor:pointer')}><span className="ms" style={css('font-size:17px;color:var(--muted)')}>campaign</span>Announce</button>
+              <div style={css('padding:12px;border-top:1px solid var(--border)')}>
+                <button onClick={onToggleOpen} className="zbtn" style={css('width:100%;display:flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:9px;border-radius:10px;cursor:pointer')}><span className="ms" style={css('font-size:17px;color:var(--muted)')}>{pauseIcon}</span>{pauseLabel}</button>
               </div>
             </div>
           </div>
@@ -169,7 +177,7 @@ export function DashboardView() {
               <div style={css('font-size:14.5px;font-weight:800;color:var(--ink);letter-spacing:-.01em')}>Recent Transactions</div>
               <div style={css('font-size:12px;color:var(--muted);margin-top:3px;font-weight:500')}>Last 6 completed orders</div>
             </div>
-            <button className="zbtn" style={css('display:flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:7px 13px;border-radius:9px;cursor:pointer')}>View all<span className="ms" style={css('font-size:16px;color:var(--muted)')}>arrow_forward</span></button>
+            <a href="#/orders" className="zbtn" style={css('display:flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:7px 13px;border-radius:9px;cursor:pointer;text-decoration:none')}>View all<span className="ms" style={css('font-size:16px;color:var(--muted)')}>arrow_forward</span></a>
           </div>
           <div style={css('display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr 1fr;background:var(--card-soft);border-bottom:1px solid var(--border)')}>
             <div style={css('padding:10px var(--pad);font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Order</div>

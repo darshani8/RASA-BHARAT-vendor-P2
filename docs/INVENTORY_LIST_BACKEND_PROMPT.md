@@ -1,3 +1,8 @@
+> **RESOLVED.** The backend shipped this as `GET /api/v1/menu?vendor_id=…&available_only=false`
+> (not the `/vendors/me/menu` path originally proposed below) — vendor/admin token required,
+> ownership enforced server-side. The client (`src/api/endpoints.ts → getVendorMenu`) has been
+> switched over; the 404 fallback to the available-only list is gone. Kept for history only.
+
 # Backend task: vendor "list all my menu items" endpoint (Inventory)
 
 ## Why

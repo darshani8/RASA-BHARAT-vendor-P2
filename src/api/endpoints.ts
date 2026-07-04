@@ -10,6 +10,7 @@ import type {
   Payment,
   Queue,
   VendorAnalytics,
+  VendorReview,
   Page,
 } from './types';
 
@@ -27,11 +28,12 @@ export const setAcceptingOrders = (id: string, accepting: boolean) =>
 export const getMenu = (vendorId: string) =>
   request<{ items: MenuItem[] }>('/menu', { query: { vendor_id: vendorId } }).then((r) => r.items);
 
-// Vendor inventory: ALL items incl. sold-out. Needs the backend endpoint in
-// docs/INVENTORY_LIST_BACKEND_PROMPT.md; falls back to the available-only list
-// until that ships (so sold-out items are temporarily hidden, never crash).
+// Vendor inventory: ALL items incl. sold-out, via the same /menu resource with
+// available_only=false (vendor/admin token required, ownership enforced server-side).
 export const getVendorMenu = (vendorId: string) =>
-  request<{ items: MenuItem[] }>('/vendors/me/menu').then((r) => r.items);
+  request<{ items: MenuItem[] }>('/menu', { query: { vendor_id: vendorId, available_only: 'false' } }).then(
+    (r) => r.items,
+  );
 
 export const createMenuItem = (input: {
   vendorId: string;
@@ -113,6 +115,12 @@ export const getPaymentByOrder = (orderId: string) =>
 export type RatingSummary = { vendorId: string; averageStars: number | null; count: number };
 export const getRatingSummary = (vendorId: string) =>
   request<RatingSummary>(`/ratings/vendor/${vendorId}`);
+
+// Per-order review text/stars for a vendor's own orders. Newest first. `comment` may be null
+// (a customer can rate without leaving text). The endpoint is being deployed in parallel with
+// this client — callers must handle a 404 (not yet live) without crashing.
+export const getVendorReviews = (vendorId: string) =>
+  request<{ data: VendorReview[] }>(`/ratings/vendor/${vendorId}/reviews`).then((r) => r.data);
 
 // ── Vendor walk-in / counter order (POS "Charge") ───────────────────────────
 // NOT YET IN THE BACKEND — see docs/POS_CHARGE_BACKEND_PROMPT.md for the spec to

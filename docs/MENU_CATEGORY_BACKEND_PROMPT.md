@@ -1,3 +1,8 @@
+> **RESOLVED.** The backend persists `category` on menu items now (create/update accept it,
+> reads return it). The client sends `category` on both `createMenuItem` and `updateMenuItem`
+> and reads `item.category` first; the `localStorage` cache is only a fallback for items that
+> predate this field. Kept for history only.
+
 # Backend task: add `category` to menu items
 
 ## Why

@@ -4,8 +4,12 @@ import { inr, iconFor } from '../format';
 import { ItemModal } from './ItemModal';
 
 export function InventoryView() {
-  const { state, itemCategory, openAddItem, openEditItem, deleteItem, toggleItemAvail, setInvCatFilter } = useStore();
-  const all = (state.menu || []).map((m) => {
+  const { state, itemCategory, openAddItem, openEditItem, deleteItem, toggleItemAvail, setInvCatFilter, setInvSearch } = useStore();
+  const menu = state.menu || [];
+  const totalCount = menu.length;
+  const availableCount = menu.filter((m) => m.isAvailable !== false).length;
+  const soldOutCount = totalCount - availableCount;
+  const all = menu.map((m) => {
     const avail = m.isAvailable !== false;
     return {
       id: m.id, name: m.name, category: itemCategory(m), priceLabel: inr(m.pricePaise),
@@ -20,8 +24,10 @@ export function InventoryView() {
     };
   });
   const filter = state.invCatFilter || 'All';
-  const items = filter === 'All' ? all : all.filter((i) => i.category === filter);
-  const invCount = filter === 'All' ? String(all.length) + ' items on your menu' : String(items.length) + ' in ' + filter;
+  const byCategory = filter === 'All' ? all : all.filter((i) => i.category === filter);
+  const q = (state.invSearch || '').trim().toLowerCase();
+  const items = q ? byCategory.filter((i) => i.name.toLowerCase().includes(q)) : byCategory;
+  const invCount = filter === 'All' ? String(items.length) + ' items on your menu' : String(items.length) + ' in ' + filter;
   const grid = 'grid-template-columns:2fr 130px 120px 90px 130px 150px';
 
   return (
@@ -32,15 +38,15 @@ export function InventoryView() {
           <section style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:16px')}>
             <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:18px 20px;display:flex;align-items:center;gap:14px')}>
               <div style={css('width:42px;height:42px;border-radius:11px;background:var(--hover);display:flex;align-items:center;justify-content:center')}><span className="ms" style={css('font-size:22px;color:var(--text)')}>category</span></div>
-              <div><div style={css('font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1')}>48</div><div style={css('font-size:11.5px;font-weight:600;color:var(--muted);margin-top:3px')}>Total SKUs</div></div>
+              <div><div style={css('font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1')}>{totalCount}</div><div style={css('font-size:11.5px;font-weight:600;color:var(--muted);margin-top:3px')}>Total Items</div></div>
             </div>
             <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:18px 20px;display:flex;align-items:center;gap:14px')}>
-              <div style={css('width:42px;height:42px;border-radius:11px;background:var(--amber-soft);display:flex;align-items:center;justify-content:center')}><span className="ms" style={css('font-size:22px;color:var(--amber)')}>warning</span></div>
-              <div><div style={css('font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1')}>6</div><div style={css('font-size:11.5px;font-weight:600;color:var(--muted);margin-top:3px')}>Low Stock</div></div>
+              <div style={css('width:42px;height:42px;border-radius:11px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center')}><span className="ms" style={css('font-size:22px;color:var(--accent-ink)')}>check_circle</span></div>
+              <div><div style={css('font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1')}>{availableCount}</div><div style={css('font-size:11.5px;font-weight:600;color:var(--muted);margin-top:3px')}>Available</div></div>
             </div>
             <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:18px 20px;display:flex;align-items:center;gap:14px')}>
               <div style={css('width:42px;height:42px;border-radius:11px;background:var(--neg-soft);display:flex;align-items:center;justify-content:center')}><span className="ms" style={css('font-size:22px;color:var(--neg)')}>error</span></div>
-              <div><div style={css('font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1')}>2</div><div style={css('font-size:11.5px;font-weight:600;color:var(--muted);margin-top:3px')}>Critical / Out</div></div>
+              <div><div style={css('font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.02em;line-height:1')}>{soldOutCount}</div><div style={css('font-size:11.5px;font-weight:600;color:var(--muted);margin-top:3px')}>Sold Out</div></div>
             </div>
           </section>
 
@@ -48,7 +54,7 @@ export function InventoryView() {
             <div style={css('padding:16px var(--pad);display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);flex-wrap:wrap')}>
               <div style={css('flex:1;min-width:240px;max-width:380px;position:relative')}>
                 <span className="ms" style={css('position:absolute;left:13px;top:50%;transform:translateY(-50%);font-size:19px;color:var(--faint)')}>search</span>
-                <input placeholder="Search inventory…" style={css('width:100%;border:1px solid var(--border);background:var(--card-soft);color:var(--text);font-family:inherit;font-size:13px;border-radius:10px;padding:9px 12px 9px 40px;outline:none')} />
+                <input value={state.invSearch} onChange={setInvSearch} placeholder="Search inventory…" style={css('width:100%;border:1px solid var(--border);background:var(--card-soft);color:var(--text);font-family:inherit;font-size:13px;border-radius:10px;padding:9px 12px 9px 40px;outline:none')} />
               </div>
               <select onChange={setInvCatFilter} value={state.invCatFilter} className="zin" style={css('width:auto;cursor:pointer;font-weight:600;padding:9px 14px')}>
                 <option value="All">All Categories</option>
@@ -68,7 +74,11 @@ export function InventoryView() {
               <div style={css('padding:11px 16px;font-size:10.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)')}>Status</div>
               <div style={css('padding:11px var(--pad)')} />
             </div>
-            {items.length === 0 && <div style={css('padding:48px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:600')}>No menu items yet. Click “Add Item” to create your first.</div>}
+            {items.length === 0 && (
+              <div style={css('padding:48px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:600')}>
+                {all.length === 0 ? 'No menu items yet. Click “Add Item” to create your first.' : 'No items match your search or filter.'}
+              </div>
+            )}
             {items.map((m) => (
               <div key={m.id} className="zrow" style={css('display:grid;' + grid + ';align-items:center;border-top:1px solid var(--border)')}>
                 <div style={css('padding:13px var(--pad);display:flex;align-items:center;gap:10px')}><span className="ms" style={css('font-size:20px;color:var(--accent-ink)')}>{m.icon}</span><span style={css('font-size:13px;font-weight:700;color:var(--ink)')}>{m.name}</span></div>
