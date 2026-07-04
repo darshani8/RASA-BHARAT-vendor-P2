@@ -28,7 +28,8 @@ export function DashboardView() {
   const recent = (state.recent || []).map((o) => {
     const m = statusMeta(mapStatus(o.status));
     return {
-      num: o.orderNumber,
+      // Same queue token the customer sees; older rows fall back to the global order number.
+      num: o.queueToken || o.orderNumber,
       amount: inr(o.totalPaise),
       channel: channelMeta(o.channel).label,
       time: o.createdAt ? new Date(o.createdAt).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }) : '',

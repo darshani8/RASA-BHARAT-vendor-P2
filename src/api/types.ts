@@ -34,6 +34,8 @@ export type OrderStatus = 'created' | 'paid' | 'ready' | 'collected' | 'complete
 export type OrderRow = {
   orderId: string;
   orderNumber: string;
+  /** Per-vendor daily queue token ("A-07") — the same number the customer's queue page shows. */
+  queueToken?: string | null;
   customerId: string;
   vendorId: string;
   channel: 'online' | 'offline' | 'cash';
