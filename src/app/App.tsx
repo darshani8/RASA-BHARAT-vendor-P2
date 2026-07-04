@@ -48,11 +48,11 @@ function Router() {
   let view: ReactNode;
   switch (route) {
     case 'pos':
-      header = { title: 'Point of Sale', search: 'Search products, SKU…', searchMaxWidth: 340, onNewOrder: clear };
+      header = { title: 'Point of Sale', onNewOrder: clear };
       view = <PosView />;
       break;
     case 'orders':
-      header = { title: 'Orders', search: 'Search orders, tokens, customers…' };
+      header = { title: 'Orders' };
       view = <OrdersView />;
       break;
     case 'inventory':
@@ -60,15 +60,15 @@ function Router() {
       view = <InventoryView />;
       break;
     case 'analytics':
-      header = { title: 'Business Intelligence', search: 'Search analytics…', searchMaxWidth: 340 };
+      header = { title: 'Business Intelligence' };
       view = <AnalyticsView />;
       break;
     case 'reports':
-      header = { title: 'Customer Reports', search: 'Search orders, customers…', searchMaxWidth: 340 };
+      header = { title: 'Customer Reports' };
       view = <ReportsView />;
       break;
     default:
-      header = { title: 'Dashboard', search: 'Search orders, items, customers…' };
+      header = { title: 'Dashboard' };
       view = <DashboardView />;
   }
 

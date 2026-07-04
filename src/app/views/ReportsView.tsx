@@ -1,34 +1,38 @@
 import { css } from '../css';
 import { useStore } from '../store';
-import { initials, matches } from '../format';
+import { matches } from '../format';
 
+// Wired to GET /ratings/vendor/:vendorId/reviews (vendor token; own vendor only). That endpoint
+// returns only submitted reviews — no customer name, order items or amount — so the card only
+// shows what the backend actually gives us: the order token, when it was left, the star rating
+// and the comment (or an honest "no comment" note). "Request Review" / "Reply to customer" had
+// no backend behind them and only flipped local state, so they're gone entirely.
 export function ReportsView() {
-  const { state, setFilter, setSort, request, reply } = useStore();
+  const { state, setFilter, setSort } = useStore();
   const all = state.reviews;
   let list = all.filter((o) => matches(o, state.filter));
-  if (state.sort === 'highest') list = [...list].sort((a, b) => (b.rating || 0) - (a.rating || 0));
-  else if (state.sort === 'lowest') list = [...list].sort((a, b) => (a.rating || 0) - (b.rating || 0));
+  if (state.sort === 'highest') list = [...list].sort((a, b) => b.stars - a.stars);
+  else if (state.sort === 'lowest') list = [...list].sort((a, b) => a.stars - b.stars);
+  else list = [...list].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
   const reviews = list.map((o) => {
-    const stars = [0, 1, 2, 3, 4].map((i) => ({ color: i < (o.rating || 0) ? 'var(--amber)' : 'var(--border-strong)' }));
-    const requested = !!state.requested[o.num];
-    const replied = !!state.replied[o.num];
+    const stars = [0, 1, 2, 3, 4].map((i) => ({ color: i < o.stars ? 'var(--amber)' : 'var(--border-strong)' }));
     return {
-      ...o, initials: initials(o.customer), awaiting: !o.reviewed, stars,
-      ratingLabel: o.reviewed ? (o.rating ?? 0).toFixed(1) : '',
-      requested, showRequest: !requested, replied, showReply: !replied,
-      onRequest: () => request(o.num), onReply: () => reply(o.num),
+      ...o,
+      num: o.queueToken || o.orderNumber,
+      dateLabel: new Date(o.createdAt).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }),
+      stars,
+      ratingLabel: o.stars.toFixed(1),
     };
   });
-  // Real vendor rating summary from GET /ratings/vendor/:id → { averageStars, count }. (C5)
+
   const rs = state.ratingSummary;
   const avgLabel = rs && rs.averageStars != null ? rs.averageStars.toFixed(1) : '—';
   const countLabel = rs ? String(rs.count) : '—';
-  const awaitingCount = all.filter((o) => !o.reviewed).length;
   const countAll = all.length;
-  const countGood = all.filter((o) => o.reviewed && (o.rating || 0) >= 4).length;
-  const countAvg = all.filter((o) => o.reviewed && o.rating === 3).length;
-  const countBad = all.filter((o) => o.reviewed && (o.rating || 0) <= 2).length;
-  const countAwait = all.filter((o) => !o.reviewed).length;
+  const countGood = all.filter((o) => o.stars >= 4).length;
+  const countAvg = all.filter((o) => o.stars === 3).length;
+  const countBad = all.filter((o) => o.stars <= 2).length;
   const chip = 'display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:13px;font-weight:700;padding:8px 13px;border-radius:10px;cursor:pointer;white-space:nowrap;';
   const chipSel = 'display:inline-flex;align-items:center;gap:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-family:inherit;font-size:13px;font-weight:700;padding:8px 13px;border-radius:10px;cursor:pointer;white-space:nowrap;';
   const cs = (f: string) => (state.filter === f ? chipSel : chip);
@@ -42,10 +46,10 @@ export function ReportsView() {
 
         <div>
           <h1 style={css('font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.025em;line-height:1.1')}>Customer Reports</h1>
-          <p style={css('font-size:13.5px;color:var(--muted);margin-top:5px;font-weight:500')}>Order records with customer reviews and feedback. Request a review or reply directly from the counter.</p>
+          <p style={css('font-size:13.5px;color:var(--muted);margin-top:5px;font-weight:500')}>Ratings and comments customers have left on your orders.</p>
         </div>
 
-        <section style={css('display:grid;grid-template-columns:repeat(3,1fr);gap:16px')}>
+        <section style={css('display:grid;grid-template-columns:repeat(2,1fr);gap:16px')}>
           <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)')}>
             <div style={css('display:flex;align-items:center;justify-content:space-between')}><span style={css('font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)')}>Avg Rating</span><span className="ms" style={css('font-size:20px;color:var(--amber)')}>star</span></div>
             <div style={css('display:flex;align-items:baseline;gap:6px;margin-top:14px')}><span style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1')}>{avgLabel}</span><span style={css('font-size:13px;color:var(--faint);font-weight:600')}>/ 5.0</span></div>
@@ -55,11 +59,6 @@ export function ReportsView() {
             <div style={css('display:flex;align-items:center;justify-content:space-between')}><span style={css('font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)')}>Reviews Collected</span><span className="ms" style={css('font-size:20px;color:var(--accent)')}>reviews</span></div>
             <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>{countLabel}</div>
             <div style={css('font-size:11.5px;color:var(--faint);font-weight:500;margin-top:12px')}>Verified customer ratings</div>
-          </div>
-          <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad)')}>
-            <div style={css('display:flex;align-items:center;justify-content:space-between')}><span style={css('font-size:10.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)')}>Awaiting Review</span><span className="ms" style={css('font-size:20px;color:var(--muted)')}>hourglass_empty</span></div>
-            <div style={css('font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:14px')}>{awaitingCount}</div>
-            <div style={css('font-size:11.5px;color:var(--faint);font-weight:500;margin-top:12px')}>Eligible for a request</div>
           </div>
         </section>
 
@@ -83,51 +82,30 @@ export function ReportsView() {
             <button onClick={() => setFilter('good')} className="zbtn" style={css(cs('good'))}><span className="ms" style={css("font-size:17px;color:var(--amber);font-variation-settings:'FILL' 1")}>star</span>Good<span style={css('font-size:11px;font-weight:700;opacity:.6;letter-spacing:.02em')}>4–5★</span><span style={css(bs('good'))}>{countGood}</span></button>
             <button onClick={() => setFilter('average')} className="zbtn" style={css(cs('average'))}><span className="ms" style={css("font-size:17px;color:var(--amber);font-variation-settings:'FILL' 1")}>star_half</span>Average<span style={css('font-size:11px;font-weight:700;opacity:.6;letter-spacing:.02em')}>3★</span><span style={css(bs('average'))}>{countAvg}</span></button>
             <button onClick={() => setFilter('bad')} className="zbtn" style={css(cs('bad'))}><span className="ms" style={css('font-size:17px;color:var(--faint)')}>star_border</span>Poor<span style={css('font-size:11px;font-weight:700;opacity:.6;letter-spacing:.02em')}>1–2★</span><span style={css(bs('bad'))}>{countBad}</span></button>
-            <button onClick={() => setFilter('awaiting')} className="zbtn" style={css(cs('awaiting'))}><span className="ms" style={css('font-size:17px;color:var(--muted)')}>schedule</span>Awaiting<span style={css(bs('awaiting'))}>{countAwait}</span></button>
           </div>
         </div>
 
         <section style={css('display:flex;flex-direction:column;gap:14px')}>
           {reviews.map((o) => (
-            <div key={o.num} className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad);display:grid;grid-template-columns:300px 1fr;gap:24px;align-items:start')}>
+            <div key={o.id} className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:var(--pad);display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:start')}>
               <div style={css('display:flex;flex-direction:column;gap:9px;border-right:1px solid var(--border);padding-right:24px')}>
                 <div style={css('display:flex;align-items:center;gap:10px')}>
-                  <div style={css('width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0;background:linear-gradient(145deg,#3A4250,#1B2027)')}>{o.initials}</div>
-                  <div style={css('min-width:0')}><div style={css('font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-.01em')}>{o.customer}</div><div style={css('font-size:11.5px;color:var(--muted);font-weight:600')}>{o.num}</div></div>
-                </div>
-                <div style={css('font-size:12.5px;color:var(--text);font-weight:500;line-height:1.5;margin-top:2px')}>{o.items}</div>
-                <div style={css('display:flex;align-items:center;gap:10px;margin-top:4px')}>
-                  <span style={css('font-size:14px;font-weight:800;color:var(--ink)')}>{o.amount}</span>
-                  <span style={css('font-size:11.5px;color:var(--faint);font-weight:500')}>· {o.date}</span>
+                  <div style={css('width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;background:linear-gradient(145deg,#3A4250,#1B2027)')}><span className="ms" style={css('font-size:20px')}>confirmation_number</span></div>
+                  <div style={css('min-width:0')}><div style={css('font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-.01em')}>{o.num}</div><div style={css('font-size:11.5px;color:var(--muted);font-weight:600')}>{o.dateLabel}</div></div>
                 </div>
               </div>
 
               <div style={css('display:flex;flex-direction:column;gap:12px;min-height:64px')}>
-                {o.reviewed && (
-                  <div style={css('display:flex;gap:10px;flex-direction:column')}>
-                    <div style={css('display:flex;align-items:center;gap:10px')}>
-                      <div style={css('display:flex;gap:2px')}>
-                        {o.stars.map((s, i) => <span key={i} className="ms" style={css("font-size:18px;color:" + s.color + ";font-variation-settings:'FILL' 1")}>star</span>)}
-                      </div>
-                      <span style={css('font-size:12.5px;font-weight:700;color:var(--ink)')}>{o.ratingLabel}</span>
-                      <span style={css('font-size:11px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:3px 9px;border-radius:999px;margin-left:2px')}>Reviewed</span>
-                    </div>
-                    <p style={css('font-size:13px;color:var(--text);font-weight:500;line-height:1.6;font-style:italic')}>“{o.comment}”</p>
-                    <div style={css('display:flex;gap:8px;margin-top:2px')}>
-                      {o.showReply && <button onClick={o.onReply} className="zbtn" style={css('display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--card);color:var(--text);font-family:inherit;font-size:12px;font-weight:700;padding:8px 14px;border-radius:9px;cursor:pointer')}><span className="ms" style={css('font-size:16px;color:var(--muted)')}>reply</span>Reply to customer</button>}
-                      {o.replied && <span style={css('display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:8px 14px;border-radius:9px')}><span className="ms" style={css('font-size:16px')}>check</span>Reply sent</span>}
-                    </div>
+                <div style={css('display:flex;align-items:center;gap:10px')}>
+                  <div style={css('display:flex;gap:2px')}>
+                    {o.stars.map((s, i) => <span key={i} className="ms" style={css("font-size:18px;color:" + s.color + ";font-variation-settings:'FILL' 1")}>star</span>)}
                   </div>
-                )}
-                {o.awaiting && (
-                  <div style={css('display:flex;align-items:center;justify-content:space-between;gap:16px;height:100%;flex:1')}>
-                    <div style={css('display:flex;align-items:center;gap:11px')}>
-                      <div style={css('width:38px;height:38px;border-radius:10px;background:var(--hover);display:flex;align-items:center;justify-content:center')}><span className="ms" style={css('font-size:20px;color:var(--faint)')}>rate_review</span></div>
-                      <div><div style={css('font-size:13px;font-weight:700;color:var(--text)')}>No review submitted yet</div><div style={css('font-size:11.5px;color:var(--muted);font-weight:500')}>Order details only — customer hasn't left feedback</div></div>
-                    </div>
-                    {o.showRequest && <button onClick={o.onRequest} className="zbtn" style={css('flex-shrink:0;display:inline-flex;align-items:center;gap:6px;border:none;background:var(--ink);color:#fff;font-family:inherit;font-size:12px;font-weight:700;padding:9px 15px;border-radius:9px;cursor:pointer')}><span className="ms" style={css('font-size:16px')}>send</span>Request Review</button>}
-                    {o.requested && <span style={css('flex-shrink:0;display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:var(--accent-ink);background:var(--accent-soft);padding:9px 15px;border-radius:9px')}><span className="ms" style={css('font-size:16px')}>mark_email_read</span>Request Sent</span>}
-                  </div>
+                  <span style={css('font-size:12.5px;font-weight:700;color:var(--ink)')}>{o.ratingLabel}</span>
+                </div>
+                {o.comment ? (
+                  <p style={css('font-size:13px;color:var(--text);font-weight:500;line-height:1.6;font-style:italic')}>“{o.comment}”</p>
+                ) : (
+                  <p style={css('font-size:12.5px;color:var(--muted);font-weight:500')}>No comment left.</p>
                 )}
               </div>
             </div>
@@ -136,18 +114,18 @@ export function ReportsView() {
             <div className="zcard" style={css('background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow-sm);padding:48px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center')}>
               {countAll === 0 ? (
                 <>
-                  {/* The aggregate rating (cards above) is real; individual review TEXT isn't exposed
-                      by the backend yet, so the per-order list is empty. Explain that rather than let
-                      the real count read as contradicting an empty list. (C5 review) */}
+                  {/* The aggregate rating (cards above) is real; the per-order review endpoint may
+                      not be deployed yet or simply has no reviews yet — explain that instead of
+                      leaving a silent blank list. */}
                   <span className="ms" style={css('font-size:38px;color:var(--faint)')}>rate_review</span>
-                  <div style={css('font-size:14px;font-weight:800;color:var(--ink)')}>Individual reviews aren’t available yet</div>
-                  <div style={css('font-size:12.5px;color:var(--muted);font-weight:500;max-width:420px')}>The cards above show your live aggregate rating from all customers. Per-order review text will appear here once the backend exposes it.</div>
+                  <div style={css('font-size:14px;font-weight:800;color:var(--ink)')}>No reviews yet</div>
+                  <div style={css('font-size:12.5px;color:var(--muted);font-weight:500;max-width:420px')}>The cards above show your live aggregate rating. Individual reviews will appear here once customers leave them.</div>
                 </>
               ) : (
                 <>
                   <span className="ms" style={css('font-size:38px;color:var(--faint)')}>filter_alt_off</span>
                   <div style={css('font-size:14px;font-weight:800;color:var(--ink)')}>No reviews match this filter</div>
-                  <div style={css('font-size:12.5px;color:var(--muted);font-weight:500')}>Try a different rating band or clear the filter.</div>
+                  <div style={css('font-size:12.5px;color:var(--muted);font-weight:500')}>Try a different rating band.</div>
                 </>
               )}
             </div>

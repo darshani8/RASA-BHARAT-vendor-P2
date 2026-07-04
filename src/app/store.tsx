@@ -5,7 +5,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { ZenithAPI } from '../api';
-import type { MenuItem, OrderRow, Queue, Vendor, VendorAnalytics } from '../api/types';
+import type { MenuItem, OrderRow, Queue, Vendor, VendorAnalytics, VendorReview } from '../api/types';
 import type { RatingSummary } from '../api/endpoints';
 import { errMsg, todayISO } from './format';
 
@@ -47,20 +47,14 @@ export interface State {
   invAvail: boolean;
   invCat: string;
   invCatFilter: string;
-  // reports (cosmetic, client-only)
-  reviews: ReviewRow[];
+  invSearch: string;
+  // reports — real per-order reviews from GET /ratings/vendor/:id/reviews
+  reviews: VendorReview[];
   filter: string;
   sort: string;
-  requested: Record<string, boolean>;
-  replied: Record<string, boolean>;
   // queue payment toggle (cosmetic, client-only)
   method: 'cash' | 'card' | 'app';
 }
-
-export type ReviewRow = {
-  num: string; customer: string; items: string; amount: string; date: string;
-  reviewed: boolean; rating?: number; comment?: string;
-};
 
 function initialState(): State {
   return {
@@ -91,11 +85,10 @@ function initialState(): State {
     invAvail: true,
     invCat: 'Other',
     invCatFilter: 'All',
+    invSearch: '',
     reviews: [],
     filter: 'all',
     sort: 'recent',
-    requested: {},
-    replied: {},
     method: 'cash',
   };
 }
@@ -127,6 +120,7 @@ export interface Store {
   // inventory
   itemCategory: (m: MenuItem) => string;
   setInvCatFilter: (e: { target: { value: string } }) => void;
+  setInvSearch: (e: { target: { value: string } }) => void;
   openAddItem: () => void;
   openEditItem: (it: MenuItem) => void;
   closeItemModal: () => void;
@@ -138,11 +132,9 @@ export interface Store {
   saveItem: () => void;
   deleteItem: (id: string) => void;
   toggleItemAvail: (it: MenuItem) => void;
-  // reports (cosmetic)
+  // reports
   setFilter: (f: string) => void;
   setSort: (s: string) => void;
-  request: (num: string) => void;
-  reply: (num: string) => void;
   // queue (cosmetic)
   setMethod: (m: 'cash' | 'card' | 'app') => void;
 }
@@ -164,7 +156,6 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const catMap = useRef<Record<string, string>>({});
   const ordersCursors = useRef<(string | undefined)[]>([undefined]);
   const ordersPageIdx = useRef(0);
-  const noOwnerMenu = useRef(false);
 
   const api = ZenithAPI;
   const setState = (patch: Patch) =>
@@ -173,7 +164,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const vendorId = (): string => api.getVendorId() || api.config.defaultVendorId;
 
-  // ── categories (localStorage-backed; prefers item.category once it ships) ──
+  // ── categories: the backend persists `category` on the item now; localStorage is only a
+  // fallback for items created before that shipped (never has one). ──
   const loadCatMap = (): Record<string, string> => {
     try { return JSON.parse(localStorage.getItem('zenith.menuCat') || '{}') || {}; } catch { return {}; }
   };
@@ -181,24 +173,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     try { localStorage.setItem('zenith.menuCat', JSON.stringify(catMap.current || {})); } catch { /* ignore */ }
   };
   const itemCategory = (m: MenuItem): string => {
-    const cat = (m as unknown as { category?: string }).category;
-    if (cat) return cat;
+    if (m.category) return m.category;
     return catMap.current[m.id] || 'Other';
   };
   const setItemCategory = (id: string, cat: string) => { catMap.current[id] = cat; saveCatMap(); };
 
   // ── live data ──────────────────────────────────────────────────────────────
+  // Owner/admin menu view: GET /menu?vendor_id&available_only=false — includes sold-out items,
+  // so toggling an item off never makes it vanish from Inventory.
   const loadMenu = async (): Promise<MenuItem[]> => {
     if (!vendorId()) return [];
-    if (!noOwnerMenu.current) {
-      try { return await api.getVendorMenu(vendorId()); }
-      catch (e) {
-        const err = e as { status?: number; code?: string };
-        if (err && (err.status === 404 || err.code === 'NOT_FOUND')) noOwnerMenu.current = true;
-        else throw e;
-      }
-    }
-    return api.getMenu(vendorId());
+    return api.getVendorMenu(vendorId());
   };
 
   const loadOrders = async (tab?: 'all' | 'active' | 'completed', cursor?: string) => {
@@ -227,6 +212,14 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     api.getAnalytics(todayISO()).then((analytics) => setState({ analytics })).catch(() => {});
     if (vid) api.getRatingSummary(vid).then((ratingSummary) => setState({ ratingSummary })).catch(() => {});
     api.getVendorOrders({ limit: 6 }).then((p) => setState({ recent: p.data })).catch(() => {});
+    if (vid) loadReviews(vid);
+  };
+
+  // Per-order review text/stars — the endpoint is rolling out alongside this client, so a 404
+  // (not deployed yet) or any other transient failure just keeps the current (empty) list;
+  // it never crashes the view.
+  const loadReviews = (vid: string) => {
+    api.getVendorReviews(vid).then((reviews) => setState({ reviews })).catch(() => {});
   };
 
   const act = (orderId: string, fn: (id: string) => Promise<unknown>) => {
@@ -270,6 +263,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   // ── inventory CRUD ──
   const setInvCatFilter = (e: { target: { value: string } }) => setState({ invCatFilter: e.target.value });
+  const setInvSearch = (e: { target: { value: string } }) => setState({ invSearch: e.target.value });
   const openAddItem = () => setState({ modalOpen: true, invEditId: null, invName: '', invPrice: '', invPrep: '5', invAvail: true, invCat: 'Other' });
   const openEditItem = (it: MenuItem) => setState({
     modalOpen: true, invEditId: it.id, invName: it.name,
@@ -292,11 +286,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     const cat = s.invCat || 'Other';
     const done = () => loadMenu().then((menu) => setState({ menu }));
     if (s.invEditId) {
-      api.updateMenuItem(s.invEditId, { name, pricePaise, prepMinutes, isAvailable: !!s.invAvail })
+      api.updateMenuItem(s.invEditId, { name, pricePaise, prepMinutes, isAvailable: !!s.invAvail, category: cat })
         .then(() => { setItemCategory(s.invEditId as string, cat); setState({ modalOpen: false }); return done(); })
         .catch((e) => setState({ loadErr: errMsg(e) }));
     } else {
-      api.createMenuItem({ vendorId: vendorId(), name, pricePaise, prepMinutes, isAvailable: !!s.invAvail })
+      api.createMenuItem({ vendorId: vendorId(), name, pricePaise, prepMinutes, isAvailable: !!s.invAvail, category: cat })
         .then((created) => { setItemCategory(created.id, cat); setState({ modalOpen: false }); return done(); })
         .catch((e) => setState({ loadErr: errMsg(e) }));
     }
@@ -342,11 +336,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
       });
   };
 
-  // ── reports (cosmetic, client-only) ──
+  // ── reports ──
   const setFilter = (f: string) => setState({ filter: f });
   const setSort = (s: string) => setState({ sort: s });
-  const request = (num: string) => setState((s) => ({ requested: { ...s.requested, [num]: true } }));
-  const reply = (num: string) => setState((s) => ({ replied: { ...s.replied, [num]: true } }));
   const setMethod = (m: 'cash' | 'card' | 'app') => setState({ method: m });
 
   // ── lifecycle: hash routing, first load, realtime ──
@@ -368,9 +360,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     onToggleOpen, onLogout, clearError,
     setOrdersTab, ordersPrev, ordersNext, loadOrders, act, startReject, cancelReject,
     add, inc, dec, clear, setPosCat, setPosMethod, onCharge,
-    itemCategory, setInvCatFilter, openAddItem, openEditItem, closeItemModal,
+    itemCategory, setInvCatFilter, setInvSearch, openAddItem, openEditItem, closeItemModal,
     setInvName, setInvPrice, setInvPrep, setInvCat, toggleInvAvail, saveItem, deleteItem, toggleItemAvail,
-    setFilter, setSort, request, reply, setMethod,
+    setFilter, setSort, setMethod,
   };
 
   return <Ctx.Provider value={store}>{children}</Ctx.Provider>;

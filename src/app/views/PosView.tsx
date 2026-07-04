@@ -62,7 +62,7 @@ export function PosView() {
       <aside style={css('width:368px;flex-shrink:0;background:var(--card);border-left:1px solid var(--border);display:flex;flex-direction:column;height:100%;box-shadow:-8px 0 24px -18px rgba(16,24,40,.2)')}>
         <div style={css('padding:18px 20px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between')}>
           <div>
-            <div style={css('font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em')}>Order #4092</div>
+            <div style={css('font-size:16px;font-weight:800;color:var(--ink);letter-spacing:-.01em')}>New walk-in order</div>
             <div style={css('font-size:12px;color:var(--muted);font-weight:500;margin-top:2px')}>Walk-in · {itemCount} items</div>
           </div>
           <button onClick={clear} className="zbtn" style={css('border:1px solid var(--border);background:var(--card);cursor:pointer;width:34px;height:34px;border-radius:9px;color:var(--muted);display:flex;align-items:center;justify-content:center')}><span className="ms" style={css('font-size:19px')}>delete</span></button>
@@ -95,7 +95,7 @@ export function PosView() {
         <div style={css('padding:16px 20px 20px;border-top:1px solid var(--border);background:var(--card-soft)')}>
           <div style={css('display:flex;flex-direction:column;gap:8px;margin-bottom:14px')}>
             <div style={css('display:flex;justify-content:space-between;font-size:13px')}><span style={css('color:var(--muted);font-weight:500')}>Subtotal</span><span style={css('color:var(--text);font-weight:600')}>{subtotal}</span></div>
-            <div style={css('display:flex;justify-content:space-between;font-size:13px')}><span style={css('color:var(--muted);font-weight:500')}>Taxes</span><span style={css('color:var(--text);font-weight:600')}>{tax}</span></div>
+            <div style={css('display:flex;justify-content:space-between;font-size:13px')}><span style={css('color:var(--muted);font-weight:500')}>Tax</span><span style={css('color:var(--text);font-weight:600')}>{tax}</span></div>
             <div style={css('display:flex;justify-content:space-between;align-items:center;padding-top:10px;border-top:1px dashed var(--border)')}><span style={css('font-size:15px;font-weight:800;color:var(--ink)')}>Total</span><span style={css('font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.02em')}>{total}</span></div>
           </div>
           <div style={css('display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:9px')}>

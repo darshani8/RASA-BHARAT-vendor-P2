@@ -1,5 +1,7 @@
 import { css } from '../css';
+import { useStore } from '../store';
 import type { Route } from '../store';
+import { initials } from '../format';
 
 function NavItem({ icon, label, href, active, badge }: {
   icon: string; label: string; href: string; active: boolean; badge?: string;
@@ -31,6 +33,12 @@ function Group({ title, children }: { title: string; children: React.ReactNode }
 }
 
 export function Sidebar({ active }: { active: Route }) {
+  const { state } = useStore();
+  const vendorName = state.vendor?.name || 'Vendor';
+  const vendorInitials = initials(vendorName) || 'V';
+  // The live active-orders board (same data source as the dashboard's queue), not the paginated
+  // orders-tab list — this is the count that matters for "orders needing attention right now".
+  const ordersBadge = String(state.activeBoard.length);
   return (
     <aside style={css('width:256px;flex-shrink:0;background:var(--side-bg);border-right:1px solid var(--side-border);display:flex;flex-direction:column;padding:22px 16px 18px')}>
       <div style={css('display:flex;align-items:center;gap:11px;padding:6px 8px 0')}>
@@ -50,7 +58,7 @@ export function Sidebar({ active }: { active: Route }) {
 
       <Group title="Operations">
         <NavItem icon="point_of_sale" label="Point of Sale" href="#/pos" active={active === 'pos'} />
-        <NavItem icon="receipt_long" label="Orders" href="#/orders" active={active === 'orders'} badge="12" />
+        <NavItem icon="receipt_long" label="Orders" href="#/orders" active={active === 'orders'} badge={ordersBadge} />
         <NavItem icon="inventory_2" label="Inventory" href="#/inventory" active={active === 'inventory'} />
       </Group>
 
@@ -60,16 +68,12 @@ export function Sidebar({ active }: { active: Route }) {
       </Group>
 
       <div style={css('margin-top:auto;padding-top:16px;border-top:1px solid var(--side-border);display:flex;flex-direction:column;gap:2px')}>
-        <a href="#" className="znav" style={css('display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:9px;font-size:13.5px;font-weight:600;text-decoration:none;color:var(--side-text)')}>
-          <span className="ms" style={css('font-size:20px')}>help</span>Support
-        </a>
-        <div style={css('display:flex;align-items:center;gap:11px;padding:10px;margin-top:6px;border-radius:11px;background:var(--side-bg-2);border:1px solid var(--side-border)')}>
-          <div style={css('width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,#2A3340,#171C24);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0')}>AD</div>
+        <div style={css('display:flex;align-items:center;gap:11px;padding:10px;border-radius:11px;background:var(--side-bg-2);border:1px solid var(--side-border)')}>
+          <div style={css('width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,#2A3340,#171C24);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:12px;flex-shrink:0')}>{vendorInitials}</div>
           <div style={css('min-width:0;flex:1')}>
-            <div style={css('color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis')}>Avery Donovan</div>
-            <div style={css('color:var(--faint);font-size:11px;font-weight:500')}>Store Manager</div>
+            <div style={css('color:#fff;font-size:12.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis')}>{vendorName}</div>
+            <div style={css('color:var(--faint);font-size:11px;font-weight:500')}>Owner</div>
           </div>
-          <span className="ms" style={css('font-size:18px;color:var(--side-text)')}>unfold_more</span>
         </div>
       </div>
     </aside>

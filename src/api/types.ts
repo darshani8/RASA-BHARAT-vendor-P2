@@ -95,6 +95,22 @@ export type VendorAnalytics = {
   orderCount: number;
   grossRevenuePaise: Paise;
   hourly: Array<{ hour: number; orderCount: number; revenuePaise: Paise }>;
+  // Rolling out on the backend alongside this client — absent on an older server, so both are
+  // optional. `completedCount`: orders that reached completed/collected today. `avgHandleMinutes`:
+  // mean minutes from payment to ready today, or null with no completions yet.
+  completedCount?: number;
+  avgHandleMinutes?: number | null;
+};
+
+/** A single customer review for one of this vendor's orders, from GET /ratings/vendor/{id}/reviews. */
+export type VendorReview = {
+  id: string;
+  orderId: string;
+  orderNumber: string;
+  queueToken: string | null;
+  stars: number;
+  comment: string | null;
+  createdAt: string;
 };
 
 export type Page<T> = { data: T[]; page: { limit: number; nextCursor: string | null } };
