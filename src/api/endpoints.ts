@@ -155,3 +155,12 @@ export const createOrder = (
     body: input,
     idempotencyKey,
   });
+
+// ── Clear order history ────────────────────────────────────────────────────
+/**
+ * DELETE /vendor/orders — clear the vendor's completed/cancelled order history.
+ * Only deletes completed, cancelled, collected, served orders. Active orders remain.
+ * Returns { cleared: number, message: string }
+ */
+export const clearVendorOrders = () =>
+  request<{ cleared: number; message: string }>('/vendor/orders', { method: 'DELETE' });

@@ -5,7 +5,7 @@ import { ZenithAPI } from '../../api';
 import { inr, mapStatus, statusMeta, channelMeta } from '../format';
 
 export function OrdersView() {
-  const { state, act, startReject, cancelReject, setOrdersTab, ordersPrev, ordersNext } = useStore();
+  const { state, act, startReject, cancelReject, setOrdersTab, ordersPrev, ordersNext, clearVendorOrders } = useStore();
   const api = ZenithAPI;
 
   const tab = state.ordersTab || 'all';
@@ -91,9 +91,24 @@ export function OrdersView() {
   return (
     <div style={css('flex:1;overflow-y:auto;padding:26px 28px 40px')}>
       <div style={css('max-width:1240px;margin:0 auto;display:flex;flex-direction:column;gap:18px')}>
-        <div>
-          <h1 style={css('font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.025em;line-height:1.1')}>Pipeline Management</h1>
-          <p style={css('font-size:13.5px;color:var(--muted);margin-top:5px;font-weight:500')}>Live tracking and historical order records across the counter.</p>
+        <div style={css('display:flex;align-items:flex-start;justify-content:space-between')}>
+          <div>
+            <h1 style={css('font-size:24px;font-weight:800;color:var(--ink);letter-spacing:-.025em;line-height:1.1')}>Pipeline Management</h1>
+            <p style={css('font-size:13.5px;color:var(--muted);margin-top:5px;font-weight:500')}>Live tracking and historical order records across the counter.</p>
+          </div>
+          {state.board.length > 0 && (
+            <button
+              onClick={() => {
+                if (confirm('Clear all completed and cancelled orders from history?')) {
+                  clearVendorOrders();
+                }
+              }}
+              className="zbtn"
+              style={css('border:1px solid var(--neg);background:var(--card);color:var(--neg);font-family:inherit;font-size:11.5px;font-weight:700;padding:7px 14px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:5px')}
+            >
+              <span className="ms" style={css('font-size:15px')}>delete_sweep</span>Clear History
+            </button>
+          )}
         </div>
 
         <section style={css('display:grid;grid-template-columns:repeat(4,1fr);gap:16px')}>
@@ -143,7 +158,7 @@ export function OrdersView() {
               </div>
               {orders.length === 0 && <div style={css('padding:48px 20px;text-align:center;color:var(--muted);font-size:13px;font-weight:600')}>No active orders right now. New orders appear here live.</div>}
               {orders.map((o) => (
-                <div key={o.orderId} className="zrow" style={css('display:grid;' + grid + ';align-items:center;border-top:1px solid var(--border)')}>
+                <div key={o.orderId} className="zrow" style={css('display:grid;' + grid + ';align-items:center;border-top:1px solid var(--border)')}>  
                   <div style={css('padding:14px var(--pad);font-size:14px;font-weight:800;color:var(--ink)')}>{o.id}</div>
                   <div style={css('padding:14px 16px;font-size:13px;font-weight:600;color:var(--text)')}>{o.customer}</div>
                   <div style={css('padding:14px 16px;font-size:12.5px;color:var(--muted)')}>{o.items}</div>
@@ -168,7 +183,7 @@ export function OrdersView() {
                           <option value="Out of stock">Out of stock</option>
                           <option value="Item unavailable">Item unavailable</option>
                           <option value="Kitchen closed">Kitchen closed</option>
-                          <option value="Payment issue">Payment issue</option>
+                          <option value="Price mismatch">Price mismatch</option>
                           <option value="Customer cancelled">Customer cancelled</option>
                         </select>
                         <button onClick={o.onCancelReject} className="zbtn" style={css('border:1px solid var(--border);background:var(--card);cursor:pointer;width:30px;height:30px;border-radius:8px;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0')}><span className="ms" style={css('font-size:18px')}>close</span></button>
