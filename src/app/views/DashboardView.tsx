@@ -19,11 +19,14 @@ export function DashboardView() {
   });
   const entries = q && q.entries ? q.entries : [];
   const liveQueue = entries.slice(0, 6).map((e) => ({
-    num: '#' + (e.position + 1),
-    name: 'Order ' + e.orderNumber,
-    sub: e.position === 0 ? 'Now serving' : 'In queue',
-    pillLabel: e.position === 0 ? 'Serving' : 'Queued',
-    pillStyle: 'font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:999px;' + (e.position === 0 ? 'color:var(--accent-ink);background:var(--accent-soft)' : 'color:var(--muted);background:var(--hover)'),
+    num: e.orderNumber,
+    name: e.customerName || 'Order ' + e.orderNumber,
+    sub: e.status === 'confirmed' ? 'Waiting' : e.status === 'preparing' ? 'Preparing' : 'Ready',
+    pillLabel: e.status === 'confirmed' ? 'Queued' : e.status === 'preparing' ? 'Preparing' : 'Ready',
+    pillStyle: 'font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:999px;' +
+      (e.status === 'ready' ? 'color:var(--accent-ink);background:var(--accent-soft)' :
+       e.status === 'preparing' ? 'color:var(--amber);background:var(--amber-soft)' :
+       'color:var(--muted);background:var(--hover)'),
   }));
   const recent = (state.recent || []).map((o) => {
     const m = statusMeta(mapStatus(o.status));
