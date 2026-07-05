@@ -109,6 +109,7 @@ export interface Store {
   act: (orderId: string, fn: (id: string) => Promise<unknown>) => void;
   startReject: (id: string) => void;
   cancelReject: () => void;
+  clearVendorOrders: () => void;
   // pos
   add: (p: { id: string; name: string; cat: string; price: number }) => void;
   inc: (id: string) => void;
@@ -261,6 +262,16 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const startReject = (id: string) => setState({ rejectingId: id });
   const cancelReject = () => setState({ rejectingId: null });
 
+  // ── clear order history ──
+  const clearVendorOrders = () => {
+    api.clearVendorOrders()
+      .then(() => {
+        setState({ loadErr: '' });
+        loadOrders();
+      })
+      .catch((e) => setState({ loadErr: errMsg(e) }));
+  };
+
   // ── inventory CRUD ──
   const setInvCatFilter = (e: { target: { value: string } }) => setState({ invCatFilter: e.target.value });
   const setInvSearch = (e: { target: { value: string } }) => setState({ invSearch: e.target.value });
@@ -358,7 +369,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const store: Store = {
     state,
     onToggleOpen, onLogout, clearError,
-    setOrdersTab, ordersPrev, ordersNext, loadOrders, act, startReject, cancelReject,
+    setOrdersTab, ordersPrev, ordersNext, loadOrders, act, startReject, cancelReject, clearVendorOrders,
     add, inc, dec, clear, setPosCat, setPosMethod, onCharge,
     itemCategory, setInvCatFilter, setInvSearch, openAddItem, openEditItem, closeItemModal,
     setInvName, setInvPrice, setInvPrep, setInvCat, toggleInvAvail, saveItem, deleteItem, toggleItemAvail,
